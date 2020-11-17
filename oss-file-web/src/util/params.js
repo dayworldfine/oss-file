@@ -2,7 +2,7 @@
 const socketUrl = "http://localhost:80/endpoint-websocket";
 
 /*api路径*/
-const baseUrl = "http://localhost:9735"
+const baseUrl = "http://127.0.0.1:9735"
 
 
 

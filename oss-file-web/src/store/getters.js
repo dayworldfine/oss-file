@@ -1,1 +1,1 @@
-// export const resturantName = state => state.resturantName
+export const getCode = state => state.code

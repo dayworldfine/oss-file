@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './App'
 
+import Vuex from "@/store/index"
+
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import { Button, Page } from 'view-design';
@@ -41,5 +43,6 @@ Vue.component('AllotRole', AllotRole);
 new Vue({
   el: '#app',
   router,
+  Vuex,
   render: h => h(App)
 })

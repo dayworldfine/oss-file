@@ -3,7 +3,7 @@
     <div class="outer">
       <div class="title">欢迎</div>
       <div class="content">
-        <div class="user">
+        <div class="user" v-if="isLogin">
           <img loading="lazy" src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="user-img"/>
           <div class="user-name">王某</div>
           <div class="button-all">
@@ -17,6 +17,13 @@
             <Button type="warning" class="button" @click="allotRole()">分配角色</Button>
             <Button type="warning" class="button" @click="addZone()">添加分区</Button>
           </div>
+        </div>
+        <div class="user" v-if="!isLogin">
+          <img loading="lazy" src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="user-img"/>
+          <div class="user-name">未登录</div>
+          <Button type="warning" class="button" @click="register()">注册</Button>
+          <Button type="warning" class="button" @click="login()">登录{{code}}</Button>
+          <Button type="warning" class="button" @click="forGetPwd()">忘记密码</Button>
         </div>
         <div class="document">
           <router-view></router-view>
@@ -36,10 +43,12 @@
 </template>
 
 <script>
+  import { mapState, mapActions } from 'vuex'
   export default {
     name: "Pc",
     data() {
       return {
+        isLogin:false,    //是否登录
         updateNameVisible: false, //修改名称弹窗
         updateImgVisible:false, //修改头像
         myRoleVisible:false, //我的角色
@@ -51,7 +60,27 @@
         allotRoleVisible:false,  //分配角色
       }
     },
+    computed:{
+      ...mapState([
+        getCode,
+      ])
+    },
     methods: {
+      ...mapActions([
+        'sendSms',
+      ]),
+      /** 注册*/
+      register(){
+
+      },
+      /** 登录*/
+      login(){
+
+      },
+      /** 忘记密码*/
+      forGetPwd(){
+
+      },
       /** 修改头像*/
       updateImg() {
         this.updateImgVisible=true;

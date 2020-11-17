@@ -1,5 +1,8 @@
-//
-// export const userLogin = (state, data) =>{
-//   storage.setStorage('userInfo',data)
-//   state.userInfo = data
-// }
+
+export const userLogin = (state, data) =>{
+  state.userInfo = data
+}
+
+export const getCode = (state, data) =>{
+  state.code = data
+}

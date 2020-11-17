@@ -116,7 +116,8 @@ http.interceptors.response.use((response) => {
     // console.log('data == ', data)
 
     // data = JSON.parse(data);
-    return data
+    // return  data;
+    return Promise.resolve(data);
   } catch (e) {
     // throw {}
   }
