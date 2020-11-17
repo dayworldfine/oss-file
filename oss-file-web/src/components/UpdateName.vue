@@ -12,9 +12,7 @@
           <Button @click="cancel()" class="updateName-button">取 消</Button>
           <Button type="primary" @click="confirm()" class="updateName-button">确 定</Button>
         </div>
-
       </div>
-
     </el-dialog>
   </div>
 </template>

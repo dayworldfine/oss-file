@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import test from '@/pc/test'
 import pcIndex from '@/pc/PcIndex/PcIndex'
 import testUpload from '@/pc/testUpload'
@@ -27,11 +26,6 @@ export default new Router({
           component: resolve => require(['@/pc/PcIndex/PcIndex.vue'], resolve)
         }
       ]
-    },
-    {
-      path: '/1',
-      name: 'HelloWorld',
-      component: HelloWorld
     },
     {
       path: '/test',

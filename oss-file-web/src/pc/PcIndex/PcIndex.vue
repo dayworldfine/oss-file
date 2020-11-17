@@ -85,7 +85,7 @@
 
 <style scoped >
   .PcIndex{
-    width: 100%;
+    /*width: 100%;*/
     height: 100%;
     width: 1500px;
     box-sizing: border-box;
