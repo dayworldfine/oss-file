@@ -42,6 +42,6 @@ body,
   padding: 0;
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 </style>
