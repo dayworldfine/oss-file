@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="修改昵称"
+      title=""
       :visible.sync="showBoolean"
       @close="close()"
       width="20%"

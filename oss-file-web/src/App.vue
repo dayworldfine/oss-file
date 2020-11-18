@@ -11,10 +11,10 @@ export default {
   //App.vue
   mounted() {
     if (this._isMobile()) {
-      alert("手机端");
+      // alert("手机端");
       this.$router.replace('/mbIndex');
     } else {
-      alert("pc端");
+      // alert("pc端");
       this.$router.replace('/PcIndex');
     }
   },

@@ -7,8 +7,7 @@ public class ErrorCodes {
     private static Map<Integer, String> errorCodes = new LinkedHashMap(100);
     public static final int OK = 10000;
     public static final int SERVER_INTERNAL_ERROR = -10000;
-    public static final int PARAM_VALID_ERROR = -20000;
-    public static final int PARAM_VAILD_ERROR = 10001;
+    public static final int PARAM_VALID_ERROR = 10001;
     public static final int PARAM_EMPTY_ERROR = 10002;
     public static final int BANGLE_EXICT = 20001;
     public static final int FILE_SUFFIX = 20002;

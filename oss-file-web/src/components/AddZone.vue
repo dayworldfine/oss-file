@@ -1,35 +1,33 @@
 <template>
   <div>
     <el-dialog
-      title="添加"
+      title="添加分区"
       :visible.sync="showBoolean"
       @close="close()"
       width="20%"
       center>
       <div class="addZone">
-        <el-form :label-position="labelPosition"  :model="formLabelAlign" class="addZone-form">
-          <el-form-item label="分区名称" class="addZone-form-item">
-            <el-input v-model="formLabelAlign.zoneName"></el-input>
-          </el-form-item>
-          <el-form-item label="分区前缀" class="addZone-form-item">
-            <el-input v-model="formLabelAlign.zonePrefix"></el-input>
-          </el-form-item>
-          <el-form-item label="分区密码" class="addZone-form-item">
-            <el-input v-model="formLabelAlign.zonePwd"></el-input>
-          </el-form-item>
-          <el-form-item label="是否公开" class="addZone-form-item">
-<!--            <el-input v-model="formLabelAlign.isOpen"></el-input>-->
-            <el-radio v-model="formLabelAlign.isOpen" label=0>否</el-radio>
-            <el-radio v-model="formLabelAlign.isOpen" label=1>是</el-radio>
-          </el-form-item>
-        </el-form>
+        <div class="addZone">
+          <div class="addZone-div">
+            <span>分区名称</span><input  class="addZoneInput" v-model="formLabelAlign.zoneName"/>
+          </div>
+          <div class="addZone-div">
+            <span>分区前缀</span><input  class="addZoneInput" v-model="formLabelAlign.zonePrefix"/>
+          </div>
+          <div class="addZone-div">
+            <span>分区密码</span><input  class="addZoneInput" v-model="formLabelAlign.pwd"/>
+          </div>
+          <div class="addZone-div">
+            <span>是否公开</span>
+            <el-radio v-model="formLabelAlign.isOpen" label="0" class="addZone-div-radio">否</el-radio>
+            <el-radio v-model="formLabelAlign.isOpen" label="1" class="addZone-div-radio">是</el-radio>
+          </div>
+        </div>
         <div class="addZone-button-all">
           <Button @click="cancel()" class="addZone-button">取 消</Button>
           <Button type="primary" @click="confirm()" class="addZone-button">确 定</Button>
         </div>
-
       </div>
-
     </el-dialog>
   </div>
 </template>
@@ -82,6 +80,17 @@
     display: flex;
     flex-direction: column;
   }
+  .addZone {
+    display: flex;
+    flex-direction: column;
+  }
+  .addZone-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 5px;
+    line-height: 45px;
+  }
 
   .addZoneInput {
     outline-style: none;
@@ -92,11 +101,14 @@
     font-size: 14px;
     color: #bfae90;
     height: 40px;
-    width: 280px;
+    width: 200px;
     font-family: "Microsoft soft";
     margin-left: 30px;
+    line-height: 45px;
   }
-
+  .addZone-div-radio{
+    margin-top: 15px;
+  }
   .addZone-button-all {
     margin-top: 20px;
     display: flex;
@@ -106,15 +118,5 @@
 
   .addZone-button {
     margin-right: 22px;
-  }
-  .addZone-form{
-    display: flex;
-    flex-direction: column;
-    padding: 0px;
-  }
-  .addZone-form-item{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
   }
 </style>

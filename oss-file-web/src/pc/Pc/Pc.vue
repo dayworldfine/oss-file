@@ -22,7 +22,7 @@
           <img loading="lazy" src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="user-img"/>
           <div class="user-name">未登录</div>
           <Button type="warning" class="button" @click="register()">注册</Button>
-          <Button type="warning" class="button" @click="login()">登录{{code}}</Button>
+          <Button type="warning" class="button" @click="login()">登录{{userInfo}}</Button>
           <Button type="warning" class="button" @click="forGetPwd()">忘记密码</Button>
         </div>
         <div class="document">
@@ -39,6 +39,9 @@
     <AddZone :addZoneVisible="addZoneVisible" @confirmAddZone="confirmAddZone" @closeAddZone="closeAddZone"></AddZone>
     <AllotZone :allotZoneVisible="allotZoneVisible" @confirmAllotZone="confirmAllotZone" @closeAllotZone="closeAllotZone"></AllotZone>
     <AllotRole :allotRoleVisible="allotRoleVisible" @confirmAllotRole="confirmAllotRole" @closeAllotRole="closeAllotRole"></AllotRole>
+    <Register :registerVisible="registerVisible" @confirmRegister="confirmRegister" @closeRegister="closeRegister"></Register>
+    <Login :loginVisible="loginVisible" @confirmLogin="confirmLogin" @closeLogin="closeLogin"></Login>
+    <ForGetPwd :forGetPwdVisible="forGetPwdVisible" @confirmLogin="confirmLogin" @closeLogin="closeLogin"></ForGetPwd>
   </div>
 </template>
 
@@ -48,7 +51,7 @@
     name: "Pc",
     data() {
       return {
-        isLogin:false,    //是否登录
+        isLogin:true,    //是否登录
         updateNameVisible: false, //修改名称弹窗
         updateImgVisible:false, //修改头像
         myRoleVisible:false, //我的角色
@@ -58,11 +61,14 @@
         addZoneVisible:false,   //添加分区
         allotZoneVisible:false,  //分配分区
         allotRoleVisible:false,  //分配角色
+        registerVisible:false,  //注册
+        loginVisible:false,     //登录
+        forGetPwdVisible:false, //忘记密码
       }
     },
     computed:{
       ...mapState([
-        getCode,
+        'userInfo',
       ])
     },
     methods: {
@@ -71,15 +77,15 @@
       ]),
       /** 注册*/
       register(){
-
+        this.registerVisible=true;
       },
       /** 登录*/
       login(){
-
+        this.loginVisible=true;
       },
       /** 忘记密码*/
       forGetPwd(){
-
+        this.forGetPwdVisible=true;
       },
       /** 修改头像*/
       updateImg() {
@@ -183,6 +189,27 @@
       },
       closeAllotRole(){
         this.allotRoleVisible=false;
+      },
+      /** 注册事件*/
+      confirmRegister(){
+        this.registerVisible=false;
+      },
+      closeRegister(){
+        this.registerVisible=false;
+      },
+      /** 登录*/
+      confirmLogin(){
+        this.loginVisible=false;
+      },
+      closeLogin(){
+        this.loginVisible=false;
+      },
+      /** 忘记密码*/
+      confirmForGetPwd(){
+        this.forGetPwdVisible=false;
+      },
+      closeForGetPwd(){
+        this.forGetPwdVisible=false;
       }
     }
   }

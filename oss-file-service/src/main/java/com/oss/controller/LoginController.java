@@ -10,6 +10,8 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.oss.config.BaseController;
 import com.oss.model.User;
+import com.oss.pojo.dto.RegisterDto;
+import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.redis.RedisService;
 import com.oss.tool.util.SmsUtil;
@@ -19,9 +21,12 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * @ClassName：fileController
@@ -95,13 +100,9 @@ public class LoginController extends BaseController {
      * }
      */
     @PostMapping("/register")
-    public ResponseModel register(String userName,
-                               String nickName,
-                               String code,
-                               String pwd,
-                               String account){
-        if (!redisService.get(account).toString().equals(code)){
-            return  ResponseModel.error(-10000);
+    public ResponseModel register(@Valid RegisterDto registerDto, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
         }
 //        User userByUserName = userService.findUserByUserName(userName);
 //        if (ValidateUtil.isNotEmpty(userByUserName)){

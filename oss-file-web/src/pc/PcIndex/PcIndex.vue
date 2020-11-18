@@ -102,6 +102,7 @@
     padding: 2.5px 10px 2.5px 10px;
     margin: 5px 10px 5px 10px;
     display: flex;
+    cursor:pointer;
   }
   .fun-button:hover{
     background-color: rgb(218, 245, 255);
@@ -129,6 +130,7 @@
     width: 25px;
     height: 25px;
     margin-left: 10px;
+    cursor:pointer;
     /*margin-top: 10px;*/
   }
   .fun-search-img:active{
