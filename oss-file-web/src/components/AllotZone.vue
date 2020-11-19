@@ -13,10 +13,12 @@
               <input v-model="name" placeholder="昵称/手机号" class="allotZoneInput"></input>
               <Button type="warning" class="search">搜索</Button>
             </div>
-            <div>
-              <div v-for="item in 10" class="allotZone-for">
+            <div class="allotZone-forDiv" @scroll="scrollUser">
+              <div v-for="item in 15" class="allotZone-for">
                 <span>张飞</span>
-                <img src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg"/>
+                <img src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="allotZone-for-img"/>
+                <span>13900000000</span>
+                <el-checkbox v-model="checked"></el-checkbox>
               </div>
             </div>
           </div>
@@ -30,7 +32,6 @@
               <div v-for="item in 10">121</div>
             </div>
           </div>
-
         </div>
         <div class="allotZone-button-all">
           <Button @click="cancel()" class="allotZone-button">取 消</Button>
@@ -55,6 +56,7 @@
         return {
           name: '',
           showBoolean: false,
+          checked:false,
         };
       },
       watch: {
@@ -72,6 +74,17 @@
         },
         confirm() {
           this.$emit("confirmAllotZone", this.name);
+        },
+        scrollUser(e){
+          console.log("e1", e.target.scrollHeight);
+          console.log("e2", e.target.scrollTop);
+          console.log("e3", e.target.clientHeight);
+          console.log("e4", e.target.scrollHeight -
+            e.target.scrollTop -
+            e.target.clientHeight);
+          let height = e.target.scrollHeight -
+            e.target.scrollTop -
+            e.target.clientHeight;
         }
 
       }
@@ -116,6 +129,24 @@
   }
   .allotZone-center{
     margin-top: 130px;
+  }
+  .allotZone-forDiv{
+    margin-top: 10px;
+    height: 400px;
+    overflow-y: scroll;
+  }
+  .allotZone-for{
+    display: flex;
+    justify-content: space-around;
+    height: 40px;
+    line-height: 40px;
+    background-color: #eaeaea;
+    border: 1px solid #b7b7b7;
+    box-sizing: border-box;
+  }
+  .allotZone-for-img{
+    width: 40px;
+    height: 40px;
   }
 
   .allotZone-button-all {

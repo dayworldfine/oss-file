@@ -23,11 +23,14 @@ import ForGetPwd  from "@/components/ForGetPwd";
 
 import 'lib-flexible'
 import router from './router'
+// 移动互动事件
+import vueTouch from 'kim-vue-touch'
 
 
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.use(vueTouch)
 Vue.component('Button', Button);
 Vue.component('Page', Page);
 Vue.component('UpdateName', UpdateName);
