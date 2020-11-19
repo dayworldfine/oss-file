@@ -88,4 +88,23 @@ public class ZoneServiceImpl implements ZoneService {
         List<ZonePwdBo> zonePwdBoList = zoneMapper.selectMyZonePwd(userId);
         return  ResponseResult.responseSuccessResult(zonePwdBoList);
     }
+
+    @Override
+    public ResponseResult start() {
+        Integer countZone = zoneMapper.countZone();
+        if (ValidateUtil.isNotCountEmpty(countZone)){
+            return ResponseResult.responseOK();
+        }
+        Zone zone = new Zone();
+        zone.setId(1l);
+        zone.setCreateTime(System.currentTimeMillis());
+        zone.setUpdateTime(System.currentTimeMillis());
+        zone.setVersion(1l);
+        zone.setZoneName("游客专区");
+        zone.setZonePrefix("visitor/");
+        zone.setZonePwd("");
+        zone.setIsOpen(1);
+        zoneMapper.insert(zone);
+        return ResponseResult.responseOK();
+    }
 }

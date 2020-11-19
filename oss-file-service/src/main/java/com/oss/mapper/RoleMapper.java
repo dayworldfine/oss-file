@@ -104,4 +104,14 @@ public interface RoleMapper {
             @Result(column="is_open", property="isOpen", jdbcType=JdbcType.TINYINT)
     })
     Role selectByPwd(String pwd);
+
+    /**
+     * 查询是否有角色
+     * @return
+     */
+    @Select({
+            "select count(1) from t_role"
+    })
+    Integer countRole();
+
 }

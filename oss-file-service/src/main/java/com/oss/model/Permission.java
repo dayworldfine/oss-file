@@ -3,6 +3,19 @@ package com.oss.model;
 import java.io.Serializable;
 
 public class Permission implements Serializable {
+
+    public Permission() {
+    }
+
+    public Permission(Long id, Long createTime, Long updateTime, Long version, String name, String url) {
+        this.id = id;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.version = version;
+        this.name = name;
+        this.url = url;
+    }
+
     /**
      * id
 	 * 2020-10-20T17:12:13.944

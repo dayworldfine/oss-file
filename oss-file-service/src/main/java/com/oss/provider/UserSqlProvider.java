@@ -26,9 +26,6 @@ public class UserSqlProvider {
             sql.VALUES("version", "#{version,jdbcType=BIGINT}");
         }
 
-        if (record.getUserName() != null) {
-            sql.VALUES("user_name", "#{userName,jdbcType=VARCHAR}");
-        }
 
         if (record.getNickName() != null) {
             sql.VALUES("nick_name", "#{nickName,jdbcType=VARCHAR}");
@@ -61,9 +58,6 @@ public class UserSqlProvider {
             sql.SET("version = #{version,jdbcType=BIGINT}");
         }
 
-        if (record.getUserName() != null) {
-            sql.SET("user_name = #{userName,jdbcType=VARCHAR}");
-        }
 
         if (record.getNickName() != null) {
             sql.SET("nick_name = #{nickName,jdbcType=VARCHAR}");

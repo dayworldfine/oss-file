@@ -63,4 +63,13 @@ public interface PermissionMapper {
         "where id = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(Permission record);
+
+    /**
+     * 统计权限
+     * @return
+     */
+    @Select({
+            "select count(1) from t_permission"
+    })
+    Integer countPermission();
 }

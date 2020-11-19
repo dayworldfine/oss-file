@@ -27,11 +27,6 @@ public class User implements Serializable {
      */
     private Long version;
 
-    /**
-     * 账号
-	 * 2020-10-20T17:12:13.952
-     */
-    private String userName;
 
     /**
      * 昵称
@@ -119,14 +114,6 @@ public class User implements Serializable {
     }
 
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getNickName() {
         return nickName;
     }
@@ -178,7 +165,6 @@ public class User implements Serializable {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", version=" + version +
-                ", userName='" + userName + '\'' +
                 ", nickName='" + nickName + '\'' +
                 ", headPortrait='" + headPortrait + '\'' +
                 ", account=" + account +

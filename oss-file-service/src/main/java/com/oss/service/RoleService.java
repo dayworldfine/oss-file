@@ -35,4 +35,9 @@ public interface RoleService extends BaseService {
     ResponseResult allotZone(ZoneAllotDto zoneAllotDto);
 
 
+    /**
+     * 初始化项目
+     * @return
+     */
+    ResponseResult start();
 }

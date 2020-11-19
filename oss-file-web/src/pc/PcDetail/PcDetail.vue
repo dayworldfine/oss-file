@@ -1,21 +1,25 @@
 <template>
-  <div class="PcIndex">
+  <div class="PcDetail">
     <div class="fun-button-all">
       <div class="fun-button">
-        <img class="button-img" src="/static/go.png"/>
-        <div class="fun-button-text" @click="goToZone()">进入分区</div>
+        <img class="button-img" src="/static/goBack.png"/>
+        <div class="fun-button-text" @click="goBack()">后退</div>
       </div>
-      <!--      <div class="fun-button">-->
-      <!--        <img class="button-img" src="/static/add.png"/>-->
-      <!--        <div class="fun-button-text" @click="addZone()">添加分区</div>-->
-      <!--      </div>-->
       <div class="fun-button">
-        <img class="button-img" src="/static/add.png"/>
-        <div class="fun-button-text">添加分区</div>
+        <img class="button-img" src="/static/download.png"/>
+        <div class="fun-button-text">下载</div>
+      </div>
+      <div class="fun-button">
+        <img class="button-img" src="/static/preview.png"/>
+        <div class="fun-button-text">在线预览</div>
+      </div>
+      <div class="fun-button">
+        <img class="button-img" src="/static/upload.png"/>
+        <div class="fun-button-text">上传</div>
       </div>
       <div class="fun-button">
         <img class="button-img" src="/static/delete.png"/>
-        <div class="fun-button-text">删除分区</div>
+        <div class="fun-button-text">删除</div>
       </div>
       <div class="fun-search">
         <input  placeholder="请输入分区名称" class="fun-search-input"/>
@@ -26,12 +30,12 @@
     <div class="forAll">
       <div class="document-for" v-for="(item,index) in 30" :key="index"
            :class="putOnIndex==index?'document-for-putOn':''"
-           @click="pichOn(index)"
-           @dblclick="goToZone()">
+           @click="pichOn(index)">
         <img loading="lazy"
-             src="/static/file.png"
+             src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg"
              class="user-img" />
         <div class="document-for-font">分区名字</div>
+        <div class="document-for-font">下载预览量：1</div>
         <!--      <div class="button-file">-->
         <!--        <Button type="warning" class="button">下载</Button>-->
         <!--        <Button type="warning" class="button">预览</Button>-->
@@ -48,48 +52,47 @@
 </template>
 
 <script>
-  export default {
-    name: "PcIndex",
-    data(){
-      return{
-        putOnIndex:-1,
-        fileList:[
-          {
-            name:121,
-            type:12312,
-          },
-          {
-            name:121,
-            type:12312,
-          }
-        ]
+    export default {
+        name: "PcDetail",
+      data(){
+        return{
+          putOnIndex:-1,
+          fileList:[
+            {
+              name:121,
+              type:12312,
+            },
+            {
+              name:121,
+              type:12312,
+            }
+          ]
+        }
+      },
+      methods:{
+        /** 当前选中状态*/
+        pichOn(index){
+          this.putOnIndex =index;
+          console.log("pichOn",index)
+        },
+        /** 进入分区*/
+        goBack(){
+          console.log("goBack")
+        },
+        /** 添加分区*/
+        addZone(){
+          console.log("addZone")
+        },
+        /** 页面事件发生改变*/
+        changePage(page){
+          console.log("页面",page)
+        },
       }
-    },
-    methods:{
-      /** 当前选中状态*/
-      pichOn(index){
-        this.putOnIndex =index;
-        console.log("pichOn",index)
-      },
-      /** 进入分区*/
-      goToZone(){
-        this.$router.push("PcDetail");
-        console.log("goToZone")
-      },
-      /** 添加分区*/
-      addZone(){
-        console.log("addZone")
-      },
-      /** 页面事件发生改变*/
-      changePage(page){
-        console.log("页面",page)
-      },
     }
-  }
 </script>
 
-<style scoped >
-  .PcIndex{
+<style scoped>
+  .PcDetail{
     /*width: 100%;*/
     height: 100%;
     width: 1500px;

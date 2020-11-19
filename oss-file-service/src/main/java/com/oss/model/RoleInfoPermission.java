@@ -3,6 +3,19 @@ package com.oss.model;
 import java.io.Serializable;
 
 public class RoleInfoPermission implements Serializable {
+
+    public RoleInfoPermission() {
+    }
+
+    public RoleInfoPermission(Long id, Long createTime, Long updateTime, Long version, Long roleId, Long permissionId) {
+        this.id = id;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.version = version;
+        this.roleId = roleId;
+        this.permissionId = permissionId;
+    }
+
     /**
      * id
 	 * 2020-10-31T00:33:28.919

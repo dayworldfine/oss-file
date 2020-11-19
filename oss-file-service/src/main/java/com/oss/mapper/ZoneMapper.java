@@ -186,4 +186,13 @@ public interface ZoneMapper {
                     "WHERE uiz.user_id =#{userId,jdbcType=BIGINT}"
     })
     List<ZonePwdBo> selectMyZonePwd(long userId);
+
+    /**
+     * 统计
+     * @return
+     */
+    @Select({
+            "select count(1) from t_zone"
+    })
+    Integer countZone();
 }

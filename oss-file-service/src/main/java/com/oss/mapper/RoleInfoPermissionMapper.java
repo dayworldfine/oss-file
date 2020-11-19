@@ -11,7 +11,9 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface RoleInfoPermissionMapper {
     @Delete({
         "delete from t_role_info_permission",
@@ -61,4 +63,13 @@ public interface RoleInfoPermissionMapper {
         "where id = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(RoleInfoPermission record);
+
+    /**
+     * 统计角色关联权限
+     * @return
+     */
+    @Select({
+            "select count(1) from t_role_info_permission"
+    })
+    Integer countRoleInfoPer();
 }

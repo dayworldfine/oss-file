@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title=""
+      title="分配分区"
       :visible.sync="showBoolean"
       @close="close()"
       width="40%"
@@ -28,8 +28,13 @@
               <input v-model="name" placeholder="分区名称" class="allotZoneInput"></input>
               <Button type="warning" class="search">搜索</Button>
             </div>
-            <div>
-              <div v-for="item in 10">121</div>
+            <div class="allotZone-forDiv-zone" @scroll="scrollZone">
+              <div v-for="item in 15" class="allotZone-for">
+                <span>张飞</span>
+                <img src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="allotZone-for-img"/>
+                <span>13900000000</span>
+                <el-checkbox v-model="checked"></el-checkbox>
+              </div>
             </div>
           </div>
         </div>
@@ -85,6 +90,11 @@
           let height = e.target.scrollHeight -
             e.target.scrollTop -
             e.target.clientHeight;
+        },
+        scrollZone(e){
+          let height = e.target.scrollHeight -
+            e.target.scrollTop -
+            e.target.clientHeight;
         }
 
       }
@@ -131,6 +141,11 @@
     margin-top: 130px;
   }
   .allotZone-forDiv{
+    margin-top: 10px;
+    height: 400px;
+    overflow-y: scroll;
+  }
+  .allotZone-forDiv-zone{
     margin-top: 10px;
     height: 400px;
     overflow-y: scroll;

@@ -1,18 +1,15 @@
 package com.oss.service.impl;
 
 import com.google.common.collect.Lists;
-import com.oss.mapper.RoleMapper;
-import com.oss.mapper.UserInfoRoleMapper;
-import com.oss.mapper.UserInfoZoneMapper;
-import com.oss.model.Role;
-import com.oss.model.UserInfoRole;
-import com.oss.model.UserInfoZone;
+import com.oss.mapper.*;
+import com.oss.model.*;
 import com.oss.pojo.dto.RoleAllotDto;
 import com.oss.pojo.dto.RoleStatusDto;
 import com.oss.pojo.dto.ZoneAllotDto;
 import com.oss.pojo.dto.ZoneStatusDto;
 import com.oss.service.RoleService;
 import com.oss.tool.ResponseResult;
+import com.oss.tool.util.ConvertScaleUtil;
 import com.oss.tool.util.SnowUtil;
 import com.oss.tool.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +31,32 @@ public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
 
     @Autowired
+    private PermissionMapper permissionMapper;
+
+    @Autowired
     private UserInfoRoleMapper userInfoRoleMapper;
 
     @Autowired
     private UserInfoZoneMapper userInfoZoneMapper;
 
+    @Autowired
+    private RoleInfoPermissionMapper roleInfoPermissionMapper;
+
+    /**
+     * 获取角色列表
+     * @return
+     */
     @Override
     public ResponseResult getRoleList() {
         List<Role> roleList = roleMapper.getRoleList();
         return ResponseResult.responseSuccessResult(roleList);
     }
 
+    /**
+     * 分配角色
+     * @param roleAllotDto
+     * @return
+     */
     @Override
     public ResponseResult allotRole(RoleAllotDto roleAllotDto) {
         String userId = roleAllotDto.getUserId();
@@ -70,6 +82,11 @@ public class RoleServiceImpl implements RoleService {
         return ResponseResult.responseOK();
     }
 
+    /**
+     * 分配分区
+     * @param zoneAllotDto
+     * @return
+     */
     @Override
     public ResponseResult allotZone(ZoneAllotDto zoneAllotDto) {
         String userId = zoneAllotDto.getUserId();
@@ -92,6 +109,83 @@ public class RoleServiceImpl implements RoleService {
             Integer insertNum = userInfoZoneMapper.insertUserInfoZoneList(userInfoZoneList);
         }
 
+        return ResponseResult.responseOK();
+    }
+
+    /**
+     * 初始化项目
+     * @return
+     */
+    @Override
+    public ResponseResult start() {
+        /**1.添加角色
+         * 2.添加权限
+         * 3.添加主账号超级管理员角色
+         * 4.添加角色权限关系表
+         * */
+        //判断是否有角色
+        Integer countRole = roleMapper.countRole();
+        //判断是否有权限
+        Integer countPermission = permissionMapper.countPermission();
+        //判断用户关联角色
+        Integer countUserInfoRole = userInfoRoleMapper.countUserInfoRole();
+        //判断角色关联权限
+        Integer countRoleInfoPer =roleInfoPermissionMapper.countRoleInfoPer();
+
+        if (ValidateUtil.isCountEmpty(countRole)){
+            List<Role> roleList = Lists.newArrayList();
+            long timeMillis = System.currentTimeMillis();
+            roleList.add(new Role(1l, timeMillis, timeMillis, 1l, "超级管理员", "", 0));
+            roleList.add(new Role(2l, timeMillis, timeMillis, 1l, "管理员", ConvertScaleUtil.get10to64(SnowUtil.generateId()), 1));
+            roleList.add(new Role(3l, timeMillis, timeMillis, 1l, "上传员", ConvertScaleUtil.get10to64(SnowUtil.generateId()), 1));
+            roleList.add(new Role(4l, timeMillis, timeMillis, 1l, "普通用户", "", 0));
+            //省事直接for
+            roleList.forEach(a->{
+                roleMapper.insert(a);
+            });
+        }
+
+        if (ValidateUtil.isCountEmpty(countPermission)){
+            List<Permission> permissionList = Lists.newArrayList();
+            long timeMillis = System.currentTimeMillis();
+            permissionList.add(new Permission(1l,timeMillis,timeMillis,1l,"添加分区","/zone/getZoneList"));
+            permissionList.add(new Permission(2l,timeMillis,timeMillis,1l,"根据分区ids删除分区","/zone/deleteZoneByIds"));
+            permissionList.add(new Permission(3l,timeMillis,timeMillis,1l,"给用户分配角色","/role/allotRole"));
+            permissionList.add(new Permission(4l,timeMillis,timeMillis,1l,"给用户分配区域","/role/allotZone"));
+            permissionList.add(new Permission(5l,timeMillis,timeMillis,1l,"上传文件","/file/uploadFile"));
+            permissionList.add(new Permission(6l,timeMillis,timeMillis,1l,"根据前缀删除文件","/file/delPrefixFile"));
+
+            //省事直接for
+            permissionList.forEach(a->{
+                permissionMapper.insert(a);
+            });
+        }
+
+        if (ValidateUtil.isCountEmpty(countUserInfoRole)){
+            UserInfoRole userInfoRole  = new UserInfoRole();
+            userInfoRole.setId(SnowUtil.generateId());
+            userInfoRole.setCreateTime(System.currentTimeMillis());
+            userInfoRole.setUpdateTime(System.currentTimeMillis());
+            userInfoRole.setVersion(1l);
+            userInfoRole.setUserId(1l);
+            userInfoRole.setRoleId(1l);
+            userInfoRoleMapper.insert(userInfoRole);
+        }
+
+        if (ValidateUtil.isCountEmpty(countRoleInfoPer)){
+            List<RoleInfoPermission> roleInfoPermissionList = Lists.newArrayList();
+            long timeMillis = System.currentTimeMillis();
+            roleInfoPermissionList.add(new RoleInfoPermission(1l,timeMillis,timeMillis,1l,1l,1l));
+            roleInfoPermissionList.add(new RoleInfoPermission(2l,timeMillis,timeMillis,1l,1l,2l));
+            roleInfoPermissionList.add(new RoleInfoPermission(3l,timeMillis,timeMillis,1l,1l,3l));
+            roleInfoPermissionList.add(new RoleInfoPermission(4l,timeMillis,timeMillis,1l,1l,4l));
+            roleInfoPermissionList.add(new RoleInfoPermission(5l,timeMillis,timeMillis,1l,1l,5l));
+            roleInfoPermissionList.add(new RoleInfoPermission(6l,timeMillis,timeMillis,1l,1l,6l));
+            roleInfoPermissionList.add(new RoleInfoPermission(7l,timeMillis,timeMillis,1l,2l,5l));
+            roleInfoPermissionList.add(new RoleInfoPermission(8l,timeMillis,timeMillis,1l,2l,6l));
+            roleInfoPermissionList.add(new RoleInfoPermission(9l,timeMillis,timeMillis,1l,3l,5l));
+
+        }
         return ResponseResult.responseOK();
     }
 

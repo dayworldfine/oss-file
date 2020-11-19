@@ -95,4 +95,13 @@ public interface UserInfoRoleMapper {
             @Result(column="role_id", property="roleId", jdbcType=JdbcType.BIGINT)
     })
     UserInfoRole selectByRoleId(long userId, Long roleId);
+
+    /**
+     * 统计关系数据
+     * @return
+     */
+    @Select({
+            "select count(1) from t_user_info_role"
+    })
+    Integer countUserInfoRole();
 }

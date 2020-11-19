@@ -43,4 +43,13 @@ public interface UserService extends BaseService {
      * @return
      */
     ResponseResult getRoleKey(long userId, String pwd);
+
+    /**
+     * 初始化项目
+     * @param nickName
+     * @param userImg
+     * @param account
+     * @param pwd
+     */
+    ResponseResult  start(String userId,String nickName, String userImg, String account, String pwd);
 }

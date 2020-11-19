@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 02/11/2020 00:33:56
+ Date: 20/11/2020 01:07:15
 */
 
 SET NAMES utf8mb4;
@@ -42,7 +42,7 @@ CREATE TABLE `t_file`  (
 INSERT INTO `t_file` VALUES (1, 0, 0, 0, '文件A', '12', '12', 1, 1, 12, 0);
 INSERT INTO `t_file` VALUES (2, 0, 0, 0, '文件B', '123', '213', 3, 12, 12, 0);
 INSERT INTO `t_file` VALUES (3, 0, 0, 0, '文件C', '123', '213', 3, 1221, 1212, 0);
-INSERT INTO `t_file` VALUES (52406319780462592, 1604248042071, 1604248042071, 1, '新建文本文档 (4)', '.txt', 'visitor/新建文本文档 (4).txt', 1, 0, 0, 1);
+INSERT INTO `t_file` VALUES (52406319780462592, 1604248042071, 1604248042071, 1, '新建文本文档 (4)', '.txt', 'visitor/新建文本文档 (4).txt', 1, 0, 1, 1);
 
 -- ----------------------------
 -- Table structure for t_file_log
@@ -70,6 +70,7 @@ INSERT INTO `t_file_log` VALUES (52396682075176960, 1604245744263, 1604245744263
 INSERT INTO `t_file_log` VALUES (52396937051111424, 1604245805054, 1604245805054, 1, 52385252626137088, '新建文本文档 (4)', 3, 1, 1);
 INSERT INTO `t_file_log` VALUES (52397216484032512, 1604245871676, 1604245871676, 1, 52385252626137088, '新建文本文档 (4)', 4, 1, 1);
 INSERT INTO `t_file_log` VALUES (52406319834988544, 1604248042084, 1604248042084, 1, 52406319780462592, '新建文本文档 (4)', 2, 1, 1);
+INSERT INTO `t_file_log` VALUES (54825882467958784, 1604824910769, 1604824910769, 1, 52406319780462592, '新建文本文档 (4)', 3, 1, 1);
 
 -- ----------------------------
 -- Table structure for t_permission
@@ -90,12 +91,10 @@ CREATE TABLE `t_permission`  (
 -- ----------------------------
 INSERT INTO `t_permission` VALUES (1, 1, 1, 1, '添加分区', '/zone/getZoneList');
 INSERT INTO `t_permission` VALUES (2, 1, 1, 1, '根据分区ids删除分区', '/zone/deleteZoneByIds');
-INSERT INTO `t_permission` VALUES (3, 1, 1, 1, '上传文件', '/file/uploadFile');
-INSERT INTO `t_permission` VALUES (4, 1, 1, 1, '根据前缀删除文件', '/file/delPrefixFile');
-INSERT INTO `t_permission` VALUES (5, 1, 1, 1, '查询角色列表', '/role/getRoleList');
-INSERT INTO `t_permission` VALUES (6, 1, 1, 1, '给用户分配角色', '/role/allotRole');
-INSERT INTO `t_permission` VALUES (7, 1, 1, 1, '查询分区列表', '/role/getZoneList');
-INSERT INTO `t_permission` VALUES (8, 1, 1, 1, '给用户分配区域', '/role/allotZone');
+INSERT INTO `t_permission` VALUES (3, 1, 1, 1, '给用户分配角色', '/role/allotRole');
+INSERT INTO `t_permission` VALUES (4, 1, 1, 1, '给用户分配区域', '/role/allotZone');
+INSERT INTO `t_permission` VALUES (5, 1, 1, 1, '上传文件', '/file/uploadFile');
+INSERT INTO `t_permission` VALUES (6, 1, 1, 1, '根据前缀删除文件', '/file/delPrefixFile');
 
 -- ----------------------------
 -- Table structure for t_role
@@ -115,10 +114,10 @@ CREATE TABLE `t_role`  (
 -- ----------------------------
 -- Records of t_role
 -- ----------------------------
-INSERT INTO `t_role` VALUES (1, 1, 1, 1, '超级管理员', '', 0);
-INSERT INTO `t_role` VALUES (2, 1, 1, 1, '管理员', '', 1);
-INSERT INTO `t_role` VALUES (3, 1, 1, 1, '上传员', ' ', 1);
-INSERT INTO `t_role` VALUES (4, 1, 1, 1, '普通用户', '', 1);
+INSERT INTO `t_role` VALUES (1, 1605804880805, 1605804880805, 1, '超级管理员', '', 0);
+INSERT INTO `t_role` VALUES (2, 1605804880805, 1605804880805, 1, '管理员', '3HblD+G000', 1);
+INSERT INTO `t_role` VALUES (3, 1605804880805, 1605804880805, 1, '上传员', '3HblD+G001', 1);
+INSERT INTO `t_role` VALUES (4, 1605804880805, 1605804880805, 1, '普通用户', '', 0);
 
 -- ----------------------------
 -- Table structure for t_role_info_permission
@@ -139,13 +138,13 @@ CREATE TABLE `t_role_info_permission`  (
 -- ----------------------------
 INSERT INTO `t_role_info_permission` VALUES (1, 1, 1, 1, 1, 1);
 INSERT INTO `t_role_info_permission` VALUES (2, 1, 1, 1, 1, 2);
-INSERT INTO `t_role_info_permission` VALUES (3, 1, 1, 1, 1, 5);
-INSERT INTO `t_role_info_permission` VALUES (4, 1, 1, 1, 1, 6);
-INSERT INTO `t_role_info_permission` VALUES (5, 1, 1, 1, 1, 7);
-INSERT INTO `t_role_info_permission` VALUES (6, 1, 1, 1, 1, 8);
-INSERT INTO `t_role_info_permission` VALUES (7, 1, 1, 1, 2, 3);
-INSERT INTO `t_role_info_permission` VALUES (8, 1, 1, 1, 2, 4);
-INSERT INTO `t_role_info_permission` VALUES (9, 1, 1, 1, 3, 3);
+INSERT INTO `t_role_info_permission` VALUES (3, 1, 1, 1, 1, 3);
+INSERT INTO `t_role_info_permission` VALUES (4, 1, 1, 1, 1, 4);
+INSERT INTO `t_role_info_permission` VALUES (5, 1, 1, 1, 1, 5);
+INSERT INTO `t_role_info_permission` VALUES (6, 1, 1, 1, 1, 6);
+INSERT INTO `t_role_info_permission` VALUES (7, 1, 1, 1, 2, 5);
+INSERT INTO `t_role_info_permission` VALUES (8, 1, 1, 1, 2, 6);
+INSERT INTO `t_role_info_permission` VALUES (9, 1, 1, 1, 3, 5);
 
 -- ----------------------------
 -- Table structure for t_user
@@ -156,7 +155,6 @@ CREATE TABLE `t_user`  (
   `create_time` bigint(0) NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` bigint(0) NOT NULL DEFAULT 0 COMMENT '修改时间',
   `version` bigint(0) NOT NULL DEFAULT 0 COMMENT '版本号',
-  `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账号',
   `nick_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '昵称',
   `head_portrait` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '头像',
   `account` bigint(0) NOT NULL DEFAULT 0 COMMENT '手机号',
@@ -167,9 +165,9 @@ CREATE TABLE `t_user`  (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES (1, 1, 1, 0, 'wbh', 'wbh', '头像1', 0, '12');
-INSERT INTO `t_user` VALUES (2, 1, 1, 0, '郑梦思', '郑梦思', '头像2', 0, '12');
-INSERT INTO `t_user` VALUES (3, 1, 1, 0, '吴萧萧', '吴萧萧', '头像3', 0, '12');
+INSERT INTO `t_user` VALUES (1, 1, 1, 0, 'wbh', '头像1', 13738700108, '12');
+INSERT INTO `t_user` VALUES (2, 1, 1, 0, '郑梦思', '头像2', 0, '12');
+INSERT INTO `t_user` VALUES (3, 1, 1, 0, '吴萧萧', '头像3', 0, '12');
 
 -- ----------------------------
 -- Table structure for t_user_info_role
@@ -188,6 +186,8 @@ CREATE TABLE `t_user_info_role`  (
 -- ----------------------------
 -- Records of t_user_info_role
 -- ----------------------------
+INSERT INTO `t_user_info_role` VALUES (57841707298848768, 1605543939440, 1605543939440, 1, 1, 2);
+INSERT INTO `t_user_info_role` VALUES (57841707298848769, 1605543939440, 1605543939440, 1, 1, 4);
 
 -- ----------------------------
 -- Table structure for t_user_info_zone
@@ -206,6 +206,9 @@ CREATE TABLE `t_user_info_zone`  (
 -- ----------------------------
 -- Records of t_user_info_zone
 -- ----------------------------
+INSERT INTO `t_user_info_zone` VALUES (54838911423217664, 1604828017114, 1604828017114, 1, 1, 54845492894367744);
+INSERT INTO `t_user_info_zone` VALUES (54838918100549632, 1604828018706, 1604828018706, 1, 1, 54831882184949760);
+INSERT INTO `t_user_info_zone` VALUES (54849259622629376, 1604830484317, 1604830484317, 1, 1, 54845833861922816);
 
 -- ----------------------------
 -- Table structure for t_zone
@@ -227,5 +230,8 @@ CREATE TABLE `t_zone`  (
 -- Records of t_zone
 -- ----------------------------
 INSERT INTO `t_zone` VALUES (1, 1, 1, 1, '游客专区', 'visitor/', '', 1);
+INSERT INTO `t_zone` VALUES (54831882184949760, 1604826341213, 1604826341213, 1, '测试分区', 'asdasd/', 'zxczxc', 0);
+INSERT INTO `t_zone` VALUES (54845492894367744, 1604829586259, 1604829586259, 1, '测试分区2', 'asdasd2/', 'zxczxc2', 0);
+INSERT INTO `t_zone` VALUES (54845833861922816, 1604829667552, 1604829667552, 1, '测试分区3', 'asdasd3/', 'zxczxc3', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

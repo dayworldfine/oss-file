@@ -9,6 +9,7 @@ import com.oss.pojo.dto.UserSelectKeyDto;
 import com.oss.service.UserService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseResult;
+import com.oss.tool.util.MD5Util;
 import com.oss.tool.util.SnowUtil;
 import com.oss.tool.util.ValidateUtil;
 import net.sf.saxon.trans.Err;
@@ -101,6 +102,34 @@ public class UserServiceImpl implements UserService {
         uir.setRoleId(role.getId());
         int insert = userInfoRoleMapper.insert(uir);
 
+        return ResponseResult.responseOK();
+    }
+
+    /**
+     * 初始化项目
+     * @param nickName
+     * @param userImg
+     * @param account
+     * @param pwd
+     * @return
+     */
+    @Override
+    public ResponseResult start(String userId,String nickName, String userImg, String account, String pwd) {
+        /** 1.查看手机号是否已存在 是就不用插入数据*/
+        Integer num =  userMapper.selectByAccount(account);
+        if (ValidateUtil.isNotCountEmpty(num)){
+            return ResponseResult.responseOK();
+        }
+        User u = new User();
+        u.setId(Long.valueOf(userId));
+        u.setCreateTime(System.currentTimeMillis());
+        u.setUpdateTime(System.currentTimeMillis());
+        u.setVersion(1l);
+        u.setAccount(Long.valueOf(account));
+        u.setHeadPortrait(userImg);
+        u.setNickName(nickName);
+        u.setPwd(MD5Util.StringMD5(pwd));
+        int insert = userMapper.insert(u);
         return ResponseResult.responseOK();
     }
 }

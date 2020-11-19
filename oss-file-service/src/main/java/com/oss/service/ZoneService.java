@@ -50,4 +50,10 @@ public interface ZoneService extends BaseService {
      * @return
      */
     ResponseResult getMyZonePwd(long userId);
+
+    /**
+     * 启动
+     * @return
+     */
+    ResponseResult start();
 }

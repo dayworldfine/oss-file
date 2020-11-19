@@ -18,11 +18,11 @@ public interface UserMapper {
     @Insert({
         "insert into t_user (id, create_time, ",
         "update_time, version, ",
-        "user_name, nick_name, head_portrait",
+        "nick_name, head_portrait,",
         "account, pwd)",
         "values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, ",
         "#{updateTime,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, ",
-        "#{userName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{headPortrait,jdbcType=VARCHAR},",
+        "#{nickName,jdbcType=VARCHAR}, #{headPortrait,jdbcType=VARCHAR},",
         "#{account,jdbcType=BIGINT}, #{pwd,jdbcType=VARCHAR})"
     })
     int insert(User record);
@@ -32,7 +32,7 @@ public interface UserMapper {
 
     @Select({
         "select",
-        "id, create_time, update_time, version, user_name, nick_name,head_portrait, account, pwd",
+        "id, create_time, update_time, version, nick_name,head_portrait, account, pwd",
         "from t_user",
         "where id = #{id,jdbcType=BIGINT}"
     })
@@ -41,7 +41,6 @@ public interface UserMapper {
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.BIGINT),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.BIGINT),
         @Result(column="version", property="version", jdbcType=JdbcType.BIGINT),
-        @Result(column="user_name", property="userName", jdbcType=JdbcType.VARCHAR),
         @Result(column="nick_name", property="nickName", jdbcType=JdbcType.VARCHAR),
         @Result(column="head_portrait", property="headPortrait", jdbcType=JdbcType.VARCHAR),
         @Result(column="account", property="account", jdbcType=JdbcType.BIGINT),
@@ -57,7 +56,6 @@ public interface UserMapper {
         "set create_time = #{createTime,jdbcType=BIGINT},",
           "update_time = #{updateTime,jdbcType=BIGINT},",
           "version = #{version,jdbcType=BIGINT},",
-          "user_name = #{userName,jdbcType=VARCHAR},",
           "nick_name = #{nickName,jdbcType=VARCHAR},",
           "head_portrait = #{headPortrait,jdbcType=VARCHAR},",
           "account = #{account,jdbcType=BIGINT},",
@@ -68,4 +66,14 @@ public interface UserMapper {
 
     @SelectProvider(type=UserSqlProvider.class, method="pageSelectKeyUser")
     Page<User> pageSelectKeyUser(String paramKey);
+
+    /**
+     * 根据手机号查询用户
+     * @param account
+     * @return
+     */
+    @Select({
+            "select count(1) from t_user where account = #{account,jdbcType=BIGINT}"
+    })
+    Integer selectByAccount(String account);
 }

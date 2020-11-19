@@ -3,6 +3,20 @@ package com.oss.model;
 import java.io.Serializable;
 
 public class Role implements Serializable {
+
+    public Role() {
+    }
+
+    public Role(Long id, Long createTime, Long updateTime, Long version, String roleName, String pwd, Integer isOpen) {
+        this.id = id;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.version = version;
+        this.roleName = roleName;
+        this.pwd = pwd;
+        this.isOpen = isOpen;
+    }
+
     /**
      * id
 	 * 2020-10-20T17:12:13.949

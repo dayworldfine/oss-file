@@ -24,6 +24,11 @@ export default new Router({
           path: '/PcIndex',
           name: 'PcIndex',
           component: resolve => require(['@/pc/PcIndex/PcIndex.vue'], resolve)
+        },
+        {
+          path: '/PcDetail',
+          name: 'PcDetail',
+          component: resolve => require(['@/pc/PcDetail/PcDetail.vue'], resolve)
         }
       ]
     },
