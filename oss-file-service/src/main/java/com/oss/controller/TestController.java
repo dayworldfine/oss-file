@@ -7,6 +7,7 @@ import com.oss.tool.JsonResult;
 import com.oss.tool.ResponseModel;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,11 +21,12 @@ import java.io.*;
 @RestController
 public class TestController extends BaseController {
 
+    @Validated
     @PostMapping("/textVolid")
     public ResponseModel textVolid(@Valid @RequestBody DocumentDto documentDto, BindingResult bindingResult)  {
-        if (bindingResult.hasErrors()){
-            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
+//        if (bindingResult.hasErrors()){
+//            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
+//        }
         return ResponseModel.success();
     }
 

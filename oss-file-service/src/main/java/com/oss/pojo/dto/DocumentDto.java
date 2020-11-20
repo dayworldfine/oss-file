@@ -19,6 +19,6 @@ public class DocumentDto {
     @Max(value = 10, message = "最大值不超过10")
     private int sadasd;
 
-    @NotNull(message = "离开你第一百个星期")
+    @NotBlank(message = "离开你第一百个星期")
     private String documentId;
 }

@@ -21,6 +21,9 @@ public class ErrorCodes {
     public static final int ERROR_ZONE_IS_HAVE = 20010;
     public static final int ZONE_REPETITION = 20011;
 
+
+    public static final int SERVICE_SNEAK_OFF= 99999;
+
     public ErrorCodes() {
     }
 
@@ -44,5 +47,6 @@ public class ErrorCodes {
         errorCodes.put(20009, "分区密匙无效");
         errorCodes.put(20010, "已经拥有该分区");
         errorCodes.put(20011, "分区的名字或前缀或密匙重复");
+        errorCodes.put(99999, "服务器正在开小差~~");
     }
 }
