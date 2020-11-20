@@ -1,16 +1,27 @@
 <template>
   <div>
     <el-dialog
-      title="修改昵称"
+      title="修改头像"
       :visible.sync="showBoolean"
       @close="close()"
       width="20%"
       center>
       <div class="updateImg">
-        <input v-model="name" placeholder="请输入昵称" class="updateImgInput"></input>
+        <el-upload
+          ref="upload"
+          class="avatar-uploader"
+          action="http://localhost:9735/file/uploadFile"
+          :show-file-list="false"
+          :on-success="handleAvatarSuccess"
+          :on-change="imgChangGe"
+          :auto-upload="false"
+          :before-upload="beforeAvatarUpload">
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-upload avatar-uploader-icon"></i>
+        </el-upload>
         <div class="updateImg-button-all">
-          <Button @click="cancel()" class="updateImg-button">取 消</Button>
-          <Button type="primary" @click="confirm()" class="updateImg-button">确 定</Button>
+          <Button @click="cancel()" class="updateImg-button">返 回</Button>
+          <Button type="primary" @click="confirm()" class="updateImg-button">上传到服务器</Button>
         </div>
       </div>
     </el-dialog>
@@ -31,6 +42,7 @@
         return {
           name: '',
           showBoolean: false,
+          imageUrl: ''
         };
       },
       watch: {
@@ -47,7 +59,31 @@
           this.$emit("closeUpdateImg");
         },
         confirm() {
-          this.$emit("confirmUpdateImg", this.name);
+          console.log("上传触发事件")
+          this.$refs.upload.submit();
+          // this.$emit("confirmUpdateImg", this.name);
+        },
+        imgChangGe(file,FileList){
+          console.log("file",file)
+          console.log("FileList",FileList)
+          this.imageUrl = URL.createObjectURL(file.raw);
+        },
+        handleAvatarSuccess(res, file) {
+          console.log("上传成功",res,file)
+          this.imageUrl = URL.createObjectURL(file.raw);
+        },
+        beforeAvatarUpload(file) {
+          console.log("上传之前",file)
+          const isJPG = file.type === 'image/jpeg';
+          const isLt2M = file.size / 1024 / 1024 < 2;
+
+          if (!isJPG) {
+            this.$message.error('上传头像图片只能是 JPG 格式!');
+          }
+          if (!isLt2M) {
+            this.$message.error('上传头像图片大小不能超过 2MB!');
+          }
+          return isJPG && isLt2M;
         }
 
       }
@@ -58,6 +94,7 @@
   .updateImg {
     display: flex;
     flex-direction: column;
+    padding-left: 80px;
   }
 
   .updateImgInput {
@@ -83,5 +120,29 @@
 
   .updateImg-button {
     margin-right: 22px;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+    border: 1px solid #42b983;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 </style>

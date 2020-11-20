@@ -32,7 +32,7 @@
            :class="putOnIndex==index?'document-for-putOn':''"
            @click="pichOn(index)">
         <img loading="lazy"
-             src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg"
+             :src="fileSuffix(12)"
              class="user-img" />
         <div class="document-for-font">分区名字</div>
         <div class="document-for-font">下载预览量：1</div>
@@ -67,6 +67,25 @@
               type:12312,
             }
           ]
+        }
+      },
+      //计算属性
+      computed:{
+        fileSuffix(){
+          return (type)=>{
+            let prefix ="/static/";
+            let suffix ="";
+            switch (type) {
+                case "jpg":
+                  suffix ="excel.png";
+                break;
+                default:
+                  suffix ="zip.png";
+                  break;
+            }
+            return prefix+suffix;
+
+          };
         }
       },
       methods:{
