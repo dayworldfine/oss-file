@@ -102,4 +102,30 @@ public class ZoneSqlProvider {
 
         return sb.toString();
     }
+
+    /**
+     * 游客专区大全
+     * @param name
+     * @return
+     */
+    public String pageZoneByVisitor( String name) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("   SELECT " +
+                "        z.id as id," +
+                "        FROM_UNIXTIME(z.create_time/1000 , '%Y-%m-%d %H:%i:%S') as createTime," +
+                "        FROM_UNIXTIME(z.update_time/1000 , '%Y-%m-%d %H:%i:%S') as updateTime," +
+                "        z.zone_name as zoneName," +
+                "        z.zone_prefix as zonePrefix " +
+                "        FROM t_zone z " +
+                "        INNER JOIN t_user_info_zone uiz  " +
+                "        on z.id = uiz.zone_id   " +
+                "        where and is_open =1 ");
+        if (ValidateUtil.isNotEmpty(name)){
+            sb.append(" and z.zone_name like '%"+name+"%'");
+        }
+
+        sb.append(" order by z.create_time desc");
+
+        return sb.toString();
+    }
 }

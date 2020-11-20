@@ -36,8 +36,14 @@ public class ZoneServiceImpl implements ZoneService {
     @Override
     public ResponseResult<Page<ZoneBo>> pageZoneByUserId(Long userId, ZoneListDto zoneListDto) {
         PageHelper.startPage(zoneListDto.getPage(),zoneListDto.getSize());
-//        Page<ZoneBo> zoneBos  = zoneMapper.pageZoneByUserId(userId);
-        Page<ZoneBo> zoneBos  = zoneMapper.pageZoneByUserIdAndName(userId,zoneListDto.getName());
+        // 如果userId为空 则为游客
+        Page<ZoneBo> zoneBos =null;
+        if (ValidateUtil.isNotEmpty(userId)){
+            zoneBos  = zoneMapper.pageZoneByUserIdAndName(userId,zoneListDto.getName());
+        }else {
+            zoneBos  = zoneMapper.pageZoneByVisitor(zoneListDto.getName());
+        }
+
         return  ResponseResult.responseSuccessResult(zoneBos);
     }
 

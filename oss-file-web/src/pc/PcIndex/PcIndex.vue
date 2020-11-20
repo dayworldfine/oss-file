@@ -48,6 +48,8 @@
 </template>
 
 <script>
+  import {mapActions} from "vuex";
+
   export default {
     name: "PcIndex",
     data(){
@@ -66,6 +68,9 @@
       }
     },
     methods:{
+      ...mapActions([
+        'sendSms',
+      ]),
       /** 当前选中状态*/
       pichOn(index){
         this.putOnIndex =index;

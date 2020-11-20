@@ -14,7 +14,7 @@
           <span>昵称</span><input  class="registerInput" v-model="formLabelAlign.nickName"/>
         </div>
         <div class="register-div">
-          <Button type="warning" class="button">获取验证码</Button>
+          <Button type="warning" class="button" @click="getCode()">获取验证码</Button>
           <input  class="registerInput" v-model="formLabelAlign.code"/>
         </div>
         <div class="register-div">
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+    import {mapActions} from "vuex";
+
     export default {
         name: "Register",
       props: {
@@ -60,6 +62,15 @@
         }
       },
       methods: {
+        ...mapActions([
+          'sendSms',
+        ]),
+        getCode(){
+          let param ={
+            "account":"13738700108"
+          }
+          this.sendSms(param);
+        },
         close() {
           this.formLabelAlign= {};
           this.cancel();
@@ -91,7 +102,7 @@
   .registerInput {
     outline-style: none;
     border: 1px solid #ccc;
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 13px 14px;
     /*width: 620px;*/
     font-size: 14px;

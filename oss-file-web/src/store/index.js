@@ -23,6 +23,9 @@ export default new Vuex.Store({
   getters,  // 获取数据并渲染
   actions,  // 数据的异步操作
   mutations,  // 处理数据的唯一途径，state的改变或赋值只能在这里
+  // modules:{
+  //   LoginModule
+  // },
   // strict: debug, // 当debug=true时开启严格模式(性能有损耗)
   plugins: debug ? [createLogger()] : []
 })

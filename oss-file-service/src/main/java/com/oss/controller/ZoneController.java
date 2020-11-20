@@ -48,7 +48,10 @@ public class ZoneController extends BaseController {
      * @return
      */
     @PostMapping("/getZoneList")
-    public ResponseModel getZoneList(@Valid ZoneListDto zoneListDto)  {
+    public ResponseModel getZoneList(@Valid ZoneListDto zoneListDto,BindingResult bindingResult)  {
+        if (bindingResult.hasErrors()){
+            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
+        }
 //        long userId = ShiroUtil.getUserId();
         long userId = 1l;
         ResponseResult<Page<ZoneBo>> zoneBoPage = zoneService.pageZoneByUserId(userId,zoneListDto);

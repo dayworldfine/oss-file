@@ -195,4 +195,12 @@ public interface ZoneMapper {
             "select count(1) from t_zone"
     })
     Integer countZone();
+
+    /**
+     * 查询游客分区
+     * @param name
+     * @return
+     */
+    @SelectProvider(type=ZoneSqlProvider.class, method="pageZoneByVisitor")
+    Page<ZoneBo> pageZoneByVisitor(String name);
 }

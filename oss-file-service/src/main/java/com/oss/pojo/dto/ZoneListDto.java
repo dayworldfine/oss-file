@@ -8,8 +8,8 @@ import javax.validation.constraints.NotNull;
 public class ZoneListDto {
 
     private String Name;
-    @NotNull
+    @NotNull(message = "页数不得为空")
     private Integer page;
-    @NotNull
+    @NotNull(message = "条数不得为空")
     private Integer size;
 }

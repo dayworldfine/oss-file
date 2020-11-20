@@ -94,9 +94,9 @@
           this.putOnIndex =index;
           console.log("pichOn",index)
         },
-        /** 进入分区*/
+        /** 返回*/
         goBack(){
-          console.log("goBack")
+          this.$router.go(-1);
         },
         /** 添加分区*/
         addZone(){
