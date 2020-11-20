@@ -51,7 +51,7 @@
     name: "Pc",
     data() {
       return {
-        isLogin:false,    //是否登录
+        isLogin:true,    //是否登录
         updateNameVisible: false, //修改名称弹窗
         updateImgVisible:false, //修改头像
         myRoleVisible:false, //我的角色
