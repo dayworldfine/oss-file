@@ -1,6 +1,6 @@
 const state = {
   isLogin: 0 ,// 登录状态
-  userInfo: 21312,
+  userInfo: 22,
   code:0,
 }
 
