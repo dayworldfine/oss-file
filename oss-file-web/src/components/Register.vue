@@ -69,7 +69,9 @@
           let param ={
             "account":"13738700108"
           }
-          this.sendSms(param);
+          this.sendSms(param).then((res)=>{
+            console.log("23",res)
+          });
         },
         close() {
           this.formLabelAlign= {};

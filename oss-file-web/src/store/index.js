@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as getters from './getters' // 导入响应的模块，*相当于引入了这个组件下所有导出的事例
-import * as actions from './actions'
-import * as mutations from './mutations'
-import * as state from './state'
+import * as getters from '@/store/getters' // 导入响应的模块，*相当于引入了这个组件下所有导出的事例
+import * as actions from '@/store/actions'
+import * as mutations from '@/store/mutations'
+import  state from '@/store/state'
 
 //每次修改state都会在控制台打印log
 import createLogger from 'vuex/dist/logger'
@@ -11,6 +11,7 @@ import createLogger from 'vuex/dist/logger'
 Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
+
 
 // // 注册上面引入的各大模块
 // const store = new Vuex.Store({
@@ -23,9 +24,6 @@ export default new Vuex.Store({
   getters,  // 获取数据并渲染
   actions,  // 数据的异步操作
   mutations,  // 处理数据的唯一途径，state的改变或赋值只能在这里
-  // modules:{
-  //   LoginModule
-  // },
   // strict: debug, // 当debug=true时开启严格模式(性能有损耗)
   plugins: debug ? [createLogger()] : []
 })

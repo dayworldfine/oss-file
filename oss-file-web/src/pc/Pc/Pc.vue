@@ -15,14 +15,14 @@
             <Button type="warning" class="button" @click="enterZone()">输入分区密匙</Button>
             <Button type="warning" class="button" @click="allotZone()">分配分区</Button>
             <Button type="warning" class="button" @click="allotRole()">分配角色</Button>
-            <Button type="warning" class="button" @click="addZone()">添加分区{{userInfo}}</Button>
+            <Button type="warning" class="button" @click="addZone()">添加分区</Button>
           </div>
         </div>
         <div class="user" v-if="!isLogin">
           <img loading="lazy" src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="user-img"/>
           <div class="user-name">未登录</div>
           <Button type="warning" class="button" @click="register()">注册</Button>
-          <Button type="warning" class="button" @click="login()">登录{{userInfo}}</Button>
+          <Button type="warning" class="button" @click="login()">登录</Button>
           <Button type="warning" class="button" @click="forGetPwd()">忘记密码</Button>
         </div>
         <div class="document">
