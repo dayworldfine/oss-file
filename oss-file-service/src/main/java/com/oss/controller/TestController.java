@@ -15,15 +15,17 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
 import java.awt.image.BufferedImage;
 import java.io.*;
 
 @RestController
+@Validated
 public class TestController extends BaseController {
 
     @Validated
     @PostMapping("/textVolid")
-    public ResponseModel textVolid(@Valid @RequestBody DocumentDto documentDto, BindingResult bindingResult)  {
+    public ResponseModel textVolid(@Valid DocumentDto documentDto, BindingResult bindingResult)  {
 //        if (bindingResult.hasErrors()){
 //            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
 //        }

@@ -16,6 +16,9 @@ import javax.validation.constraints.NotNull;
 @Data
 public class DocumentDto {
 
+    @NotNull(message = "不为空")
+    private String num;
+
     @Max(value = 10, message = "最大值不超过10")
     private int sadasd;
 
