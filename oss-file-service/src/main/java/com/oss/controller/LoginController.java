@@ -11,17 +11,24 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.oss.config.BaseController;
 import com.oss.model.User;
 import com.oss.pojo.dto.RegisterDto;
+import com.oss.service.UserService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
+import com.oss.tool.ResponseResult;
 import com.oss.tool.redis.RedisService;
+import com.oss.tool.util.RedisUtil;
 import com.oss.tool.util.SmsUtil;
 import com.oss.tool.util.ValidateUtil;
+import com.oss.tool.util.VerificationUtil;
+import net.sf.saxon.trans.Err;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.checkerframework.checker.units.qual.A;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,15 +47,23 @@ import javax.validation.Valid;
 public class LoginController extends BaseController {
 
     @Autowired
+    private RedisUtil redisUtil;
+
+    @Autowired
     private SmsUtil smsUtil;
 
     @Autowired
     private RedisService redisService;
 
+    @Autowired
+    private UserService userService;
+
 
     @PostMapping("/sendSms")
     public ResponseModel sendSms(String account){
-        Subject subject = SecurityUtils.getSubject();
+        if (!VerificationUtil.checkPhone(account)){
+          return   ResponseModel.error(ErrorCodes.PHONE_ERROR);
+        }
 
         DefaultProfile profile = DefaultProfile.getProfile(smsUtil.getRegionId(), smsUtil.getAccessKeyId(), smsUtil.getSecret());
         IAcsClient client = new DefaultAcsClient(profile);
@@ -64,7 +79,7 @@ public class LoginController extends BaseController {
         request.putQueryParameter("TemplateCode", smsUtil.getTemplateCode());
         String code = SmsUtil.generalRandomVeriCode();
         request.putQueryParameter("TemplateParam", "{\"code\":\""+code+"\"}");
-        redisService.set(account,code,3600l);
+        redisUtil.setex(account, code, 180,15);
         try {
             CommonResponse response = client.getCommonResponse(request);
             System.out.println(response.getData());
@@ -100,16 +115,16 @@ public class LoginController extends BaseController {
      * }
      */
     @PostMapping("/register")
-    public ResponseModel register(@Valid RegisterDto registerDto, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
+    public ResponseModel register(@Valid RegisterDto registerDto){
+        if (!registerDto.getCode().equals(redisUtil.get(registerDto.getAccount(),15))){
+            return  ResponseModel.error(ErrorCodes.CODE_ERROR);
         }
-//        User userByUserName = userService.findUserByUserName(userName);
-//        if (ValidateUtil.isNotEmpty(userByUserName)){
-//            return ResponseModel.error(-10000);
-//        }
-//        userService.addUser(userName,nickName,pwd,account);
-        return ResponseModel.success("注册成功 请使用新账号登录");
+        ResponseResult<User> userResponseResult = userService.findUserByAccount(registerDto.getAccount());
+        if (ValidateUtil.isNotEmpty(userResponseResult.getData())){
+            return ResponseModel.error(ErrorCodes.PHONE_IS_HAVE);
+        }
+        ResponseResult responseResult = userService.addUser(registerDto);
+        return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
     }
 
     /**
@@ -132,22 +147,38 @@ public class LoginController extends BaseController {
      * }
      */
     @PostMapping("/login")
-    public ResponseModel login(String userName,
+    public ResponseModel login(String account,
                             String passWord){
-
+        if (ValidateUtil.isEmpty(account) || ValidateUtil.isEmpty(passWord)){
+            return ResponseModel.error(ErrorCodes.PARAM_VALID_ERROR);
+        }
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(userName,passWord);
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(account,passWord);
         try {
             subject.login(usernamePasswordToken);
             System.out.println("token:"+subject.getSession().getId());
             User user = (User) subject.getPrincipals().getPrimaryPrincipal();
-            JSONObject object = new JSONObject();
-            object.put("token",subject.getSession().getId());
-            object.put("userId",String.valueOf(user.getId()));
-            return ResponseModel.success(object);
+//            JSONObject object = new JSONObject();
+//            object.put("token",subject.getSession().getId());
+//            object.put("userId",String.valueOf(user.getId()));
+            return ResponseModel.success(user);
         }catch (Exception e){
             e.printStackTrace();
             return ResponseModel.error(-10000);
         }
+    }
+
+    @PostMapping("/textRedis")
+    public ResponseModel textRedis(){
+        String setex = redisUtil.setex("13900000000", "666666", 60,15);
+//        String set = redisUtil.set("13900000000", "666666", 15);
+        String s = redisUtil.get("13900000000", 15);
+        System.out.println("s:"+s);
+
+//        redisService.set("13900000000","666666",60l);
+//        Object o = redisService.get("13900000000");
+//        System.out.println("o:"+o);
+
+        return ResponseModel.success("发送成功");
     }
 }

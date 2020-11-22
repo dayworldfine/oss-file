@@ -11,7 +11,7 @@
           <span>手机号</span><input  class="loginInput" v-model="formLabelAlign.account"/>
         </div>
         <div class="login-div">
-          <span>密码</span><input  class="loginInput" v-model="formLabelAlign.pwd"/>
+          <span>密码</span><input  class="loginInput" v-model="formLabelAlign.passWord"/>
         </div>
       </div>
       <div class="login-button-all">
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+  import {mapActions,mapState,mapMutations} from "vuex";
+  import LoginService from "@/service/LoginService";
     export default {
         name: "Login",
       props: {
@@ -37,9 +39,7 @@
           labelPosition: 'left',
           formLabelAlign: {
             account: '',
-            nickName: '',
-            code: '',
-            pwd:'',
+            passWord: '',
           },
           showBoolean: false,
         };
@@ -58,6 +58,12 @@
           this.$emit("closeLogin");
         },
         confirm() {
+          LoginService.login(this.formLabelAlign).then((res)=>{
+            console.log("res",res)
+            if (10000==res.error){
+
+            }
+          })
           this.$emit("confirmLogin", this.formLabelAlign);
         }
 

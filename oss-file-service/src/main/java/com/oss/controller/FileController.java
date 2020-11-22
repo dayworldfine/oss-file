@@ -7,8 +7,6 @@ import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.ResponseResult;
 import com.oss.tool.util.EnumUtil;
-import com.oss.tool.util.ShiroUtil;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.oss.config.BaseController;
 import com.oss.service.UploadService;
-import com.oss.tool.JsonResult;
 import com.oss.tool.util.ValidateUtil;
-
-import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  * @ClassName：fileController

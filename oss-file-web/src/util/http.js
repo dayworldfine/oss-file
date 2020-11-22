@@ -5,7 +5,7 @@ import axios from 'axios'
 import {baseUrl} from './params'
 // import config from '../config'
 // import router from '../router'
-
+import { MessageBox, Message } from "element-ui";  // 引入
 const http = axios.create({
   // baseURL: config.api.base,
   baseURL: baseUrl,
@@ -92,7 +92,7 @@ http.interceptors.request.use((option) => {
   return option
 }, (err) => {
   console.log('interceptors.request == error ==> ', err);
-
+  Message.error("请求失败,请检查网络")
   return Promise.reject(err).catch(err)
 });
 
@@ -113,11 +113,17 @@ http.interceptors.response.use((response) => {
     // console.log('response',response)
     let data = response.data;
 
-    // console.log('data == ', data)
-
     // data = JSON.parse(data);
     // return  data;
-    return Promise.resolve(data);
+    if (data.error==10000){
+      // return Promise.resolve(data);
+      return  data;
+    }else {
+      Message.error(data.message?data.message:"服务器正在开小差")
+    }
+
+
+
   } catch (e) {
     // throw {}
   }
@@ -181,8 +187,8 @@ http.interceptors.response.use((response) => {
   } else {
     console.warn(err.message)
   }
-
-  let Promise = require('promise-polyfill').default
+  Message.error(err.message?err.message:"网络错误,请稍后再试")
+  // let Promise = require('promise-polyfill').default
   return Promise.reject(err).catch(err)
 })
 

@@ -14,14 +14,14 @@
           <span>昵称</span><input  class="registerInput" v-model="formLabelAlign.nickName"/>
         </div>
         <div class="register-div">
-          <Button type="warning" class="button" @click="getCode()">获取验证码</Button>
+          <Button type="warning" class="button" @click="getCode()">{{countDown<=0?'获取验证码':countDown}}</Button>
           <input  class="registerInput" v-model="formLabelAlign.code"/>
         </div>
         <div class="register-div">
           <span>密码</span><input  class="registerInput" v-model="formLabelAlign.pwd"/>
         </div>
         <div class="register-div">
-          <span>再次输入密码</span><input  class="registerInput"/>
+          <span>再次输入密码</span><input  class="registerInput"  v-model="formLabelAlign.pwdTwo"/>
         </div>
       </div>
       <div class="register-button-all">
@@ -33,7 +33,8 @@
 </template>
 
 <script>
-    import {mapActions} from "vuex";
+    import {mapActions,mapState,mapMutations} from "vuex";
+    import LoginService from "@/service/LoginService";
 
     export default {
         name: "Register",
@@ -52,8 +53,10 @@
             nickName: '',
             code: '',
             pwd:'',
+            pwdTwo:'',
           },
           showBoolean: false,
+          timer:null,   //定时器
         };
       },
       watch: {
@@ -61,17 +64,38 @@
           this.showBoolean = bool;
         }
       },
+      computed: {
+        ...mapState([
+          'countDown'
+        ])
+      },
       methods: {
         ...mapActions([
-          'sendSms',
+          // 'sendSms',
         ]),
+        ...mapMutations([
+          'setCountDown'
+        ]),
+        /** 获取验证码*/
         getCode(){
-          let param ={
-            "account":"13738700108"
+          if (this.countDown<=0){
+            let param ={
+              "account":this.formLabelAlign.account
+            }
+            LoginService.sendSms(param).then((res)=>{
+              if (10000==res.error){
+                this.$message.success("发送成功")
+                let time=60;
+                this.timer = setInterval(()=>{//定时器开始
+                  time--;
+                  this.setCountDown(time)
+                  if(time<=0){
+                    clearInterval(this.timer);// 满足条件时 停止计时
+                  }
+                },1000)
+              }
+            });
           }
-          this.sendSms(param).then((res)=>{
-            console.log("23",res)
-          });
         },
         close() {
           this.formLabelAlign= {};
@@ -80,8 +104,20 @@
         cancel() {
           this.$emit("closeRegister");
         },
+        /** 确定按钮 */
         confirm() {
-          this.$emit("confirmRegister", this.formLabelAlign);
+          if (this.formLabelAlign.code!= this.formLabelAlign.pwdTwo && this.formLabelAlign.code==''){
+            this.$message.error("两次输入的密码不一样")
+            return;
+          }
+          LoginService.register(this.formLabelAlign).then((res)=>{
+            console.log("res",res)
+            if (10000==res.error){
+              this.$message.success("注册成功")
+              this.$emit("confirmRegister", this.formLabelAlign);
+            }
+          });
+
         }
 
       }

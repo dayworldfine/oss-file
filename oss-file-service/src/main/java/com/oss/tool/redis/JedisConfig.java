@@ -37,8 +37,8 @@ public class JedisConfig  {
     @Value("${spring.redis.port}")
     private int port;
 
-//    @Value("${spring.redis.password}")
-//    private String password;
+    @Value("${spring.redis.password}")
+    private String password;
 
     @Value("${spring.redis.timeout}")
     private int timeout;
@@ -62,7 +62,7 @@ public class JedisConfig  {
         jedisPoolConfig.setMaxWaitMillis(maxWaitMillis);
         jedisPoolConfig.setMaxTotal(maxActive);
         jedisPoolConfig.setMinIdle(minIdle);
-        JedisPool jedisPool = new JedisPool(jedisPoolConfig,host,port,timeout,null);
+        JedisPool jedisPool = new JedisPool(jedisPoolConfig,host,port,timeout,password);
 
         logger.info("JedisPool注入成功！");
         logger.info("redis地址：" + host + ":" + port);

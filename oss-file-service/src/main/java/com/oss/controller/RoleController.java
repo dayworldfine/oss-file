@@ -3,16 +3,13 @@ package com.oss.controller;
 import com.oss.config.BaseController;
 import com.oss.pojo.dto.RoleAllotDto;
 import com.oss.pojo.dto.ZoneAllotDto;
-import com.oss.pojo.dto.ZoneListDto;
 import com.oss.service.RoleService;
 import com.oss.service.UserService;
 import com.oss.service.ZoneService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.ResponseResult;
-import com.oss.tool.util.ShiroUtil;
 import com.oss.tool.util.ValidateUtil;
-import net.sf.saxon.trans.Err;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 /**
  * @ClassName：RoleController

@@ -2,6 +2,7 @@ package com.oss.service;
 
 import com.oss.config.BaseService;
 import com.oss.model.User;
+import com.oss.pojo.dto.RegisterDto;
 import com.oss.pojo.dto.UserSelectKeyDto;
 import com.oss.tool.ResponseResult;
 
@@ -52,4 +53,18 @@ public interface UserService extends BaseService {
      * @param pwd
      */
     ResponseResult  start(String userId,String nickName, String userImg, String account, String pwd);
+
+    /**
+     * 根据手机号查询用户
+     * @param account
+     * @return
+     */
+    ResponseResult<User> findUserByAccount(String account);
+
+    /**
+     * 添加用户
+     * @param registerDto
+     * @return
+     */
+    ResponseResult addUser(RegisterDto registerDto);
 }

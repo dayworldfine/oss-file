@@ -4,7 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.oss.mapper.*;
 import com.oss.model.*;
-import com.oss.pojo.bo.FileBo;
+import com.oss.pojo.dto.RegisterDto;
 import com.oss.pojo.dto.UserSelectKeyDto;
 import com.oss.service.UserService;
 import com.oss.tool.ErrorCodes;
@@ -12,8 +12,6 @@ import com.oss.tool.ResponseResult;
 import com.oss.tool.util.MD5Util;
 import com.oss.tool.util.SnowUtil;
 import com.oss.tool.util.ValidateUtil;
-import net.sf.saxon.trans.Err;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -131,5 +129,26 @@ public class UserServiceImpl implements UserService {
         u.setPwd(MD5Util.StringMD5(pwd));
         int insert = userMapper.insert(u);
         return ResponseResult.responseOK();
+    }
+
+    @Override
+    public ResponseResult<User> findUserByAccount(String account) {
+        User user = userMapper.selectUserByAccount(account);
+        return ResponseResult.responseSuccessResult(user);
+    }
+
+    @Override
+    public ResponseResult addUser(RegisterDto registerDto) {
+        User user = new User();
+        user.setId(SnowUtil.generateId());
+        user.setCreateTime(System.currentTimeMillis());
+        user.setUpdateTime(System.currentTimeMillis());
+        user.setVersion(1l);
+        user.setNickName(registerDto.getNickName());
+        user.setHeadPortrait("HeadImg/defaultUserImg.png");
+        user.setAccount(Long.valueOf(registerDto.getAccount()));
+        user.setPwd(MD5Util.StringMD5(registerDto.getPwd()));
+        int insert = userMapper.insert(user);
+        return ValidateUtil.isNotCountEmpty(insert)?ResponseResult.responseOK():ResponseResult.responseResultWithErrorCode(ErrorCodes.ADD_ERROR);
     }
 }

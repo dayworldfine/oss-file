@@ -76,4 +76,14 @@ public interface UserMapper {
             "select count(1) from t_user where account = #{account,jdbcType=BIGINT}"
     })
     Integer selectByAccount(String account);
+
+    /**
+     * 根据手机号查询用户实体
+     * @param account
+     * @return
+     */
+    @Select({
+            "select * from t_user where account =#{account,jdbcType=BIGINT}"
+    })
+    User selectUserByAccount(String account);
 }
