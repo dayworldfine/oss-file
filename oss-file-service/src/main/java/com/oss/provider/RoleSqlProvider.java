@@ -29,6 +29,10 @@ public class RoleSqlProvider {
             sql.VALUES("role_name", "#{roleName,jdbcType=VARCHAR}");
         }
 
+        if (record.getCode() != null) {
+            sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
+        }
+
         if (record.getPwd() != null) {
             sql.VALUES("pwd", "#{pwd,jdbcType=VARCHAR}");
         }
@@ -58,6 +62,10 @@ public class RoleSqlProvider {
 
         if (record.getRoleName() != null) {
             sql.SET("role_name = #{roleName,jdbcType=VARCHAR}");
+        }
+
+        if (record.getCode() != null) {
+            sql.SET("code = #{code,jdbcType=VARCHAR}");
         }
 
         if (record.getPwd() != null) {

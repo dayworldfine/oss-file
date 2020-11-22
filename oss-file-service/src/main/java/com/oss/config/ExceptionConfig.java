@@ -47,7 +47,6 @@ public class ExceptionConfig {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseModel httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        String message = e.getMessage();
         return ResponseModel.error(ErrorCodes.NO_PERMISSION);
     }
 

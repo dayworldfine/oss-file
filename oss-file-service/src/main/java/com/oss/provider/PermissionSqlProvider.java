@@ -29,6 +29,10 @@ public class PermissionSqlProvider {
             sql.VALUES("name", "#{name,jdbcType=VARCHAR}");
         }
 
+        if (record.getCode() != null) {
+            sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
+        }
+
         if (record.getUrl() != null) {
             sql.VALUES("url", "#{url,jdbcType=VARCHAR}");
         }
@@ -55,6 +59,10 @@ public class PermissionSqlProvider {
 
         if (record.getName() != null) {
             sql.SET("name = #{name,jdbcType=VARCHAR}");
+        }
+
+        if (record.getCode() != null) {
+            sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
         }
 
         if (record.getUrl() != null) {

@@ -1,10 +1,13 @@
 package com.oss.service;
 
+import com.oss.model.Role;
 import com.oss.tool.BaseService;
 import com.oss.model.User;
 import com.oss.pojo.dto.RegisterDto;
 import com.oss.pojo.dto.UserSelectKeyDto;
 import com.oss.tool.ResponseResult;
+
+import java.util.List;
 
 /**
  * @InterfaceName：UserService
@@ -67,4 +70,11 @@ public interface UserService extends BaseService {
      * @return
      */
     ResponseResult addUser(RegisterDto registerDto);
+
+    /**
+     * 查询用户拥有的角色
+     * @param id
+     * @return
+     */
+    ResponseResult<List<Role>> selectRoleByUserId(Long id);
 }

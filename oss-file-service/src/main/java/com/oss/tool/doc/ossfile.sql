@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 20/11/2020 01:07:15
+ Date: 22/11/2020 22:35:28
 */
 
 SET NAMES utf8mb4;
@@ -82,6 +82,7 @@ CREATE TABLE `t_permission`  (
   `update_time` bigint(0) NOT NULL DEFAULT 0 COMMENT '修改时间',
   `version` bigint(0) NOT NULL DEFAULT 0 COMMENT '版本号',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限名称',
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限编码',
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限url',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限' ROW_FORMAT = DYNAMIC;
@@ -89,12 +90,12 @@ CREATE TABLE `t_permission`  (
 -- ----------------------------
 -- Records of t_permission
 -- ----------------------------
-INSERT INTO `t_permission` VALUES (1, 1, 1, 1, '添加分区', '/zone/getZoneList');
-INSERT INTO `t_permission` VALUES (2, 1, 1, 1, '根据分区ids删除分区', '/zone/deleteZoneByIds');
-INSERT INTO `t_permission` VALUES (3, 1, 1, 1, '给用户分配角色', '/role/allotRole');
-INSERT INTO `t_permission` VALUES (4, 1, 1, 1, '给用户分配区域', '/role/allotZone');
-INSERT INTO `t_permission` VALUES (5, 1, 1, 1, '上传文件', '/file/uploadFile');
-INSERT INTO `t_permission` VALUES (6, 1, 1, 1, '根据前缀删除文件', '/file/delPrefixFile');
+INSERT INTO `t_permission` VALUES (1, 1606055709030, 1606055709030, 1, '添加分区', 'addZone', '/zone/addZone');
+INSERT INTO `t_permission` VALUES (2, 1606055709030, 1606055709030, 1, '根据分区ids删除分区', 'deleteZoneByIds', '/zone/deleteZoneByIds');
+INSERT INTO `t_permission` VALUES (3, 1606055709030, 1606055709030, 1, '给用户分配角色', 'allotRole', '/role/allotRole');
+INSERT INTO `t_permission` VALUES (4, 1606055709030, 1606055709030, 1, '给用户分配区域', 'allotZone', '/role/allotZone');
+INSERT INTO `t_permission` VALUES (5, 1606055709030, 1606055709030, 1, '上传文件', 'uploadFile', '/file/uploadFile');
+INSERT INTO `t_permission` VALUES (6, 1606055709030, 1606055709030, 1, '根据前缀删除文件', 'delPrefixFile', '/file/delPrefixFile');
 
 -- ----------------------------
 -- Table structure for t_role
@@ -106,6 +107,7 @@ CREATE TABLE `t_role`  (
   `update_time` bigint(0) NOT NULL DEFAULT 0 COMMENT '修改时间',
   `version` bigint(0) NOT NULL DEFAULT 0 COMMENT '版本号',
   `role_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色编号',
   `pwd` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限密码',
   `is_open` tinyint(0) NOT NULL COMMENT '是否开放密码',
   PRIMARY KEY (`id`) USING BTREE
@@ -114,10 +116,10 @@ CREATE TABLE `t_role`  (
 -- ----------------------------
 -- Records of t_role
 -- ----------------------------
-INSERT INTO `t_role` VALUES (1, 1605804880805, 1605804880805, 1, '超级管理员', '', 0);
-INSERT INTO `t_role` VALUES (2, 1605804880805, 1605804880805, 1, '管理员', '3HblD+G000', 1);
-INSERT INTO `t_role` VALUES (3, 1605804880805, 1605804880805, 1, '上传员', '3HblD+G001', 1);
-INSERT INTO `t_role` VALUES (4, 1605804880805, 1605804880805, 1, '普通用户', '', 0);
+INSERT INTO `t_role` VALUES (1, 1606055304539, 1606055304539, 1, '超级管理员', 'superAdmin', '', 0);
+INSERT INTO `t_role` VALUES (2, 1606055304539, 1606055304539, 1, '管理员', 'admin', '3L79Tuj000', 1);
+INSERT INTO `t_role` VALUES (3, 1606055304539, 1606055304539, 1, '上传员', 'uploadGeneral', '3L79TuM000', 1);
+INSERT INTO `t_role` VALUES (4, 1606055304539, 1606055304539, 1, '普通用户', 'general', '', 0);
 
 -- ----------------------------
 -- Table structure for t_role_info_permission
@@ -168,6 +170,7 @@ CREATE TABLE `t_user`  (
 INSERT INTO `t_user` VALUES (1, 1, 1, 0, 'wbh', '头像1', 13738700108, '12');
 INSERT INTO `t_user` VALUES (2, 1, 1, 0, '郑梦思', '头像2', 0, '12');
 INSERT INTO `t_user` VALUES (3, 1, 1, 0, '吴萧萧', '头像3', 0, '12');
+INSERT INTO `t_user` VALUES (59814635099914240, 1606014322083, 1606014322083, 1, '威少', 'HeadImg/defaultUserImg.png', 13736766788, 'e10adc3949ba59abbe56e057f20f883e');
 
 -- ----------------------------
 -- Table structure for t_user_info_role

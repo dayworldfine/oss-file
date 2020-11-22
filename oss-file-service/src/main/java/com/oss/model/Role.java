@@ -7,12 +7,13 @@ public class Role implements Serializable {
     public Role() {
     }
 
-    public Role(Long id, Long createTime, Long updateTime, Long version, String roleName, String pwd, Integer isOpen) {
+    public Role(Long id, Long createTime, Long updateTime, Long version, String roleName, String code, String pwd, Integer isOpen) {
         this.id = id;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.version = version;
         this.roleName = roleName;
+        this.code = code;
         this.pwd = pwd;
         this.isOpen = isOpen;
     }
@@ -46,6 +47,12 @@ public class Role implements Serializable {
 	 * 2020-10-20T17:12:13.949
      */
     private String roleName;
+
+    /**
+     * 权限密码
+     * 2020-10-20T17:12:13.944
+     */
+    private String code;
 
     /**
      * 权限密码
@@ -132,6 +139,14 @@ public class Role implements Serializable {
      */
     public void setRoleName(String roleName) {
         this.roleName = roleName == null ? null : roleName.trim();
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getPwd() {

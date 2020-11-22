@@ -1,5 +1,6 @@
 package com.oss.tool.shiro;
 
+import com.oss.model.Role;
 import com.oss.model.User;
 import com.oss.service.UserService;
 import com.oss.tool.ResponseResult;
@@ -39,39 +40,21 @@ public class CustomRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 
-
         System.out.println("-----------------进行权限校验的时候会调用-----------------");
+
+       User user = (User)principalCollection.getPrimaryPrincipal();
+       ResponseResult<List<Role>> roleResult = userService.selectRoleByUserId(user.getId());
         List<String> aaa =new ArrayList<>();
         List<String> bbb =new ArrayList<>();
         aaa.add("111");
-        aaa.add("222");
+        aaa.add("管理员");
         bbb.add("333");
         bbb.add("444");
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addRoles(aaa);
         simpleAuthorizationInfo.addStringPermissions(bbb);
 
-//        System.out.println("授权 doGetAuthorizationInfo");
-//        User newUser = (User)principals.getPrimaryPrincipal();
-//        User user = userService.findAllUserInfoByUsername(newUser.getUsername());
-//        List<String> stringRoleList = new ArrayList<>();
-//        List<String> stringPermissionList = new ArrayList<>();
-//        List<Role> roleList = user.getRoleList();
-//        for(Role role : roleList){
-//            stringRoleList.add(role.getName());
-//            List<Permission> permissionList = role.getPermissionList();
-//            for(Permission p: permissionList){
-//                if(p!=null){
-//                    stringPermissionList.add(p.getName());
-//                }
-//            }
-//        }
-//        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-//        simpleAuthorizationInfo.addRoles(stringRoleList);
-//        simpleAuthorizationInfo.addStringPermissions(stringPermissionList);
-//        return simpleAuthorizationInfo;
-
-        return null;
+        return simpleAuthorizationInfo;
     }
 
     /**

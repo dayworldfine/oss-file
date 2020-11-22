@@ -26,10 +26,10 @@ public interface RoleMapper {
     @Insert({
         "insert into t_role (id, create_time, ",
         "update_time, version, ",
-        "role_name, pwd,is_open )",
+        "role_name, pwd,is_open,code )",
         "values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, ",
         "#{updateTime,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, ",
-        "#{roleName,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR},#{isOpen,jdbcType=TINYINT})"
+        "#{roleName,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR},#{isOpen,jdbcType=TINYINT},#{code,jdbcType=VARCHAR})"
     })
     int insert(Role record);
 
@@ -38,7 +38,7 @@ public interface RoleMapper {
 
     @Select({
         "select",
-        "id, create_time, update_time, version, role_name, pwd ,is_open ",
+        "id, create_time, update_time, version, role_name, pwd ,is_open,code ",
         "from t_role",
         "where id = #{id,jdbcType=BIGINT}"
     })
@@ -49,7 +49,8 @@ public interface RoleMapper {
         @Result(column="version", property="version", jdbcType=JdbcType.BIGINT),
         @Result(column="role_name", property="roleName", jdbcType=JdbcType.VARCHAR),
         @Result(column="pwd", property="pwd", jdbcType=JdbcType.VARCHAR),
-        @Result(column="is_open", property="isOpen", jdbcType=JdbcType.TINYINT)
+        @Result(column="is_open", property="isOpen", jdbcType=JdbcType.TINYINT),
+        @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
     })
     Role selectByPrimaryKey(Long id);
 
@@ -64,13 +65,14 @@ public interface RoleMapper {
           "role_name = #{roleName,jdbcType=VARCHAR}, ",
           "pwd = #{pwd,jdbcType=VARCHAR}, ",
           "is_open = #{isOpen,jdbcType=TINYINT}",
+          "code = #{code,jdbcType=VARCHAR} ",
         "where id = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(Role record);
 
     @Select({
             "select",
-            "id, create_time, update_time, version, role_name, pwd ,is_open ",
+            "id, create_time, update_time, version, role_name, pwd ,is_open, code ",
             "from t_role",
             "where is_open = 1"
     })
@@ -81,7 +83,8 @@ public interface RoleMapper {
             @Result(column="version", property="version", jdbcType=JdbcType.BIGINT),
             @Result(column="role_name", property="roleName", jdbcType=JdbcType.VARCHAR),
             @Result(column="pwd", property="pwd", jdbcType=JdbcType.VARCHAR),
-            @Result(column="is_open", property="isOpen", jdbcType=JdbcType.TINYINT)
+            @Result(column="is_open", property="isOpen", jdbcType=JdbcType.TINYINT),
+            @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
     })
     List<Role> getRoleList();
 
@@ -91,7 +94,7 @@ public interface RoleMapper {
      * @return
      */
     @Select({
-            "select id, create_time, update_time, version, role_name,pwd, is_open ",
+            "select id, create_time, update_time, version, role_name,pwd, is_open,code ",
             " from t_role where pwd = #{pwd,jdbcType=VARCHAR}"
     })
     @Results({
@@ -101,7 +104,9 @@ public interface RoleMapper {
             @Result(column="version", property="version", jdbcType=JdbcType.BIGINT),
             @Result(column="role_name", property="roleName", jdbcType=JdbcType.VARCHAR),
             @Result(column="pwd", property="pwd", jdbcType=JdbcType.VARCHAR),
-            @Result(column="is_open", property="isOpen", jdbcType=JdbcType.TINYINT)
+            @Result(column="is_open", property="isOpen", jdbcType=JdbcType.TINYINT),
+            @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
+
     })
     Role selectByPwd(String pwd);
 

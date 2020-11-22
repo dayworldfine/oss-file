@@ -135,10 +135,10 @@ public class RoleServiceImpl implements RoleService {
         if (ValidateUtil.isCountEmpty(countRole)){
             List<Role> roleList = Lists.newArrayList();
             long timeMillis = System.currentTimeMillis();
-            roleList.add(new Role(1l, timeMillis, timeMillis, 1l, "超级管理员", "", 0));
-            roleList.add(new Role(2l, timeMillis, timeMillis, 1l, "管理员", ConvertScaleUtil.get10to64(SnowUtil.generateId()), 1));
-            roleList.add(new Role(3l, timeMillis, timeMillis, 1l, "上传员", ConvertScaleUtil.get10to64(SnowUtil.generateId()), 1));
-            roleList.add(new Role(4l, timeMillis, timeMillis, 1l, "普通用户", "", 0));
+            roleList.add(new Role(1l, timeMillis, timeMillis, 1l, "超级管理员","superAdmin", "", 0));
+            roleList.add(new Role(2l, timeMillis, timeMillis, 1l, "管理员","admin", ConvertScaleUtil.get10to64(SnowUtil.generateId()), 1));
+            roleList.add(new Role(3l, timeMillis, timeMillis, 1l, "上传员","uploadGeneral", ConvertScaleUtil.get10to64(SnowUtil.generateId()), 1));
+            roleList.add(new Role(4l, timeMillis, timeMillis, 1l, "普通用户","general", "", 0));
             //省事直接for
             roleList.forEach(a->{
                 roleMapper.insert(a);
@@ -148,12 +148,12 @@ public class RoleServiceImpl implements RoleService {
         if (ValidateUtil.isCountEmpty(countPermission)){
             List<Permission> permissionList = Lists.newArrayList();
             long timeMillis = System.currentTimeMillis();
-            permissionList.add(new Permission(1l,timeMillis,timeMillis,1l,"添加分区","/zone/getZoneList"));
-            permissionList.add(new Permission(2l,timeMillis,timeMillis,1l,"根据分区ids删除分区","/zone/deleteZoneByIds"));
-            permissionList.add(new Permission(3l,timeMillis,timeMillis,1l,"给用户分配角色","/role/allotRole"));
-            permissionList.add(new Permission(4l,timeMillis,timeMillis,1l,"给用户分配区域","/role/allotZone"));
-            permissionList.add(new Permission(5l,timeMillis,timeMillis,1l,"上传文件","/file/uploadFile"));
-            permissionList.add(new Permission(6l,timeMillis,timeMillis,1l,"根据前缀删除文件","/file/delPrefixFile"));
+            permissionList.add(new Permission(1l,timeMillis,timeMillis,1l,"添加分区","addZone","/zone/addZone"));
+            permissionList.add(new Permission(2l,timeMillis,timeMillis,1l,"根据分区ids删除分区","deleteZoneByIds","/zone/deleteZoneByIds"));
+            permissionList.add(new Permission(3l,timeMillis,timeMillis,1l,"给用户分配角色","allotRole","/role/allotRole"));
+            permissionList.add(new Permission(4l,timeMillis,timeMillis,1l,"给用户分配区域","allotZone","/role/allotZone"));
+            permissionList.add(new Permission(5l,timeMillis,timeMillis,1l,"上传文件","uploadFile","/file/uploadFile"));
+            permissionList.add(new Permission(6l,timeMillis,timeMillis,1l,"根据前缀删除文件","delPrefixFile","/file/delPrefixFile"));
 
             //省事直接for
             permissionList.forEach(a->{

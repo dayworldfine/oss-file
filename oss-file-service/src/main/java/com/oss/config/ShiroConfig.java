@@ -84,7 +84,7 @@ public class ShiroConfig {
 
         //管理员角色才可以访问
         filterChainDefinitionMap.put("/admin/**","roles[admin]");
-        filterChainDefinitionMap.put("/role/**","roles[admin]");
+        filterChainDefinitionMap.put("/role/**","roles[管理员]");
 
         //有编辑权限的才可以访问
         filterChainDefinitionMap.put("/video/update","perms[video_update]");

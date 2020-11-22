@@ -15,6 +15,8 @@ import com.oss.tool.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @ClassName：UserServiceImpl
  * @Description: 用户服务
@@ -53,6 +55,12 @@ public class UserServiceImpl implements UserService {
         return ResponseResult.responseSuccessResult(pageInfo);
     }
 
+    /**
+     * 获取分区钥匙
+     * @param userId
+     * @param pwd
+     * @return
+     */
     @Override
     public ResponseResult getZoneKey(Long userId, String pwd) {
         /** 查看这个密钥相对于的分区id*/
@@ -78,6 +86,12 @@ public class UserServiceImpl implements UserService {
         return ResponseResult.responseOK();
     }
 
+    /**
+     * 获取角色钥匙
+     * @param userId
+     * @param pwd
+     * @return
+     */
     @Override
     public ResponseResult getRoleKey(long userId, String pwd) {
         /** 查看这个密钥相对于的角色id*/
@@ -137,6 +151,11 @@ public class UserServiceImpl implements UserService {
         return ResponseResult.responseSuccessResult(user);
     }
 
+    /**
+     * 添加用户
+     * @param registerDto
+     * @return
+     */
     @Override
     public ResponseResult addUser(RegisterDto registerDto) {
         User user = new User();
@@ -150,5 +169,11 @@ public class UserServiceImpl implements UserService {
         user.setPwd(MD5Util.StringMD5(registerDto.getPwd()));
         int insert = userMapper.insert(user);
         return ValidateUtil.isNotCountEmpty(insert)?ResponseResult.responseOK():ResponseResult.responseResultWithErrorCode(ErrorCodes.ADD_ERROR);
+    }
+
+    @Override
+    public ResponseResult<List<Role>> selectRoleByUserId(Long id) {
+//        userMapper.selectRoleByUserId();
+        return null;
     }
 }

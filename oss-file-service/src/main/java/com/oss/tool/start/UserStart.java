@@ -40,7 +40,7 @@ public class UserStart {
     @Autowired
     private ZoneService zoneService;
 
-//    @PostConstruct
+    @PostConstruct
     public void cleanSeatUser(){
         LOGGER.info("------------------开始执行用户初始化数据----------------------");
         ResponseResult roleResult = roleService.start();

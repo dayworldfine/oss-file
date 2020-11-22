@@ -7,12 +7,13 @@ public class Permission implements Serializable {
     public Permission() {
     }
 
-    public Permission(Long id, Long createTime, Long updateTime, Long version, String name, String url) {
+    public Permission(Long id, Long createTime, Long updateTime, Long version, String name, String code, String url) {
         this.id = id;
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.version = version;
         this.name = name;
+        this.code = code;
         this.url = url;
     }
 
@@ -45,6 +46,12 @@ public class Permission implements Serializable {
 	 * 2020-10-20T17:12:13.944
      */
     private String name;
+
+    /**
+     * 权限编号
+     * 2020-10-20T17:12:13.944
+     */
+    private String code;
 
     /**
      * 权限url
@@ -126,6 +133,14 @@ public class Permission implements Serializable {
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     /**

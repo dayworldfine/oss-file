@@ -24,10 +24,10 @@ public interface PermissionMapper {
     @Insert({
         "insert into t_permission (id, create_time, ",
         "update_time, version, ",
-        "name, url)",
+        "name, url,code )",
         "values (#{id,jdbcType=BIGINT}, #{createTime,jdbcType=BIGINT}, ",
         "#{updateTime,jdbcType=BIGINT}, #{version,jdbcType=BIGINT}, ",
-        "#{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR} )"
+        "#{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},#{code,jdbcType=VARCHAR} )"
     })
     int insert(Permission record);
 
@@ -36,7 +36,7 @@ public interface PermissionMapper {
 
     @Select({
         "select",
-        "id, create_time, update_time, version, name, url ",
+        "id, create_time, update_time, version, name, url, code ",
         "from t_permission",
         "where id = #{id,jdbcType=BIGINT}"
     })
@@ -46,7 +46,8 @@ public interface PermissionMapper {
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.BIGINT),
         @Result(column="version", property="version", jdbcType=JdbcType.BIGINT),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
-        @Result(column="url", property="url", jdbcType=JdbcType.VARCHAR)
+        @Result(column="url", property="url", jdbcType=JdbcType.VARCHAR),
+        @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
     })
     Permission selectByPrimaryKey(Long id);
 
@@ -60,6 +61,7 @@ public interface PermissionMapper {
           "version = #{version,jdbcType=BIGINT},",
           "name = #{name,jdbcType=VARCHAR},",
           "url = #{url,jdbcType=VARCHAR} ",
+          "code = #{code,jdbcType=VARCHAR} ",
         "where id = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(Permission record);
