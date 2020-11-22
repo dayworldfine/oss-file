@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.oss.config.BaseController;
+import com.oss.tool.BaseController;
 import com.oss.service.UploadService;
 import com.oss.tool.util.ValidateUtil;
 

@@ -1,4 +1,4 @@
-package com.oss.config;
+package com.oss.tool;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

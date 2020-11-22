@@ -1,22 +1,18 @@
 package com.oss.controller;
 
-import com.oss.config.BaseController;
+import com.oss.tool.BaseController;
 import com.oss.pojo.dto.DocumentDto;
-import com.oss.tool.ErrorCodes;
 import com.oss.tool.JsonResult;
 import com.oss.tool.ResponseModel;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import java.awt.image.BufferedImage;
 import java.io.*;
 
 @RestController

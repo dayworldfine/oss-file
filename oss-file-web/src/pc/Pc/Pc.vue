@@ -66,6 +66,9 @@
         forGetPwdVisible:false, //忘记密码
       }
     },
+    created() {
+
+    },
     computed:{
       ...mapState([
         "userInfo",

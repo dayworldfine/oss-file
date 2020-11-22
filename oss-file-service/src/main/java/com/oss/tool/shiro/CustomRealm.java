@@ -2,6 +2,8 @@ package com.oss.tool.shiro;
 
 import com.oss.model.User;
 import com.oss.service.UserService;
+import com.oss.tool.ResponseResult;
+import com.oss.tool.util.ValidateUtil;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -36,6 +38,8 @@ public class CustomRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+
+
         System.out.println("-----------------进行权限校验的时候会调用-----------------");
         List<String> aaa =new ArrayList<>();
         List<String> bbb =new ArrayList<>();
@@ -46,6 +50,27 @@ public class CustomRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addRoles(aaa);
         simpleAuthorizationInfo.addStringPermissions(bbb);
+
+//        System.out.println("授权 doGetAuthorizationInfo");
+//        User newUser = (User)principals.getPrimaryPrincipal();
+//        User user = userService.findAllUserInfoByUsername(newUser.getUsername());
+//        List<String> stringRoleList = new ArrayList<>();
+//        List<String> stringPermissionList = new ArrayList<>();
+//        List<Role> roleList = user.getRoleList();
+//        for(Role role : roleList){
+//            stringRoleList.add(role.getName());
+//            List<Permission> permissionList = role.getPermissionList();
+//            for(Permission p: permissionList){
+//                if(p!=null){
+//                    stringPermissionList.add(p.getName());
+//                }
+//            }
+//        }
+//        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+//        simpleAuthorizationInfo.addRoles(stringRoleList);
+//        simpleAuthorizationInfo.addStringPermissions(stringPermissionList);
+//        return simpleAuthorizationInfo;
+
         return null;
     }
 
@@ -59,9 +84,10 @@ public class CustomRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         System.out.println("-----------------用户登录的时候会调用-----------------");
         //从token获得用户信息，token代表用户输入
-        String userName =(String)token.getPrincipal();
-        User user = userService.findUserByUserName(userName);
-        if (null==user){
+        String account =(String)token.getPrincipal();
+        ResponseResult<User> userByAccount = userService.findUserByAccount(account);
+        User user = userByAccount.getData();
+        if (ValidateUtil.isEmpty(user)){
             return null;
         }
         String pwd= user.getPwd();

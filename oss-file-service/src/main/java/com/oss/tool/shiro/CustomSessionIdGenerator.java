@@ -4,6 +4,7 @@ package com.oss.tool.shiro;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
 
+import javax.security.auth.Subject;
 import java.io.Serializable;
 import java.util.UUID;
 

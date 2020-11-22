@@ -17,11 +17,11 @@ import java.io.Serializable;
  * @Description: 实现 - 活动
  * @Version: V1.0
  */
-public class CustomSessionManager extends DefaultWebSessionManager{
+public class CustomSessionManager extends DefaultWebSessionManager {
 
     private static final String AUTHORIZATION = "token";
 
-    public CustomSessionManager(){
+    public CustomSessionManager() {
         super();
     }
 

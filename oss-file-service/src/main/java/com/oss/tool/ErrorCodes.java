@@ -23,6 +23,7 @@ public class ErrorCodes {
     public static final int PHONE_ERROR = 20012;
     public static final int CODE_ERROR = 20013;
     public static final int PHONE_IS_HAVE = 20014;
+    public static final int NO_PERMISSION = 20015;
 
 
     public static final int SERVICE_SNEAK_OFF= 99999;
@@ -53,6 +54,7 @@ public class ErrorCodes {
         errorCodes.put(20012, "请输入正确的手机号");
         errorCodes.put(20013, "验证码错误");
         errorCodes.put(20014, "该手机号已被注册");
+        errorCodes.put(20015, "没有权限");
         errorCodes.put(99999, "服务器正在开小差~~");
     }
 }

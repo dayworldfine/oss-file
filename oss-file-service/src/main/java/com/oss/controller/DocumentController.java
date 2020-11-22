@@ -1,7 +1,7 @@
 package com.oss.controller;
 
 
-import com.oss.config.BaseController;
+import com.oss.tool.BaseController;
 import com.oss.pojo.bo.DocumentPreviewBo;
 import com.oss.pojo.bo.DocumentRefreshBo;
 import com.oss.pojo.dto.DocumentSignDto;

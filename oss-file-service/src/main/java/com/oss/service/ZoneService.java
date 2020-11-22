@@ -1,11 +1,10 @@
 package com.oss.service;
 
 import com.github.pagehelper.Page;
-import com.oss.config.BaseService;
+import com.oss.tool.BaseService;
 import com.oss.pojo.bo.ZoneBo;
 import com.oss.pojo.dto.ZoneDto;
 import com.oss.pojo.dto.ZoneListDto;
-import com.oss.tool.ResponseModel;
 import com.oss.tool.ResponseResult;
 
 

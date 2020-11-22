@@ -2,7 +2,7 @@ package com.oss.service;
 
 import com.oss.tool.ResponseResult;
 import org.springframework.web.multipart.MultipartFile;
-import com.oss.config.BaseService;
+import com.oss.tool.BaseService;
 
 public interface UploadService extends BaseService {
 

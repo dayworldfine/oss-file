@@ -8,7 +8,8 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
-import com.oss.config.BaseController;
+import com.oss.pojo.vo.LoginVo;
+import com.oss.tool.BaseController;
 import com.oss.model.User;
 import com.oss.pojo.dto.RegisterDto;
 import com.oss.service.UserService;
@@ -20,15 +21,10 @@ import com.oss.tool.util.RedisUtil;
 import com.oss.tool.util.SmsUtil;
 import com.oss.tool.util.ValidateUtil;
 import com.oss.tool.util.VerificationUtil;
-import net.sf.saxon.trans.Err;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.checkerframework.checker.units.qual.A;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -152,16 +148,16 @@ public class LoginController extends BaseController {
         if (ValidateUtil.isEmpty(account) || ValidateUtil.isEmpty(passWord)){
             return ResponseModel.error(ErrorCodes.PARAM_VALID_ERROR);
         }
-        Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(account,passWord);
+        Subject     subject = SecurityUtils.getSubject();
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(account,passWord,true);
         try {
             subject.login(usernamePasswordToken);
             System.out.println("token:"+subject.getSession().getId());
             User user = (User) subject.getPrincipals().getPrimaryPrincipal();
-//            JSONObject object = new JSONObject();
-//            object.put("token",subject.getSession().getId());
-//            object.put("userId",String.valueOf(user.getId()));
-            return ResponseModel.success(user);
+            LoginVo loginVo = new LoginVo();
+            loginVo.setToken(String.valueOf(subject.getSession().getId()));
+            loginVo.setUser(user);
+            return ResponseModel.success(loginVo);
         }catch (Exception e){
             e.printStackTrace();
             return ResponseModel.error(-10000);

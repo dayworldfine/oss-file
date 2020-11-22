@@ -1,6 +1,6 @@
 package com.oss.service;
 
-import com.oss.config.BaseService;
+import com.oss.tool.BaseService;
 import com.oss.pojo.dto.RoleAllotDto;
 import com.oss.pojo.dto.ZoneAllotDto;
 import com.oss.tool.ResponseResult;

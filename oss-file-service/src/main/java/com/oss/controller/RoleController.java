@@ -1,6 +1,6 @@
 package com.oss.controller;
 
-import com.oss.config.BaseController;
+import com.oss.tool.BaseController;
 import com.oss.pojo.dto.RoleAllotDto;
 import com.oss.pojo.dto.ZoneAllotDto;
 import com.oss.service.RoleService;
@@ -9,6 +9,7 @@ import com.oss.service.ZoneService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.ResponseResult;
+import com.oss.tool.util.ShiroUtil;
 import com.oss.tool.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -61,6 +62,7 @@ public class RoleController extends BaseController {
      */
     @PostMapping("/getRoleList")
     public ResponseModel getRoleList()  {
+        Long userId = ShiroUtil.getUserId();
         ResponseResult responseResult = roleService.getRoleList();
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }

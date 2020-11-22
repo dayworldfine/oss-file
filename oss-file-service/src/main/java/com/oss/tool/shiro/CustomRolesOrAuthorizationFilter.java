@@ -15,8 +15,9 @@ public class CustomRolesOrAuthorizationFilter extends AuthorizationFilter{
 
     @SuppressWarnings({"unchecked"})
     @Override
-    public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
+    public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue)  {
         System.out.println("-----------------自定义filter执行-----------------");
+        System.out.println("saedsad");
 //        Subject subject = getSubject(request, response);
 //
 //        //获取当前访问路径所需要的角色集合
@@ -40,5 +41,10 @@ public class CustomRolesOrAuthorizationFilter extends AuthorizationFilter{
 //
 //        return false;
         return  true;
+    }
+
+    @Override
+    protected boolean onAccessDenied(ServletRequest request, ServletResponse response)  {
+        return false;
     }
 }

@@ -3,6 +3,10 @@ package com.oss.config;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.util.JsonUtil;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -10,6 +14,7 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,6 +38,18 @@ import java.util.stream.Collectors;
 public class ExceptionConfig {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ExceptionConfig.class);
+
+
+    /**
+     * 没有登录或者没有权限
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseModel httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        String message = e.getMessage();
+        return ResponseModel.error(ErrorCodes.NO_PERMISSION);
+    }
 
 
     //处理Get请求中 使用@Valid 验证路径中请求实体校验失败后抛出的异常，详情继续往下看代码

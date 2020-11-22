@@ -1,8 +1,7 @@
 package com.oss.service;
 
-import com.oss.config.BaseService;
+import com.oss.tool.BaseService;
 import com.oss.tool.ResponseResult;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @InterfaceName：LogService

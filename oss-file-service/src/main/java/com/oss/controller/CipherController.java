@@ -1,6 +1,6 @@
 package com.oss.controller;
 
-import com.oss.config.BaseController;
+import com.oss.tool.BaseController;
 import com.oss.tool.ResponseModel;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

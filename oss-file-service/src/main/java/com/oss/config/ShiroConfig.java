@@ -2,17 +2,17 @@ package com.oss.config;
 
 
 
-import com.oss.tool.shiro.CustomRealm;
-import com.oss.tool.shiro.CustomRolesOrAuthorizationFilter;
-import com.oss.tool.shiro.CustomSessionIdGenerator;
-import com.oss.tool.shiro.CustomSessionManager;
+import com.oss.tool.shiro.*;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
@@ -53,11 +53,12 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSuccessUrl("/home");
 
         //没有权限，未授权就会调用此方法，先验证登录-> 再验证是否有权限
-        shiroFilterFactoryBean.setUnauthorizedUrl("/pub/not_permit");
+//        shiroFilterFactoryBean.setUnauthorizedUrl("/pub/not_permit");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/login/textRedis");
 
         //设置自定义filter
         Map<String, Filter> filterMap = new LinkedHashMap<>();
-        filterMap.put("roleOrFilter",new CustomRolesOrAuthorizationFilter());
+        filterMap.put("roleOrFilter",new CustomRolesOrAuthorizationFilter());       //失效  原因未知
         shiroFilterFactoryBean.setFilters(filterMap);
 
         //拦截器路径， 坑一:部分路径无法进行拦截，时有时无，因为使用了hashMap，无序的，应该改为LinkedHashMap
@@ -65,6 +66,9 @@ public class ShiroConfig {
 
         //退出过滤器
         filterChainDefinitionMap.put("/logout","logout");
+
+        //配置记住我或认证通过可以访问的地址
+//        filterChainDefinitionMap.put("/", "user");
 
         //匿名可以访问，也就是游客模式
         filterChainDefinitionMap.put("/pub/**","anon");
@@ -76,9 +80,11 @@ public class ShiroConfig {
 
         //登录用户才可以访问
         filterChainDefinitionMap.put("/authc/**","authc");
+//        filterChainDefinitionMap.put("/role/**","authc");
 
         //管理员角色才可以访问
         filterChainDefinitionMap.put("/admin/**","roles[admin]");
+        filterChainDefinitionMap.put("/role/**","roles[admin]");
 
         //有编辑权限的才可以访问
         filterChainDefinitionMap.put("/video/update","perms[video_update]");
@@ -101,16 +107,45 @@ public class ShiroConfig {
     public SecurityManager  securityManager(){
         DefaultWebSecurityManager securityManager =  new DefaultWebSecurityManager();
 
+
         //如果不是前后端分离，则不必设置下面的sessionManager
         securityManager.setSessionManager(sessionManager());
 
         //使用自定义的cacheManager
         securityManager.setCacheManager(cacheManager());
 
+//        //使用记住我的
+//        securityManager.setRememberMeManager(rememberMeManager());
+
         //设置realm（推荐放到最后，某些情况会不生效）
         securityManager.setRealm(customRealm());
         return  securityManager;
     }
+
+//    /**
+//     * rememberMe管理器, cipherKey生成见{@code Base64Test.java}
+//     */
+//    @Bean
+//    public CookieRememberMeManager rememberMeManager() {
+//        CookieRememberMeManager manager = new CookieRememberMeManager();
+////        manager.setCipherKey(Base64.decode("Z3VucwAAAAAAAAAAAAAAAA=="));
+//        manager.setCipherKey("12321312".getBytes());
+//        manager.setCookie( rememberMeCookie());
+//        return manager;
+//    }
+//
+//    /**
+//     * 记住密码Cookie
+//     */
+//    @Bean
+//    public SimpleCookie rememberMeCookie() {
+//        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+//        simpleCookie.setHttpOnly(true);
+//        simpleCookie.setMaxAge(7 * 24 * 60 * 60);//7天
+//        return simpleCookie;
+//    }
+
+
 
     /**
      * 配置具体实现类
@@ -130,7 +165,7 @@ public class ShiroConfig {
     public RedisManager getRedisManager(){
         RedisManager redisManager = new RedisManager();
 
-        redisManager.setHost("localhost");
+        redisManager.setHost("127.0.0.1");
         redisManager.setPort(6379);
         redisManager.setPassword("123456");
         return redisManager;

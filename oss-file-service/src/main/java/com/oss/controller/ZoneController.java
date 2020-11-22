@@ -1,7 +1,7 @@
 package com.oss.controller;
 
 import com.github.pagehelper.Page;
-import com.oss.config.BaseController;
+import com.oss.tool.BaseController;
 import com.oss.pojo.bo.ZoneBo;
 import com.oss.pojo.dto.ZoneDto;
 import com.oss.pojo.dto.ZoneListDto;
