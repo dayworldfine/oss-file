@@ -171,9 +171,25 @@ public class UserServiceImpl implements UserService {
         return ValidateUtil.isNotCountEmpty(insert)?ResponseResult.responseOK():ResponseResult.responseResultWithErrorCode(ErrorCodes.ADD_ERROR);
     }
 
+    /**
+     * 查询用户拥有角色(鉴权)
+     * @param userId
+     * @return
+     */
     @Override
-    public ResponseResult<List<Role>> selectRoleByUserId(Long id) {
-//        userMapper.selectRoleByUserId();
-        return null;
+    public ResponseResult<List<Role>> selectRoleByUserId(Long userId) {
+        List<Role> roleList = userMapper.selectRoleByUserId(userId);
+        return ResponseResult.responseSuccessResult(roleList);
+    }
+
+    /**
+     * 查询用户拥有权限(鉴权)
+     * @param roleJoin
+     * @return
+     */
+    @Override
+    public ResponseResult<List<Permission>> selectPermissionByRoleIds(String roleJoin) {
+        List<Permission> permissionList = userMapper.selectPermissionByRoleIds(roleJoin);
+        return ResponseResult.responseSuccessResult(permissionList);
     }
 }

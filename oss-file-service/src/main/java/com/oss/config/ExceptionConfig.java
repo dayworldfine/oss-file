@@ -4,6 +4,8 @@ import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.util.JsonUtil;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -39,6 +41,26 @@ public class ExceptionConfig {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(ExceptionConfig.class);
 
+
+    /**
+     * 账号错误的异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(UnknownAccountException.class)
+    public ResponseModel unknownAccountException(UnknownAccountException e) {
+        return ResponseModel.error(ErrorCodes.USER_PWD_ERROR);
+    }
+
+    /**
+     * 密码错误的异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(IncorrectCredentialsException.class)
+    public ResponseModel incorrectCredentialsException(IncorrectCredentialsException e) {
+        return ResponseModel.error(ErrorCodes.USER_PWD_ERROR);
+    }
 
     /**
      * 没有登录或者没有权限

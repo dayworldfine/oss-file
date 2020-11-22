@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 22/11/2020 22:35:28
+ Date: 23/11/2020 00:30:46
 */
 
 SET NAMES utf8mb4;
@@ -167,9 +167,7 @@ CREATE TABLE `t_user`  (
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
-INSERT INTO `t_user` VALUES (1, 1, 1, 0, 'wbh', '头像1', 13738700108, '12');
-INSERT INTO `t_user` VALUES (2, 1, 1, 0, '郑梦思', '头像2', 0, '12');
-INSERT INTO `t_user` VALUES (3, 1, 1, 0, '吴萧萧', '头像3', 0, '12');
+INSERT INTO `t_user` VALUES (1, 1606061069768, 1606061069768, 1, 'wbh', '/HeadImg/wbh.jpg', 13738700108, '4b81dd5e3abca610e5105bb2bcf148f0');
 INSERT INTO `t_user` VALUES (59814635099914240, 1606014322083, 1606014322083, 1, '威少', 'HeadImg/defaultUserImg.png', 13736766788, 'e10adc3949ba59abbe56e057f20f883e');
 
 -- ----------------------------
@@ -189,8 +187,7 @@ CREATE TABLE `t_user_info_role`  (
 -- ----------------------------
 -- Records of t_user_info_role
 -- ----------------------------
-INSERT INTO `t_user_info_role` VALUES (57841707298848768, 1605543939440, 1605543939440, 1, 1, 2);
-INSERT INTO `t_user_info_role` VALUES (57841707298848769, 1605543939440, 1605543939440, 1, 1, 4);
+INSERT INTO `t_user_info_role` VALUES (60014959345532928, 1606062083105, 1606062083105, 1, 1, 1);
 
 -- ----------------------------
 -- Table structure for t_user_info_zone

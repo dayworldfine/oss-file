@@ -1,11 +1,15 @@
 package com.oss.mapper;
 
 import com.github.pagehelper.Page;
+import com.oss.model.Permission;
+import com.oss.model.Role;
 import com.oss.model.User;
 import com.oss.provider.UserSqlProvider;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface UserMapper {
@@ -86,4 +90,38 @@ public interface UserMapper {
             "select * from t_user where account =#{account,jdbcType=BIGINT}"
     })
     User selectUserByAccount(String account);
+
+    /**
+     * 查询用户角色
+     * @param userId
+     * @return
+     */
+    @Select({
+            "SELECT  " +
+                    "r.* " +
+                    "FROM " +
+                    "t_user_info_role uir " +
+                    "INNER JOIN t_role r " +
+                    "on uir.role_id = r.id " +
+                    "where uir.user_id =1"
+    })
+    List<Role> selectRoleByUserId(Long userId);
+
+
+    /**
+     * 查询用户拥有权限(鉴权)
+     * @param roleJoin
+     * @return
+     */
+    @Select({
+            "SELECT " +
+                    "DISTINCT " +
+                    "p.* " +
+                    "FROM " +
+                    "t_role_info_permission tip  " +
+                    "INNER JOIN t_permission p " +
+                    "on tip.permission_id =p.id " +
+                    "WHERE tip.role_id in (${roleJoin})"
+    })
+    List<Permission> selectPermissionByRoleIds(@Param("roleJoin") String roleJoin);
 }

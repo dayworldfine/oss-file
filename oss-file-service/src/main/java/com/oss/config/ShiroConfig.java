@@ -83,11 +83,17 @@ public class ShiroConfig {
 //        filterChainDefinitionMap.put("/role/**","authc");
 
         //管理员角色才可以访问
-        filterChainDefinitionMap.put("/admin/**","roles[admin]");
-        filterChainDefinitionMap.put("/role/**","roles[管理员]");
+//        filterChainDefinitionMap.put("/admin/**","roles[admin]");
+//        filterChainDefinitionMap.put("/role/**","roles[admin]");
 
         //有编辑权限的才可以访问
-        filterChainDefinitionMap.put("/video/update","perms[video_update]");
+//        filterChainDefinitionMap.put("/video/update","perms[video_update]");
+        filterChainDefinitionMap.put("/zone/addZone","perms[addZone]");
+        filterChainDefinitionMap.put("/zone/deleteZoneByIds","perms[deleteZoneByIds]");
+        filterChainDefinitionMap.put("/role/allotRole","perms[allotRole]");
+        filterChainDefinitionMap.put("/role/allotZone","perms[allotZone]");
+        filterChainDefinitionMap.put("/file/uploadFile","perms[uploadFile]");
+        filterChainDefinitionMap.put("/file/delPrefixFile","perms[delPrefixFile]");
 
         //坑二：过滤链是顺序执行，从上而下，一般讲/** 放在最下面
 

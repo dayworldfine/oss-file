@@ -1,5 +1,6 @@
 package com.oss.tool.shiro;
 
+import com.oss.model.Permission;
 import com.oss.model.Role;
 import com.oss.model.User;
 import com.oss.service.UserService;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -44,15 +46,18 @@ public class CustomRealm extends AuthorizingRealm {
 
        User user = (User)principalCollection.getPrimaryPrincipal();
        ResponseResult<List<Role>> roleResult = userService.selectRoleByUserId(user.getId());
-        List<String> aaa =new ArrayList<>();
-        List<String> bbb =new ArrayList<>();
-        aaa.add("111");
-        aaa.add("管理员");
-        bbb.add("333");
-        bbb.add("444");
+        List<Role> roleList = roleResult.getData();
+        List<String> roles = roleList.stream().map(p -> p.getCode()).collect(Collectors.toList());
+        List<String> permissions =new ArrayList<>();
+        if (ValidateUtil.isNotEmpty(roleList)){
+            String roleJoin = roleList.stream().map(p->String.valueOf(p.getId())).collect(Collectors.joining(","));
+           ResponseResult<List<Permission>> permissionResult = userService.selectPermissionByRoleIds(roleJoin);
+            permissions=permissionResult.getData().stream().map(p->p.getCode()).collect(Collectors.toList());
+        }
+
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRoles(aaa);
-        simpleAuthorizationInfo.addStringPermissions(bbb);
+        simpleAuthorizationInfo.addRoles(roles);
+        simpleAuthorizationInfo.addStringPermissions(permissions);
 
         return simpleAuthorizationInfo;
     }

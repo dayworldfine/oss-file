@@ -111,8 +111,8 @@
             return;
           }
           LoginService.register(this.formLabelAlign).then((res)=>{
-            console.log("res",res)
             if (10000==res.error){
+              console.log("12312")
               this.$message.success("注册成功")
               this.$emit("confirmRegister", this.formLabelAlign);
             }

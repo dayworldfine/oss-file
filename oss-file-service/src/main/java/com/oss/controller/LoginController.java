@@ -148,8 +148,8 @@ public class LoginController extends BaseController {
         if (ValidateUtil.isEmpty(account) || ValidateUtil.isEmpty(passWord)){
             return ResponseModel.error(ErrorCodes.PARAM_VALID_ERROR);
         }
-        Subject     subject = SecurityUtils.getSubject();
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(account,passWord,true);
+        Subject  subject = SecurityUtils.getSubject();
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(account,passWord);
         try {
             subject.login(usernamePasswordToken);
             System.out.println("token:"+subject.getSession().getId());
@@ -160,7 +160,7 @@ public class LoginController extends BaseController {
             return ResponseModel.success(loginVo);
         }catch (Exception e){
             e.printStackTrace();
-            return ResponseModel.error(-10000);
+            return ResponseModel.error(ErrorCodes.USER_PWD_ERROR);
         }
     }
 

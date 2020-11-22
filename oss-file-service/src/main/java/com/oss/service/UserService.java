@@ -1,5 +1,6 @@
 package com.oss.service;
 
+import com.oss.model.Permission;
 import com.oss.model.Role;
 import com.oss.tool.BaseService;
 import com.oss.model.User;
@@ -73,8 +74,15 @@ public interface UserService extends BaseService {
 
     /**
      * 查询用户拥有的角色
-     * @param id
+     * @param userId
      * @return
      */
-    ResponseResult<List<Role>> selectRoleByUserId(Long id);
+    ResponseResult<List<Role>> selectRoleByUserId(Long userId);
+
+    /**
+     * 查询用户拥有权限
+     * @param roleJoin
+     * @return
+     */
+    ResponseResult<List<Permission>> selectPermissionByRoleIds(String roleJoin);
 }
