@@ -85,7 +85,7 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
-    public ResponseResult getMyZonePwd(long userId) {
+    public ResponseResult<List<ZonePwdBo>> getMyZonePwd(long userId) {
         List<ZonePwdBo> zonePwdBoList = zoneMapper.selectMyZonePwd(userId);
         return  ResponseResult.responseSuccessResult(zonePwdBoList);
     }

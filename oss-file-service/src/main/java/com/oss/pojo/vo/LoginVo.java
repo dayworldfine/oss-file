@@ -1,6 +1,7 @@
 package com.oss.pojo.vo;
 
 import com.oss.model.User;
+import com.oss.tool.Identity;
 import lombok.Data;
 
 /**
@@ -13,5 +14,5 @@ import lombok.Data;
 @Data
 public class LoginVo {
     private String token;
-    private User user;
+    private Identity identity;
 }

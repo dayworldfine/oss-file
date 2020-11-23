@@ -5,7 +5,7 @@
       <div class="content">
         <div class="user" v-if="isLogin">
           <img loading="lazy" src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="user-img"/>
-          <div class="user-name">王某</div>
+          <div class="user-name">{{userNickName}}</div>
           <div class="button-all">
             <Button type="warning" class="button" @click="updateImg()">修改头像</Button>
             <Button type="warning" class="button" @click="updateName()">修改昵称</Button>
@@ -46,12 +46,12 @@
 </template>
 
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import {mapState, mapActions, mapMutations} from 'vuex'
+  import LoginService from "@/service/LoginService";
   export default {
     name: "Pc",
     data() {
       return {
-        isLogin:false,    //是否登录
         updateNameVisible: false, //修改名称弹窗
         updateImgVisible:false, //修改头像
         myRoleVisible:false, //我的角色
@@ -67,16 +67,51 @@
       }
     },
     created() {
-
+      let account = localStorage.getItem("account");
+      let passWord = localStorage.getItem("passWord");
+      if (account=='' || account==undefined || passWord=='' || passWord==undefined){
+        return;
+      }
+      LoginService.login({account:account,passWord:passWord}).then((res)=>{
+        console.log("res",res)
+        if (undefined==res){
+          localStorage.removeItem("account")
+          localStorage.removeItem("passWord")
+          localStorage.removeItem("token");
+        }
+        if (10000==res.error){
+          this.setIsLogin(true);
+          this.setUserId(res.data.identity.userId);
+          this.setUserNickName(res.data.identity.userNickName);
+          this.setUserImg(res.data.identity.userImg);
+          this.setUserRole(res.data.identity.userRoleName);
+          localStorage.setItem("token",res.data.token);
+        }else {
+          localStorage.removeItem("account")
+          localStorage.removeItem("passWord")
+          localStorage.removeItem("token");
+        }
+      })
     },
     computed:{
       ...mapState([
-        "userInfo",
+        "isLogin",
+        'userId',
+        'userNickName',
+        'userImg',
+        'userRole'
       ])
     },
     methods: {
       ...mapActions([
         'sendSms',
+      ]),
+      ...mapMutations([
+        'setIsLogin',
+        'setUserId',
+        'setUserNickName',
+        'setUserImg',
+        'setUserRole',
       ]),
       /** 注册*/
       register(){
@@ -130,8 +165,7 @@
 
 
       /** 修改名称事件 */
-      confirmUpdateName(name){
-        console.log("确认",name)
+      confirmUpdateName(){
         this.updateNameVisible=false;
       },
       closeUpdateName(){

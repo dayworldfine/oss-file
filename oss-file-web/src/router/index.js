@@ -42,6 +42,11 @@ export default new Router({
       name: 'testUpload',
       component: testUpload
     },
+    {
+      path: '/testArray',
+      name: 'testArray',
+      component: resolve => require(['@/pc/testArray.vue'], resolve)
+    },
     /*------------------pc 分隔符  mb---------------------*/
   ]
 })

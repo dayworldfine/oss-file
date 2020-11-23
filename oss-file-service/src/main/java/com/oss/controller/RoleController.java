@@ -1,5 +1,6 @@
 package com.oss.controller;
 
+import com.oss.model.Role;
 import com.oss.tool.BaseController;
 import com.oss.pojo.dto.RoleAllotDto;
 import com.oss.pojo.dto.ZoneAllotDto;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @ClassName：RoleController
@@ -98,32 +100,6 @@ public class RoleController extends BaseController {
 
 
 
-    /**
-     * @api {POST} /changeSubject 查询分区列表
-     * @apiGroup 接口小组
-     * @apiVersion 1.0.0
-     * @apiDescription 接口说明
-     * @apiParam {String} id 机构ID
-     * @apiParamExample {json} 请求样例：
-     *                ?id=bfc5bd62010f467cbbe98c9e4741733b
-     * @apiSuccess (200) {String} code 200:成功</br>
-     *                                 404:机构不存在/ID为空</br>
-     * @apiSuccess (200) {String} message 信息
-     * @apiSuccess (200) {String} data 返回用户信息
-     * @apiSuccessExample {json} 返回样例:
-     * {
-     * 	"code": 200,
-     * 	"message": "登录成功",
-     * 	"data": "{}"
-     * }
-     */
-    @PostMapping("/getZoneList")
-    public ResponseModel getZoneList()  {
-        ResponseResult responseResult =  zoneService.selectAllZoneList();
-
-        return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
-    }
-
 
 
     /**
@@ -155,6 +131,31 @@ public class RoleController extends BaseController {
     }
 
 
+    /**
+     * @api {POST} /changeSubject 查询我的角色所有密匙
+     * @apiGroup 接口小组
+     * @apiVersion 1.0.0
+     * @apiDescription 接口说明
+     * @apiParam {String} id 机构ID
+     * @apiParamExample {json} 请求样例：
+     *                ?id=bfc5bd62010f467cbbe98c9e4741733b
+     * @apiSuccess (200) {String} code 200:成功</br>
+     *                                 404:机构不存在/ID为空</br>
+     * @apiSuccess (200) {String} message 信息
+     * @apiSuccess (200) {String} data 返回用户信息
+     * @apiSuccessExample {json} 返回样例:
+     * {
+     * 	"code": 200,
+     * 	"message": "登录成功",
+     * 	"data": "{}"
+     * }
+     */
+    @PostMapping("/getMyRolePwd")
+    public ResponseModel getMyRolePwd()  {
+        long userId = 1l;
+        ResponseResult<List<Role>>  responseResult = userService.getMyRolePwd(userId);
+        return responseResult.isSuccess()?ResponseModel.success():ResponseModel.error(responseResult.getErrorCode());
+    }
 
 
     /**

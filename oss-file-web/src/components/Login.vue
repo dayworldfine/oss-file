@@ -49,7 +49,28 @@
           this.showBoolean = bool;
         }
       },
+      created() {
+        let _this =this
+        document.onkeydown = function(e) {
+          let key = window.event.keyCode;
+          if (key == 13) {
+            if (_this.showBoolean){
+              _this.confirm()
+            }
+          }
+        }
+      },
       methods: {
+        ...mapActions([
+
+        ]),
+        ...mapMutations([
+          'setIsLogin',
+          'setUserId',
+          'setUserNickName',
+          'setUserImg',
+          'setUserRole'
+        ]),
         close() {
           this.formLabelAlign= {};
           this.cancel();
@@ -60,11 +81,28 @@
         confirm() {
           LoginService.login(this.formLabelAlign).then((res)=>{
             console.log("res",res)
-            if (10000==res.error){
-
+            if (undefined==res){
+              this.$message.error("网络错误，请稍后再试！")
+              return;
             }
+            if (10000==res.error){
+                this.$message.success("登录成功")
+                this.setIsLogin(true);
+                this.setUserId(res.data.identity.userId);
+                this.setUserNickName(res.data.identity.userNickName);
+                this.setUserImg(res.data.identity.userImg);
+                this.setUserRole(res.data.identity.userRoleName);
+                localStorage.setItem("account",this.formLabelAlign.account);
+                localStorage.setItem("passWord",this.formLabelAlign.passWord);
+                localStorage.setItem("token",res.data.token);
+
+
+            }else {
+              this.$message.error(res.data.message)
+            }
+            this.$emit("confirmLogin", this.formLabelAlign);
           })
-          this.$emit("confirmLogin", this.formLabelAlign);
+
         }
 
       }
@@ -87,11 +125,11 @@
   .loginInput {
     outline-style: none;
     border: 1px solid #ccc;
-    border-radius: 3px;
+    border-radius: 10px;
     padding: 13px 14px;
     /*width: 620px;*/
     font-size: 14px;
-    color: #bfae90;
+    color: #352f2a;
     height: 40px;
     width: 250px;
     font-family: "Microsoft soft";
@@ -104,5 +142,8 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+  }
+  .addZone-button{
+    margin-left: 5px;
   }
 </style>

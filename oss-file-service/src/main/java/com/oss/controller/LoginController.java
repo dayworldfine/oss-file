@@ -8,14 +8,13 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.oss.mapper.RoleMapper;
+import com.oss.model.Role;
 import com.oss.pojo.vo.LoginVo;
-import com.oss.tool.BaseController;
+import com.oss.tool.*;
 import com.oss.model.User;
 import com.oss.pojo.dto.RegisterDto;
 import com.oss.service.UserService;
-import com.oss.tool.ErrorCodes;
-import com.oss.tool.ResponseModel;
-import com.oss.tool.ResponseResult;
 import com.oss.tool.redis.RedisService;
 import com.oss.tool.util.RedisUtil;
 import com.oss.tool.util.SmsUtil;
@@ -30,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName：fileController
@@ -154,9 +155,11 @@ public class LoginController extends BaseController {
             subject.login(usernamePasswordToken);
             System.out.println("token:"+subject.getSession().getId());
             User user = (User) subject.getPrincipals().getPrimaryPrincipal();
+            ResponseResult<List<Role>>  roleResponse = userService.getMyRolePwd(user.getId());
+            List<String> roleList = roleResponse.getData().stream().map(p -> p.getCode()).collect(Collectors.toList());
             LoginVo loginVo = new LoginVo();
             loginVo.setToken(String.valueOf(subject.getSession().getId()));
-            loginVo.setUser(user);
+            loginVo.setIdentity(new Identity(String.valueOf(user.getId()),user.getHeadPortrait(),user.getNickName(),roleList));
             return ResponseModel.success(loginVo);
         }catch (Exception e){
             e.printStackTrace();

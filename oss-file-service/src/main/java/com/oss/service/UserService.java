@@ -85,4 +85,19 @@ public interface UserService extends BaseService {
      * @return
      */
     ResponseResult<List<Permission>> selectPermissionByRoleIds(String roleJoin);
+
+
+    /**
+     * 查询我的角色及密匙
+     * @param userId
+     * @return
+     */
+    ResponseResult<List<Role>> getMyRolePwd(long userId);
+
+    /**
+     * 修改用户名称
+     * @param userName
+     * @return
+     */
+    ResponseResult updateUserName(String userName,long userId);
 }

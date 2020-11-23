@@ -174,6 +174,7 @@ public class ShiroConfig {
         redisManager.setHost("127.0.0.1");
         redisManager.setPort(6379);
         redisManager.setPassword("123456");
+        redisManager.setDatabase(15);
         return redisManager;
     }
 
@@ -211,7 +212,8 @@ public class ShiroConfig {
         CustomSessionManager customSessionManager = new CustomSessionManager();
 
         //超时时间,默认30分钟，会话超时,方法里面的单位是毫秒
-        customSessionManager.setGlobalSessionTimeout(6000*60*60*24);
+//        customSessionManager.setGlobalSessionTimeout(1000*60*60*24);
+        customSessionManager.setGlobalSessionTimeout(1000*60);
         //配置session持久化
         customSessionManager.setSessionDAO(redisSessionDAO());
         return  customSessionManager;

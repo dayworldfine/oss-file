@@ -103,7 +103,7 @@ public interface UserMapper {
                     "t_user_info_role uir " +
                     "INNER JOIN t_role r " +
                     "on uir.role_id = r.id " +
-                    "where uir.user_id =1"
+                    "where uir.user_id = #{userId,jdbcType=BIGINT}"
     })
     List<Role> selectRoleByUserId(Long userId);
 
@@ -124,4 +124,25 @@ public interface UserMapper {
                     "WHERE tip.role_id in (${roleJoin})"
     })
     List<Permission> selectPermissionByRoleIds(@Param("roleJoin") String roleJoin);
+
+    @Select({
+            "SELECT  " +
+                    "r.* " +
+                    "FROM " +
+                    "t_user_info_role uir " +
+                    "INNER JOIN t_role r " +
+                    "on uir.role_id = r.id " +
+                    "where uir.user_id =#{userId,jdbcType=BIGINT}"
+    })
+    List<Role> getMyRolePwd(long userId);
+
+    /**
+     * 修改用户名
+     * @param userName
+     * @return
+     */
+    @Update({
+            "update t_user set nick_name = #{userName,jdbcType=VARCHAR} where id = #{userId,jdbcType=BIGINT}"
+    })
+    Integer updateUserName(@Param("userName") String userName,@Param("userId") long userId);
 }

@@ -7,7 +7,7 @@
       width="20%"
       center>
       <div class="updateName">
-        <input v-model="name" placeholder="请输入昵称" class="updateNameInput"></input>
+        <input v-model="userName" placeholder="请输入昵称" class="updateNameInput"></input>
         <div class="updateName-button-all">
           <Button @click="cancel()" class="updateName-button">取 消</Button>
           <Button type="primary" @click="confirm()" class="updateName-button">确 定</Button>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+  import UserService from "@/service/UserService";
+  import {mapActions,mapState,mapMutations} from "vuex";
   export default {
     name: "UpdateName",
     props: {
@@ -29,7 +31,7 @@
     },
     data() {
       return {
-        name: '',
+        userName: '',
         showBoolean: false,
       };
     },
@@ -39,6 +41,12 @@
       }
     },
     methods: {
+      ...mapActions([
+
+      ]),
+      ...mapMutations([
+        'setUserNickName',
+      ]),
       close() {
         this.name='';
         this.cancel();
@@ -47,7 +55,13 @@
         this.$emit("closeUpdateName");
       },
       confirm() {
-        this.$emit("confirmUpdateName", this.name);
+        UserService.updateUserName({"userName":this.userName}).then((res)=>{
+            if (10000==res.error){
+              this.setUserNickName(this.userName);
+              this.$emit("confirmUpdateName");
+            }
+        })
+
       }
 
     }

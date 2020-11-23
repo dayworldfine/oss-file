@@ -80,10 +80,10 @@ http.interceptors.request.use((option) => {
     option.data = data;
     option.url = reqUrl;
   }
-  if ( reqName != 'login' && reqName != 'changeSubject'){
+  if ( reqName != 'login' ){
     // option.headers['Content-Type'] = 'application/json;charset=UTF-8'
     // option.headers['IYunDao-AssessToken'] = sessionStorage.getItem('IYunDao-AssessToken');
-    option.headers['token'] = sessionStorage.getItem('token');
+    option.headers['token'] = localStorage.getItem('token');
     // option.headers['IYunDao-AssessToken'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjdXJyZW50VGltZU1pbGxpcyI6IjE1Njk3NDQ3MDAxOTkiLCJleHAiOjE1Njk3NTE5MDAsImFjY291bnQiOiJhZG1pbiJ9.d-7WZCk0iAjxp9hfaffZH9C-OBCPEfnzfHiY7P8htrs'
   }
 
@@ -119,12 +119,17 @@ http.interceptors.response.use((response) => {
       // return Promise.resolve(data);
       return  data;
     }else {
-      Message.error(data.message?data.message:"服务器正在开小差")
+      //过滤这个请求
+      if (response.config.url.indexOf("/login/login")<0){
+        Message.error(data.message?data.message:"服务器正在开小差")
+      }
+
     }
 
 
 
   } catch (e) {
+    console.log("213",e)
     // throw {}
   }
 }, (err) => {
@@ -187,7 +192,11 @@ http.interceptors.response.use((response) => {
   } else {
     console.warn(err.message)
   }
-  Message.error(err.message?err.message:"网络错误,请稍后再试")
+  //过滤这个请求
+  if (err.response.config.url.indexOf("/login/login")<0){
+    Message.error(err.message?err.message:"网络错误,请稍后再试")
+  }
+
   // let Promise = require('promise-polyfill').default
   return Promise.reject(err).catch(err)
 })

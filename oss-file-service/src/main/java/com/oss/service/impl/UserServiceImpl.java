@@ -192,4 +192,22 @@ public class UserServiceImpl implements UserService {
         List<Permission> permissionList = userMapper.selectPermissionByRoleIds(roleJoin);
         return ResponseResult.responseSuccessResult(permissionList);
     }
+
+
+    @Override
+    public ResponseResult<List<Role>> getMyRolePwd(long userId) {
+        List<Role> roleList = userMapper.getMyRolePwd(userId);
+        return ResponseResult.responseSuccessResult(roleList);
+    }
+
+    /**
+     * 修改用户昵称
+     * @param userName
+     * @return
+     */
+    @Override
+    public ResponseResult updateUserName(String userName,long userId) {
+        Integer num = userMapper.updateUserName(userName,userId);
+        return null;
+    }
 }

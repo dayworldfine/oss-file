@@ -9,15 +9,15 @@
       <!--        <img class="button-img" src="/static/add.png"/>-->
       <!--        <div class="fun-button-text" @click="addZone()">添加分区</div>-->
       <!--      </div>-->
-      <div class="fun-button">
+      <div class="fun-button" v-show="userRole.indexOf('superAdmin')>=0">
         <img class="button-img" src="/static/add.png"/>
         <div class="fun-button-text">添加分区</div>
       </div>
-      <div class="fun-button">
+      <div class="fun-button" v-show="userRole.indexOf('superAdmin')>=0">
         <img class="button-img" src="/static/delete.png"/>
         <div class="fun-button-text">删除分区</div>
       </div>
-      <div class="fun-search">
+      <div class="fun-search" :class="userRole.indexOf('superAdmin')>=0?'fun-search-superAdmin':'fun-search-general'">
         <input  placeholder="请输入分区名称" class="fun-search-input"/>
         <img class="fun-search-img" src="/static/search.png"/>
 
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-  import {mapActions} from "vuex";
+  import {mapActions,mapState,mapGetters,mapMutations} from "vuex";
 
   export default {
     name: "PcIndex",
@@ -66,6 +66,11 @@
           }
         ]
       }
+    },
+    computed:{
+      ...mapState([
+        "userRole",
+      ])
     },
     methods:{
       ...mapActions([
@@ -105,7 +110,7 @@
     border: 1px solid salmon;
     display: flex;
     flex-direction: row;
-    /*justify-content: flex-start;*/
+    justify-content: flex-start;
   }
   .fun-button{
     /*padding: 5px 20px 5px 20px;*/
@@ -119,11 +124,16 @@
     border: 1px solid rgb(55, 213, 255);
   }
   .fun-search{
-    position: absolute;
-    right: 65px;
+    position: relative;
     display: flex;
     justify-content: flex-start;
     padding-top: 10px;
+  }
+  .fun-search-superAdmin{
+    margin-left: 870px;
+  }
+  .fun-search-general{
+    margin-left: 1130px;
   }
   .fun-search-input{
     outline-style: none ;

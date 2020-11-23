@@ -1,6 +1,7 @@
 package com.oss.controller;
 
 import com.github.pagehelper.Page;
+import com.oss.pojo.bo.ZonePwdBo;
 import com.oss.tool.BaseController;
 import com.oss.pojo.bo.ZoneBo;
 import com.oss.pojo.dto.ZoneDto;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 /**
@@ -116,7 +118,7 @@ public class ZoneController extends BaseController {
     public ResponseModel getMyZonePwd()  {
 //        long userId = ShiroUtil.getUserId();
         long userId = 1l;
-        ResponseResult responseResult = zoneService.getMyZonePwd(userId);
+        ResponseResult<List<ZonePwdBo>> responseResult = zoneService.getMyZonePwd(userId);
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }
 
