@@ -6,7 +6,7 @@ export const urlPrefix = "https://v5.ywmapp.com";
 
 
 // 本地静态图片前缀。
-export const URL_USER_IMG_PREFIX= "https://img.tomtangmu.com/oss-file/img//HeadImg/wbh.jpg";
+export const URL_USER_IMG_PREFIX= "https://file.tomtangmu.com/headImg/wbh.jpg";
 
 
 //用户协议的链接后缀。
