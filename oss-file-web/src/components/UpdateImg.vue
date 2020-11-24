@@ -16,6 +16,7 @@
           :on-change="imgChangGe"
           :auto-upload="false"
           :headers=header
+          :file-list="fileList"
           name="file"
           :before-upload="beforeAvatarUpload">
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -48,12 +49,16 @@
           action:this.$BaseUrl.URL_HTTP_PREFIX+'/user/updateUserImg',
           name: '',
           showBoolean: false,
-          imageUrl: ''
+          imageUrl: '',
+          fileList:[]
         };
       },
       watch: {
         updateImgVisible(bool) {
           this.showBoolean = bool;
+          if (!bool){
+            this.imageUrl=''
+          }
         }
       },
       methods: {
@@ -68,13 +73,14 @@
           this.$emit("closeUpdateImg");
         },
         confirm() {
-          console.log("上传触发事件")
+          console.log("上传触发事件",this.fileList)
           this.$refs.upload.submit();
           // this.$emit("confirmUpdateImg", this.name);
         },
         imgChangGe(file,FileList){
           console.log("file",file)
           console.log("FileList",FileList)
+          this.fileList=FileList.length>0? FileList.slice(FileList.length-1):[];
           this.imageUrl = URL.createObjectURL(file.raw);
         },
         handleAvatarSuccess(res, file) {
@@ -88,14 +94,15 @@
           console.log("上传之前",file)
           const isJPG = file.type === 'image/jpeg';
           const isLt2M = file.size / 1024 / 1024 < 2;
+          const isPNG= file.type ==='image/png';
 
-          if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG 格式!');
+          if (!isJPG && !isPNG) {
+            this.$message.error('上传头像图片只能是 JPG,PNG 格式!');
           }
           if (!isLt2M) {
             this.$message.error('上传头像图片大小不能超过 2MB!');
           }
-          return isJPG && isLt2M;
+          return (isJPG || isPNG) && isLt2M;
         }
 
       }

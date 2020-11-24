@@ -257,7 +257,7 @@ public class UserServiceImpl implements UserService {
             return ResponseResult.responseResultWithErrorCode(ErrorCodes.FILE_SUFFIX);
         }
         //上传拼接路径
-        String url = OssParam.USER_IMG_PREFIX +"/"+file.getOriginalFilename();
+        String url = OssParam.USER_IMG_PREFIX +"/"+SnowUtil.generateId()+file.getOriginalFilename();
         ossClient.putObject(ossUtil.getBucketName(), url,inputStream );
 
         // 关闭OSSClient。
