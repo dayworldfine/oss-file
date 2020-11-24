@@ -2,13 +2,11 @@
  * Axios 请求分装，支持拦截
  */
 import axios from 'axios'
-import {baseUrl} from './params'
-// import config from '../config'
-// import router from '../router'
+import {URL_HTTP_PREFIX} from '@/param/BaseUrl'
 import { MessageBox, Message } from "element-ui";  // 引入
 const http = axios.create({
   // baseURL: config.api.base,
-  baseURL: baseUrl,
+  baseURL: URL_HTTP_PREFIX,
   // baseURL:'http://115.236.80.114:7001/iyundao/',
   timeout: 100000, // 请求的超时时间
   // 设置默认请求头，使post请求发送的是formdata格式数据
@@ -35,7 +33,6 @@ http.interceptors.request.use((option) => {
   // if (/^https?:\/\//.test(option.url)) {
   //   reqUrl = option.url
   // }
-
 
   // if (!window.ENV.app) {
   //   option.headers['Closer-Agent'] = 'Closer-Download'
@@ -119,9 +116,12 @@ http.interceptors.response.use((response) => {
       // return Promise.resolve(data);
       return  data;
     }else {
+      console.log("到1")
       //过滤这个请求
       if (response.config.url.indexOf("/login/login")<0){
         Message.error(data.message?data.message:"服务器正在开小差")
+      }else {
+        return  data;
       }
 
     }
@@ -186,7 +186,7 @@ http.interceptors.response.use((response) => {
   } else {
     err.message = '网络错误，请稍后再试！'
   }
-
+  console.log("到2")
   if (err && err.response && err.response.data && err.response.data.message) {
     console.warn(err.response.data.message)
   } else {

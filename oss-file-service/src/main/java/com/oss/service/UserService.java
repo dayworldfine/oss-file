@@ -7,6 +7,7 @@ import com.oss.model.User;
 import com.oss.pojo.dto.RegisterDto;
 import com.oss.pojo.dto.UserSelectKeyDto;
 import com.oss.tool.ResponseResult;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -100,4 +101,12 @@ public interface UserService extends BaseService {
      * @return
      */
     ResponseResult updateUserName(String userName,long userId);
+
+    /**
+     * 修改用户头像
+     * @param file
+     * @param userId
+     * @return
+     */
+    ResponseResult updateUserImg(MultipartFile file, Long userId);
 }

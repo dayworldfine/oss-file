@@ -77,6 +77,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/login/sendSms","anon");
         filterChainDefinitionMap.put("/login/register","anon");
         filterChainDefinitionMap.put("/login/textRedis","anon");
+        filterChainDefinitionMap.put("/user/updateUserImg","anon");
 
         //登录用户才可以访问
         filterChainDefinitionMap.put("/authc/**","authc");
@@ -212,8 +213,8 @@ public class ShiroConfig {
         CustomSessionManager customSessionManager = new CustomSessionManager();
 
         //超时时间,默认30分钟，会话超时,方法里面的单位是毫秒
-//        customSessionManager.setGlobalSessionTimeout(1000*60*60*24);
-        customSessionManager.setGlobalSessionTimeout(1000*60);
+        customSessionManager.setGlobalSessionTimeout(1000*60*60*24);
+//        customSessionManager.setGlobalSessionTimeout(1000*60);
         //配置session持久化
         customSessionManager.setSessionDAO(redisSessionDAO());
         return  customSessionManager;

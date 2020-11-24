@@ -10,11 +10,13 @@
         <el-upload
           ref="upload"
           class="avatar-uploader"
-          action="http://localhost:9735/file/uploadFile"
+          :action="action"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :on-change="imgChangGe"
           :auto-upload="false"
+          :headers=header
+          name="file"
           :before-upload="beforeAvatarUpload">
           <img v-if="imageUrl" :src="imageUrl" class="avatar">
           <i v-else class="el-icon-upload avatar-uploader-icon"></i>
@@ -40,6 +42,8 @@
       },
       data() {
         return {
+          header:{token:localStorage.getItem("token")},
+          action:this.$BaseUrl.URL_HTTP_PREFIX+'/user/updateUserImg',
           name: '',
           showBoolean: false,
           imageUrl: ''

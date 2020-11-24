@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import { Button, Page } from 'view-design';
 import 'view-design/dist/styles/iview.css';
 
+
 import UpdateName  from "@/components/UpdateName";
 import UpdateImg  from "@/components/UpdateImg";
 import MyRole  from "@/components/MyRole";
@@ -20,6 +21,8 @@ import AllotRole  from "@/components/AllotRole";
 import Register  from "@/components/Register";
 import Login  from "@/components/Login";
 import ForGetPwd  from "@/components/ForGetPwd";
+
+import * as BaseUrl from '@/param/BaseUrl';
 
 import 'lib-flexible'
 import router from './router'
@@ -45,6 +48,8 @@ Vue.component('AllotRole', AllotRole);
 Vue.component('Register', Register);
 Vue.component('Login', Login);
 Vue.component('ForGetPwd', ForGetPwd);
+Vue.prototype.$BaseUrl = BaseUrl;
+Vue.prototype.$urlUserImgPerfix = BaseUrl.URL_USER_IMG_PREFIX;
 
 
 /* eslint-disable no-new */

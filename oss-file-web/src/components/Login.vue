@@ -96,11 +96,11 @@
                 localStorage.setItem("passWord",this.formLabelAlign.passWord);
                 localStorage.setItem("token",res.data.token);
 
-
+              this.$emit("confirmLogin", this.formLabelAlign);
             }else {
-              this.$message.error(res.data.message)
+              this.$message.error(res.message)
             }
-            this.$emit("confirmLogin", this.formLabelAlign);
+
           })
 
         }

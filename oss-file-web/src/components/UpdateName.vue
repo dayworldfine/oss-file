@@ -57,6 +57,7 @@
       confirm() {
         UserService.updateUserName({"userName":this.userName}).then((res)=>{
             if (10000==res.error){
+              this.$message.success("修改成功")
               this.setUserNickName(this.userName);
               this.$emit("confirmUpdateName");
             }

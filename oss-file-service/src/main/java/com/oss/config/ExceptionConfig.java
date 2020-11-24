@@ -49,6 +49,7 @@ public class ExceptionConfig {
      */
     @ExceptionHandler(UnknownAccountException.class)
     public ResponseModel unknownAccountException(UnknownAccountException e) {
+        LOGGER.error("错误{}",e.getMessage());
         return ResponseModel.error(ErrorCodes.USER_PWD_ERROR);
     }
 
@@ -59,6 +60,7 @@ public class ExceptionConfig {
      */
     @ExceptionHandler(IncorrectCredentialsException.class)
     public ResponseModel incorrectCredentialsException(IncorrectCredentialsException e) {
+        LOGGER.error("错误{}",e.getMessage());
         return ResponseModel.error(ErrorCodes.USER_PWD_ERROR);
     }
 
@@ -69,6 +71,7 @@ public class ExceptionConfig {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseModel httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        LOGGER.error("错误{}",e.getMessage());
         return ResponseModel.error(ErrorCodes.NO_PERMISSION);
     }
 

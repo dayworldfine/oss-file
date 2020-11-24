@@ -4,7 +4,7 @@
       <div class="title">欢迎</div>
       <div class="content">
         <div class="user" v-if="isLogin">
-          <img loading="lazy" src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="user-img"/>
+          <img loading="lazy" :src="this.$urlUserImgPerfix+userImg" class="user-img"/>
           <div class="user-name">{{userNickName}}</div>
           <div class="button-all">
             <Button type="warning" class="button" @click="updateImg()">修改头像</Button>
@@ -52,6 +52,7 @@
     name: "Pc",
     data() {
       return {
+        img : this.$urlUserImgPerfix,
         updateNameVisible: false, //修改名称弹窗
         updateImgVisible:false, //修改头像
         myRoleVisible:false, //我的角色
