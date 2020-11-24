@@ -79,9 +79,9 @@
         },
         handleAvatarSuccess(res, file) {
           console.log("上传成功",res,file)
-          this.imageUrl = URL.createObjectURL(file.raw);
-          console.log("this.$urlUserImgPerfix+res.data",this.$urlUserImgPerfix+res.data)
-          this.setUserImg(this.$urlUserImgPerfix+res.data)
+          this.imageUrl = ''
+          this.setUserImg(res.data)
+          this.$message.success("修改成功")
           this.$emit("confirmUpdateImg");
         },
         beforeAvatarUpload(file) {

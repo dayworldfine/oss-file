@@ -130,7 +130,7 @@
     padding-top: 10px;
   }
   .fun-search-superAdmin{
-    margin-left: 870px;
+    margin-left: 850px;
   }
   .fun-search-general{
     margin-left: 1130px;
