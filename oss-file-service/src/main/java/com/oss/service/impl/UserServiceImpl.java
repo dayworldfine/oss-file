@@ -256,13 +256,15 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             return ResponseResult.responseResultWithErrorCode(ErrorCodes.FILE_SUFFIX);
         }
-
         //上传拼接路径
         String url = OssParam.USER_IMG_PREFIX +"/"+file.getOriginalFilename();
         ossClient.putObject(ossUtil.getBucketName(), url,inputStream );
 
         // 关闭OSSClient。
         ossClient.shutdown();
-        return ResponseResult.responseOK();
+
+        Integer num = userMapper.updateUserImg(userId,"/"+url);
+
+        return  ValidateUtil.isNotCountEmpty(num)?ResponseResult.responseSuccessResult("/"+url):ResponseResult.responseResultWithErrorCode(ErrorCodes.UPDATE_ERROR);
     }
 }

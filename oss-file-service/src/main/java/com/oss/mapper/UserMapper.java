@@ -145,4 +145,15 @@ public interface UserMapper {
             "update t_user set nick_name = #{userName,jdbcType=VARCHAR} where id = #{userId,jdbcType=BIGINT}"
     })
     Integer updateUserName(@Param("userName") String userName,@Param("userId") long userId);
+
+    /**
+     * 修改头像
+     * @param userId
+     * @param url
+     * @return
+     */
+    @Update({
+            "update t_user set head_portrait = #{url,jdbcType=VARCHAR} where id = #{userId,jdbcType=BIGINT}"
+    })
+    Integer updateUserImg(@Param("userId")Long userId,@Param("url") String url);
 }

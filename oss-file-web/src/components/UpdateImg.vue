@@ -31,6 +31,8 @@
 </template>
 
 <script>
+    import {mapMutations} from "vuex";
+
     export default {
         name: "UpdateImg",
       props: {
@@ -55,6 +57,9 @@
         }
       },
       methods: {
+        ...mapMutations([
+          'setUserImg',
+        ]),
         close() {
           this.name='';
           this.cancel();
@@ -75,6 +80,9 @@
         handleAvatarSuccess(res, file) {
           console.log("上传成功",res,file)
           this.imageUrl = URL.createObjectURL(file.raw);
+          console.log("this.$urlUserImgPerfix+res.data",this.$urlUserImgPerfix+res.data)
+          this.setUserImg(this.$urlUserImgPerfix+res.data)
+          this.$emit("confirmUpdateImg");
         },
         beforeAvatarUpload(file) {
           console.log("上传之前",file)
