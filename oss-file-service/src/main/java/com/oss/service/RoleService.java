@@ -1,9 +1,14 @@
 package com.oss.service;
 
+import com.github.pagehelper.Page;
+import com.oss.model.Role;
+import com.oss.pojo.dto.RoleListDto;
 import com.oss.tool.BaseService;
 import com.oss.pojo.dto.RoleAllotDto;
 import com.oss.pojo.dto.ZoneAllotDto;
 import com.oss.tool.ResponseResult;
+
+import java.util.List;
 
 /**
  * @InterfaceName：RoleService
@@ -18,7 +23,7 @@ public interface RoleService extends BaseService {
      * 查询角色列表
      * @return
      */
-    ResponseResult getRoleList();
+    ResponseResult<Page<Role>>  getRoleList(RoleListDto roleListDto);
 
     /**
      * 分配权限

@@ -1,9 +1,11 @@
 package com.oss.service.impl;
 
+import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
 import com.oss.mapper.*;
 import com.oss.model.*;
 import com.oss.pojo.dto.RoleAllotDto;
+import com.oss.pojo.dto.RoleListDto;
 import com.oss.pojo.dto.RoleStatusDto;
 import com.oss.pojo.dto.ZoneAllotDto;
 import com.oss.service.RoleService;
@@ -46,8 +48,8 @@ public class RoleServiceImpl implements RoleService {
      * @return
      */
     @Override
-    public ResponseResult getRoleList() {
-        List<Role> roleList = roleMapper.getRoleList();
+    public ResponseResult<Page<Role>>  getRoleList(RoleListDto roleListDto) {
+        Page<Role> roleList = roleMapper.getRoleList(roleListDto);
         return ResponseResult.responseSuccessResult(roleList);
     }
 

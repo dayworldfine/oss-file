@@ -1,6 +1,8 @@
 package com.oss.mapper;
 
+import com.github.pagehelper.Page;
 import com.oss.model.Role;
+import com.oss.pojo.dto.RoleListDto;
 import com.oss.provider.RoleSqlProvider;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -86,7 +88,7 @@ public interface RoleMapper {
             @Result(column="is_open", property="isOpen", jdbcType=JdbcType.TINYINT),
             @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
     })
-    List<Role> getRoleList();
+    Page<Role> getRoleList(RoleListDto roleListDto);
 
     /**
      * 根据密匙查询角色

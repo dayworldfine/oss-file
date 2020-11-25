@@ -10,14 +10,14 @@
         <div class="allotRole-top">
           <div class="allotRole-user">
             <div class="allotRole-searchInput">
-              <input v-model="name" placeholder="昵称/手机号" class="allotRoleInput"></input>
-              <Button type="warning" class="search">搜索</Button>
+              <input v-model="userKey" placeholder="昵称/手机号" class="allotRoleInput"></input>
+              <Button type="warning" class="search" @click="searchUser()">搜索</Button>
             </div>
             <div class="allotRole-forDiv" @scroll="scrollUser">
-              <div v-for="item in 15" class="allotRole-for">
-                <span>张飞</span>
-                <img src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="allotRole-for-img"/>
-                <span>13900000000</span>
+              <div v-for="(item,index) in userList" :key="index" class="allotRole-for">
+                <span class="allotRole-for-name">{{item.nickName}}</span>
+                <img :src="img+item.headPortrait" class="allotRole-for-img"/>
+                <span class="allotRole-for-account">{{item.account}}</span>
                 <el-checkbox v-model="checked"></el-checkbox>
               </div>
             </div>
@@ -25,14 +25,13 @@
           <div class="allotRole-center"><i class="el-icon-mobile-phone"></i></div>
           <div class="allotRole-zone">
             <div>
-              <input v-model="name" placeholder="分区名称" class="allotRoleInput"></input>
-              <Button type="warning" class="search">搜索</Button>
+              <input v-model="roleKey" placeholder="分区名称" class="allotRoleInput"></input>
+              <Button type="warning" class="search" @click="searchRole()">搜索</Button>
             </div>
             <div class="allotRole-forDiv-zone" @scroll="scrollZone">
-              <div v-for="item in 15" class="allotRole-for">
-                <span>张飞</span>
-                <img src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="allotRole-for-img"/>
-                <span>13900000000</span>
+              <div v-for="(item,index) in roleList" :key="index" class="allotRole-for">
+                <span class="allotRole-for-width">{{item.roleName}}</span>
+                <span class="allotRole-for-width">{{item.code}}</span>
                 <el-checkbox v-model="checked"></el-checkbox>
               </div>
             </div>
@@ -48,6 +47,10 @@
 </template>
 
 <script>
+    import UserService from "@/service/UserService";
+    import ZoneService from "@/service/ZoneService";
+    import RoleService from "@/service/RoleService";
+
     export default {
         name: "AllotRole",
       props: {
@@ -59,7 +62,15 @@
       },
       data() {
         return {
-          name: '',
+          img:this.$urlUserImgPerfix,
+          userKey: '',
+          userPage:1,
+          userSize:11,
+          userList:[],
+          roleKey:'',
+          rolePage:1,
+          roleSize:11,
+          roleList:[],
           showBoolean: false,
           checked:false
         };
@@ -67,6 +78,15 @@
       watch: {
         allotRoleVisible(bool) {
           this.showBoolean = bool;
+          if (bool){
+            this.searchUser();
+            this.searchRole();
+          }else {
+            this.userPage=1;
+            this.userList=[];
+            this.rolePage=1;
+            this.roleList=[];
+          }
         }
       },
       methods: {
@@ -80,21 +100,85 @@
         confirm() {
           this.$emit("confirmAllotRole", this.name);
         },
+        /** 搜索用户*/
+        searchUser(){
+          this.userPage=1;
+          console.log(this.userKey,this.userPage,this.userSize);
+          UserService.queryUserByParam(
+            {paramKey: this.userKey,
+              page: this.userPage,
+              size: this.userSize}
+          ).then((res)=>{
+            if (10000==res.error){
+              res.data.forEach(a=>{
+                a['checked']=false;
+              })
+              this.userList=res.data;
+            }
+          });
+        },
+        /** 搜索角色*/
+        searchRole(){
+          this.rolePage=1;
+          console.log(this.roleKey,this.rolePage,this.roleSize);
+          RoleService.getRoleList(
+            {name: this.roleKey,
+              page: this.rolePage,
+              size: this.roleSize}
+          ).then((res)=>{
+            console.log("res",res)
+            if (10000==res.error){
+              res.data.forEach(a=>{
+                a['checked']=false;
+              })
+              this.roleList=res.data;
+            }
+          });
+        },
+        /** 滚轮到底部用户*/
         scrollUser(e){
-          console.log("e1", e.target.scrollHeight);
-          console.log("e2", e.target.scrollTop);
-          console.log("e3", e.target.clientHeight);
           console.log("e4", e.target.scrollHeight -
             e.target.scrollTop -
             e.target.clientHeight);
           let height = e.target.scrollHeight -
             e.target.scrollTop -
             e.target.clientHeight;
+          if (height<=0){
+            UserService.queryUserByParam(
+              {paramKey: this.userKey,
+                page: this.userPage+1,
+                size: this.userSize}
+            ).then((res)=>{
+              if (10000==res.error){
+                this.userPage =this.userPage+1;
+                res.data.forEach(a=>{
+                  a['checked']=false;
+                })
+                this.userList=this.userList.concat(res.data);
+              }
+            });
+          }
         },
+        /** 滚轮到底部分区*/
         scrollZone(e){
           let height = e.target.scrollHeight -
             e.target.scrollTop -
             e.target.clientHeight;
+          if (height<=0){
+            RoleService.getRoleList(
+              {name: this.roleKey,
+                page: this.rolePage,
+                size: this.roleSize}
+            ).then((res)=>{
+              console.log("res",res)
+              if (10000==res.error){
+                res.data.forEach(a=>{
+                  a['checked']=false;
+                })
+                this.roleList=res.data;
+              }
+            });
+          }
         }
 
       }
@@ -145,6 +229,9 @@
     height: 400px;
     overflow-y: scroll;
   }
+  .allotRole-for-width{
+    width: 100px;
+  }
   .allotRole-forDiv-zone{
     margin-top: 10px;
     height: 400px;
@@ -158,6 +245,12 @@
     background-color: #eaeaea;
     border: 1px solid #b7b7b7;
     box-sizing: border-box;
+  }
+  .allotRole-for-name{
+    width: 60px;
+  }
+  .allotRole-for-account{
+    width: 100px;
   }
   .allotRole-for-img{
     width: 40px;
