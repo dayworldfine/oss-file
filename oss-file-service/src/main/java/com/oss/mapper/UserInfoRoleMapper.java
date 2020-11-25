@@ -61,9 +61,9 @@ public interface UserInfoRoleMapper {
 
     @Delete({
             "delete from t_user_info_role",
-            "where user_id = #{userId,jdbcType=BIGINT}"
+            "where user_id in (${userIdJoin})"
     })
-    Integer deleteByUserId(String userId);
+    Integer deleteByUserId(@Param("userIdJoin") String userIdJoin);
 
     @Insert({
             "<script>",

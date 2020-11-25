@@ -81,8 +81,10 @@
             this.searchUser();
             this.searchZone();
           }else {
+            this.userKey='';
             this.userPage=1;
             this.userList=[];
+            this.zoneKey='';
             this.zonePage=1;
             this.zoneList=[];
           }
@@ -110,7 +112,7 @@
             ).then((res)=>{
               if (10000==res.error){
                 this.$message.success("分配成功")
-                this.$emit("confirmAllotZone", this.name);
+                this.$emit("confirmAllotZone");
               }
           });
 

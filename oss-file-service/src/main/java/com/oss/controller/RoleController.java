@@ -91,10 +91,8 @@ public class RoleController extends BaseController {
      * }
      */
     @PostMapping("/allotRole")
-    public ResponseModel allotRole(@RequestBody @Valid RoleAllotDto roleAllotDto, BindingResult bindingResult)  {
-        if (bindingResult.hasErrors()){
-            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
+    public ResponseModel allotRole(@Valid RoleAllotDto roleAllotDto)  {
+
         ResponseResult responseResult = roleService.allotRole(roleAllotDto);
         return responseResult.isSuccess()?ResponseModel.success():ResponseModel.error(responseResult.getErrorCode());
     }

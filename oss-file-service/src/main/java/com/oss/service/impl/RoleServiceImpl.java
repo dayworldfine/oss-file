@@ -1,6 +1,7 @@
 package com.oss.service.impl;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.oss.mapper.*;
 import com.oss.model.*;
@@ -49,7 +50,8 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public ResponseResult<Page<Role>>  getRoleList(RoleListDto roleListDto) {
-        Page<Role> roleList = roleMapper.getRoleList(roleListDto);
+        PageHelper.startPage(roleListDto.getPage(),roleListDto.getSize());
+        Page<Role> roleList = roleMapper.getRoleList(roleListDto.getName());
         return ResponseResult.responseSuccessResult(roleList);
     }
 
@@ -60,21 +62,16 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public ResponseResult allotRole(RoleAllotDto roleAllotDto) {
-        String userId = roleAllotDto.getUserId();
+        String userIdJoin = roleAllotDto.getUserIdList().stream().collect(Collectors.joining(","));
         //先删除所有权限
-        Integer delNum  =   userInfoRoleMapper.deleteByUserId(userId);
+        Integer delNum  = userInfoRoleMapper.deleteByUserId(userIdJoin);
         //再分配权限
-        List<RoleStatusDto> collect = roleAllotDto.getStatusDtoList().stream().filter(p -> p.getStatus() == 1).collect(Collectors.toList());
         List<UserInfoRole> userInfoRoleList = Lists.newArrayList();
-        collect.forEach(a->{
-            UserInfoRole userInfoRole = new UserInfoRole();
-            userInfoRole.setId(SnowUtil.generateId());
-            userInfoRole.setCreateTime(System.currentTimeMillis());
-            userInfoRole.setUpdateTime(System.currentTimeMillis());
-            userInfoRole.setVersion(1l);
-            userInfoRole.setUserId(Long.valueOf(userId));
-            userInfoRole.setRoleId(Long.valueOf(a.getRoleId()));
-            userInfoRoleList.add(userInfoRole);
+        long currentTime = System.currentTimeMillis();
+        roleAllotDto.getUserIdList().forEach(a->{
+            roleAllotDto.getRoleIdList().forEach(b->{
+                userInfoRoleList.add(new UserInfoRole(SnowUtil.generateId(),currentTime,currentTime,1l,Long.valueOf(a),Long.valueOf(b)));
+            });
         });
         if (ValidateUtil.isNotEmpty(userInfoRoleList)){
             Integer insertNum = userInfoRoleMapper.insertUserInfoRoleList(userInfoRoleList);

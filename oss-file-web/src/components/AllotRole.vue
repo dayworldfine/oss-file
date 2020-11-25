@@ -18,7 +18,7 @@
                 <span class="allotRole-for-name">{{item.nickName}}</span>
                 <img :src="img+item.headPortrait" class="allotRole-for-img"/>
                 <span class="allotRole-for-account">{{item.account}}</span>
-                <el-checkbox v-model="checked"></el-checkbox>
+                <el-checkbox v-model="item.checked"></el-checkbox>
               </div>
             </div>
           </div>
@@ -32,7 +32,7 @@
               <div v-for="(item,index) in roleList" :key="index" class="allotRole-for">
                 <span class="allotRole-for-width">{{item.roleName}}</span>
                 <span class="allotRole-for-width">{{item.code}}</span>
-                <el-checkbox v-model="checked"></el-checkbox>
+                <el-checkbox v-model="item.checked"></el-checkbox>
               </div>
             </div>
           </div>
@@ -82,8 +82,10 @@
             this.searchUser();
             this.searchRole();
           }else {
+            this.userKey='';
             this.userPage=1;
             this.userList=[];
+            this.roleKey='';
             this.rolePage=1;
             this.roleList=[];
           }
@@ -98,7 +100,22 @@
           this.$emit("closeAllotRole");
         },
         confirm() {
-          this.$emit("confirmAllotRole", this.name);
+          let userIdList = this.userList.filter(a=> a.checked).map(p=>p.id+'');
+          let roleIdList = this.roleList.filter(a=> a.checked).map(p=>p.id+'');
+          console.log("userIdList",userIdList)
+          console.log("roleIdList",roleIdList)
+          RoleService.allotRole(
+            {
+              userIdList:userIdList,
+              roleIdList:roleIdList,
+            }
+          ).then((res)=>{
+            if (10000==res.error){
+              this.$message.success("分配成功")
+              this.$emit("confirmAllotRole");
+            }
+          });
+
         },
         /** 搜索用户*/
         searchUser(){

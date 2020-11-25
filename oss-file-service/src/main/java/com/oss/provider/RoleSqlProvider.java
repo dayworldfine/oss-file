@@ -1,7 +1,9 @@
 package com.oss.provider;
 
 import com.oss.model.Role;
+import com.oss.tool.util.ValidateUtil;
 import org.apache.ibatis.jdbc.SQL;
+import org.apache.ibatis.jdbc.SqlRunner;
 
 public class RoleSqlProvider {
 
@@ -77,6 +79,20 @@ public class RoleSqlProvider {
         }
 
         sql.WHERE("id = #{id,jdbcType=BIGINT}");
+
+        return sql.toString();
+    }
+
+    public String getRoleList(String name){
+        SQL sql = new SQL();
+        sql.SELECT("*");
+        sql.FROM("t_role");
+        sql.WHERE("is_open=1");
+        if (ValidateUtil.isNotEmpty(name)){
+            sql.AND();
+            sql.WHERE("role_name like concat('%',#{name,jdbcType=VARCHAR},'%')");
+        }
+        sql.ORDER_BY("id asc");
 
         return sql.toString();
     }

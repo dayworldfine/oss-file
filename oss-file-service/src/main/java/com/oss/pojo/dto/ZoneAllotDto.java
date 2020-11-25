@@ -10,6 +10,6 @@ import java.util.List;
 public class ZoneAllotDto {
     @NotNull(message = "userId不得为空")
     private List<String> userIdList = Lists.newArrayList();
-    @NotNull(message = "zoneList不得为空")
+    @NotNull(message = "zoneIdList不得为空")
     private List<String> zoneIdList = Lists.newArrayList();
 }
