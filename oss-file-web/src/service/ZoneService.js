@@ -9,9 +9,15 @@ const getMyZonePwd = (param = {}) =>{return http.post({url: '/zone/getMyZonePwd'
 /** 查询输入分区密匙*/
 const getZoneKey = (param = {}) =>{return http.post({url: '/zone/getZoneKey', data: param})}
 
+/** 分配分区查询分区列表*/
+const queryZoneByParam = (param = {}) =>{return http.post({url: '/zone/queryZoneByParam', data: param})}
+
+
 
 export default {
   getMyZonePwd,                                          /** 查询我的分区所有密匙*/
   getZoneKey,                                           /** 查询输入分区密匙*/
   getZoneList,                                          /** 获取分区列表*/
+  queryZoneByParam,                                     /** 分配分区查询分区列表*/
+
 }

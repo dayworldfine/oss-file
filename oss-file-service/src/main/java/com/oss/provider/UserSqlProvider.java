@@ -89,7 +89,9 @@ public class UserSqlProvider {
                 "pwd as pwd");
 
         sql.FROM("t_user");
+        sql.WHERE("id !=1");
         if (ValidateUtil.isNotEmpty(paramKey)){
+            sql.AND();
             sql.WHERE("nick_name like concat('%',#{paramKey,jdbcType=VARCHAR},'%') or " +
                     "account like concat('%',#{paramKey,jdbcType=VARCHAR},'%') ");
         }

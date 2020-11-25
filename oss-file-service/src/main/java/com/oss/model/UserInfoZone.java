@@ -3,6 +3,19 @@ package com.oss.model;
 import java.io.Serializable;
 
 public class UserInfoZone implements Serializable {
+
+    public UserInfoZone() {
+    }
+
+    public UserInfoZone(Long id, Long createTime, Long updateTime, Long version, Long userId, Long zoneId) {
+        this.id = id;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.version = version;
+        this.userId = userId;
+        this.zoneId = zoneId;
+    }
+
     /**
      * id
 	 * 2020-10-20T17:12:13.958

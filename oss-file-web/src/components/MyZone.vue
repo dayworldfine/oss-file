@@ -8,12 +8,12 @@
       center>
       <div class="myZone">
         <div class="myZone-top">
-          <div>分区名称</div>
-          <div>分区密码</div>
+          <div class="myZone-div-width">分区名称</div>
+          <div class="myZone-div-width">分区密码</div>
         </div>
         <div class="myZone-div" v-for="(item,index) in myZoneList" :key="index">
-          <div>{{item.zoneName}}</div>
-          <div>{{item.zonePwd}}</div>
+          <div class="myZone-div-width">{{item.zoneName}}</div>
+          <div class="myZone-div-width">{{item.zonePwd}}</div>
         </div>
       </div>
 
@@ -76,5 +76,9 @@
     justify-content: space-around;
     /*align-items:baseline;*/
     margin-top: 10px;
+  }
+  .myZone-div-width{
+    width: 200px;
+    text-align: center;
   }
 </style>

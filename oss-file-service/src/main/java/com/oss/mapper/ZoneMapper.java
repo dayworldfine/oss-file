@@ -203,4 +203,12 @@ public interface ZoneMapper {
      */
     @SelectProvider(type=ZoneSqlProvider.class, method="pageZoneByVisitor")
     Page<ZoneBo> pageZoneByVisitor(String name);
+
+    /**
+     * 分配分区查询分区列表
+     * @param name
+     * @return
+     */
+    @SelectProvider(type=ZoneSqlProvider.class, method="pageQueryZoneByUserId")
+    Page<Zone> pageQueryZoneByUserId(String name);
 }

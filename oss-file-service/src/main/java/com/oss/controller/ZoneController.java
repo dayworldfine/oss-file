@@ -1,6 +1,7 @@
 package com.oss.controller;
 
 import com.github.pagehelper.Page;
+import com.oss.model.Zone;
 import com.oss.pojo.bo.ZonePwdBo;
 import com.oss.tool.BaseController;
 import com.oss.pojo.bo.ZoneBo;
@@ -48,6 +49,16 @@ public class ZoneController extends BaseController {
     @PostMapping("/getZoneList")
     public ResponseModel getZoneList(@Valid ZoneListDto zoneListDto)  {
         ResponseResult<Page<ZoneBo>> zoneBoPage = zoneService.pageZoneByUserId(ShiroHandler.getUserId(),zoneListDto);
+        return ResponseModel.success(zoneBoPage.getData());
+    }
+
+    /**
+     * 分配分区查询分区列表
+     * @return
+     */
+    @PostMapping("/queryZoneByParam")
+    public ResponseModel queryZoneByParam(@Valid ZoneListDto zoneListDto)  {
+        ResponseResult<Page<Zone>> zoneBoPage = zoneService.pageQueryZoneByUserId(zoneListDto);
         return ResponseModel.success(zoneBoPage.getData());
     }
 

@@ -8,14 +8,14 @@
       center>
       <div class="myRole">
         <div class="myRole-top">
-          <div>角色身份</div>
-          <div>角色编号</div>
-          <div>角色密码</div>
+          <div class="myRole-div-width">角色身份</div>
+          <div class="myRole-div-width">角色编号</div>
+          <div class="myRole-div-width">角色密码</div>
         </div>
         <div class="myRole-div" v-for="(item,index) in myRoleList" :key="index">
-          <div>{{item.roleName}}</div>
-          <div>{{item.code}}</div>
-          <div>{{item.pwd}}</div>
+          <div class="myRole-div-width">{{item.roleName}}</div>
+          <div class="myRole-div-width">{{item.code}}</div>
+          <div class="myRole-div-width">{{item.pwd}}</div>
         </div>
       </div>
 
@@ -78,6 +78,10 @@
     justify-content: space-between;
     /*align-items:baseline;*/
     margin-top: 10px;
+  }
+  .myRole-div-width{
+    width: 200px;
+    text-align: center;
   }
 
 </style>

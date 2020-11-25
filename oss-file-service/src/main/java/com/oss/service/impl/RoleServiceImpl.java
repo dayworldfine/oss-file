@@ -6,7 +6,6 @@ import com.oss.model.*;
 import com.oss.pojo.dto.RoleAllotDto;
 import com.oss.pojo.dto.RoleStatusDto;
 import com.oss.pojo.dto.ZoneAllotDto;
-import com.oss.pojo.dto.ZoneStatusDto;
 import com.oss.service.RoleService;
 import com.oss.tool.ResponseResult;
 import com.oss.tool.util.ConvertScaleUtil;
@@ -89,21 +88,16 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public ResponseResult allotZone(ZoneAllotDto zoneAllotDto) {
-        String userId = zoneAllotDto.getUserId();
+        String userJoin =  zoneAllotDto.getUserIdList().stream().collect(Collectors.joining(","));
         //先删除所有角色
-        Integer delNum  =   userInfoZoneMapper.deleteByUserId(userId);
+        Integer delNum  =   userInfoZoneMapper.deleteByUserId(userJoin);
         //再分配角色
-        List<ZoneStatusDto> collect = zoneAllotDto.getStatusDtoList().stream().filter(p -> p.getStatus() == 1).collect(Collectors.toList());
         List<UserInfoZone> userInfoZoneList = Lists.newArrayList();
-        collect.forEach(a->{
-            UserInfoZone userInfoZone = new UserInfoZone();
-            userInfoZone.setId(SnowUtil.generateId());
-            userInfoZone.setCreateTime(System.currentTimeMillis());
-            userInfoZone.setUpdateTime(System.currentTimeMillis());
-            userInfoZone.setVersion(1l);
-            userInfoZone.setUserId(Long.valueOf(userId));
-            userInfoZone.setZoneId(Long.valueOf(a.getZoneId()));
-            userInfoZoneList.add(userInfoZone);
+        long currentTime= System.currentTimeMillis();
+        zoneAllotDto.getUserIdList().forEach(a->{
+            zoneAllotDto.getZoneIdList().forEach(b->{
+                userInfoZoneList.add(new UserInfoZone(SnowUtil.generateId(),currentTime,currentTime,1l,Long.valueOf(a),Long.valueOf(b)));
+            });
         });
         if (ValidateUtil.isNotEmpty(userInfoZoneList)){
             Integer insertNum = userInfoZoneMapper.insertUserInfoZoneList(userInfoZoneList);

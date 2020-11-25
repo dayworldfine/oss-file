@@ -14,26 +14,25 @@
               <Button type="warning" class="search" @click="searchUser()">搜索</Button>
             </div>
             <div class="allotZone-forDiv" @scroll="scrollUser">
-              <div v-for="item in userList" class="allotZone-for">
-                <span>张飞</span>
-                <img src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="allotZone-for-img"/>
-                <span>13900000000</span>
-                <el-checkbox v-model="checked"></el-checkbox>
+              <div v-for="(item,index) in userList" :key="index" class="allotZone-for">
+                <span class="allotZone-forDiv-name">{{item.nickName}}</span>
+                <img loading="lazy" :src="img+item.headPortrait" class="allotZone-for-img"/>
+                <span class="allotZone-forDiv-account">{{item.account}}</span>
+                <el-checkbox v-model="item.checked"></el-checkbox>
               </div>
             </div>
           </div>
           <div class="allotZone-center"><i class="el-icon-mobile-phone"></i></div>
           <div class="allotZone-zone">
             <div>
-              <input v-model="roleKey" placeholder="分区名称" class="allotZoneInput"></input>
-              <Button type="warning" class="search">搜索</Button>
+              <input v-model="zoneKey" placeholder="分区名称" class="allotZoneInput"></input>
+              <Button type="warning" class="search"  @click="searchZone()">搜索</Button>
             </div>
             <div class="allotZone-forDiv-zone" @scroll="scrollZone">
-              <div v-for="item in 15" class="allotZone-for">
-                <span>张飞</span>
-                <img src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="allotZone-for-img"/>
-                <span>13900000000</span>
-                <el-checkbox v-model="checked"></el-checkbox>
+              <div v-for="(item,index) in zoneList" :key="index" class="allotZone-for">
+                <span class="allotZone-for-width">{{item.zoneName}}</span>
+                <span class="allotZone-for-width">{{item.zonePrefix}}</span>
+                <el-checkbox v-model="item.checked"></el-checkbox>
               </div>
             </div>
           </div>
@@ -49,6 +48,8 @@
 
 <script>
   import UserService from "@/service/UserService";
+  import ZoneService from "@/service/ZoneService";
+  import RoleService from "@/service/RoleService";
     export default {
         name: "AllotZone",
       props: {
@@ -60,14 +61,15 @@
       },
       data() {
         return {
+          img:this.$urlUserImgPerfix,
           userKey: '',
           userPage:1,
-          userSize:10,
+          userSize:11,
           userList:[],
-          roleKey:'',
-          rolePage:1,
-          roleSize:10,
-          roleList:[],
+          zoneKey:'',
+          zonePage:1,
+          zoneSize:11,
+          zoneList:[],
           showBoolean: false,
           checked:false,
         };
@@ -75,6 +77,16 @@
       watch: {
         allotZoneVisible(bool) {
           this.showBoolean = bool;
+          if (bool){
+            this.searchUser();
+            this.searchZone();
+          }else {
+            this.userPage=1;
+            this.userList=[];
+            this.zonePage=1;
+            this.zoneList=[];
+          }
+
         }
       },
       methods: {
@@ -86,36 +98,108 @@
           this.$emit("closeAllotZone");
         },
         confirm() {
-          this.$emit("confirmAllotZone", this.name);
+          let userIdList = this.userList.filter(a=> a.checked).map(p=>p.id+'');
+          let zoneIdList = this.zoneList.filter(a=> a.checked).map(p=>p.id+'');
+          console.log("userIdList",userIdList)
+          console.log("zoneIdList",zoneIdList)
+          RoleService.allotZone(
+            {
+              userIdList:userIdList,
+              zoneIdList:zoneIdList,
+              }
+            ).then((res)=>{
+              if (10000==res.error){
+                this.$message.success("分配成功")
+                this.$emit("confirmAllotZone", this.name);
+              }
+          });
+
         },
+        /** 搜索用户*/
         searchUser(){
-            console.log(this.usage,this.userPage,this.userSize);
+          this.userPage=1;
+            console.log(this.userKey,this.userPage,this.userSize);
           UserService.queryUserByParam(
             {paramKey: this.userKey,
                     page: this.userPage,
                     size: this.userSize}
             ).then((res)=>{
              if (10000==res.error){
+               res.data.forEach(a=>{
+                 a['checked']=false;
+               })
                 this.userList=res.data;
              }
           });
         },
+        /** 搜索分区*/
+        searchZone(){
+          this.zonePage=1;
+          console.log(this.zoneKey,this.zonePage,this.zoneSize);
+          ZoneService.queryZoneByParam(
+            {name: this.zoneKey,
+              page: this.zonePage,
+              size: this.zoneSize}
+          ).then((res)=>{
+            console.log("res",res)
+            if (10000==res.error){
+              res.data.forEach(a=>{
+                a['checked']=false;
+              })
+              this.zoneList=res.data;
+            }
+          });
+        },
+        /** 用户下拉到底触发事件*/
         scrollUser(e){
-          console.log("e1", e.target.scrollHeight);
-          console.log("e2", e.target.scrollTop);
-          console.log("e3", e.target.clientHeight);
           console.log("e4", e.target.scrollHeight -
             e.target.scrollTop -
             e.target.clientHeight);
           let height = e.target.scrollHeight -
             e.target.scrollTop -
             e.target.clientHeight;
+          if (height<=0){
+            UserService.queryUserByParam(
+              {paramKey: this.userKey,
+                page: this.userPage+1,
+                size: this.userSize}
+            ).then((res)=>{
+              if (10000==res.error){
+                this.userPage =this.userPage+1;
+                res.data.forEach(a=>{
+                  a['checked']=false;
+                })
+                this.userList=this.userList.concat(res.data);
+              }
+            });
+          }
         },
+        /** 分区下拉到底触发事件*/
         scrollZone(e){
+          console.log("e4", e.target.scrollHeight -
+            e.target.scrollTop -
+            e.target.clientHeight);
           let height = e.target.scrollHeight -
             e.target.scrollTop -
             e.target.clientHeight;
+          if (height<=0){
+            ZoneService.queryZoneByParam(
+              {name: this.zoneKey,
+                page: this.zonePage+1,
+                size: this.zoneSize}
+            ).then((res)=>{
+              console.log("res",res)
+              if (10000==res.error){
+                this.zonePage =this.zonePage+1;
+                res.data.forEach(a=>{
+                  a['checked']=false;
+                })
+                this.zoneList=this.zoneList.concat(res.data);
+              }
+            });
+          }
         }
+
 
       }
     }
@@ -170,6 +254,9 @@
     height: 400px;
     overflow-y: scroll;
   }
+  .allotZone-for-width{
+    width: 100px;
+  }
   .allotZone-for{
     display: flex;
     justify-content: space-around;
@@ -182,6 +269,12 @@
   .allotZone-for-img{
     width: 40px;
     height: 40px;
+  }
+  .allotZone-forDiv-name{
+    width: 60px;
+  }
+  .allotZone-forDiv-account{
+    width: 100px;
   }
 
   .allotZone-button-all {

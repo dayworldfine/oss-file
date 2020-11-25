@@ -1,6 +1,7 @@
 package com.oss.service;
 
 import com.github.pagehelper.Page;
+import com.oss.model.Zone;
 import com.oss.tool.BaseService;
 import com.oss.pojo.bo.ZoneBo;
 import com.oss.pojo.dto.ZoneDto;
@@ -55,4 +56,11 @@ public interface ZoneService extends BaseService {
      * @return
      */
     ResponseResult start();
+
+    /**
+     * 分配分区查询分区列表
+     * @param zoneListDto
+     * @return
+     */
+    ResponseResult<Page<Zone>> pageQueryZoneByUserId(ZoneListDto zoneListDto);
 }

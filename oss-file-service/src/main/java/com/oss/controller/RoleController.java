@@ -122,10 +122,7 @@ public class RoleController extends BaseController {
      * }
      */
     @PostMapping("/allotZone")
-    public ResponseModel allotZone(@Valid @RequestBody ZoneAllotDto zoneAllotDto ,BindingResult bindingResult)  {
-        if (bindingResult.hasErrors()){
-            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
+    public ResponseModel allotZone(@Valid ZoneAllotDto zoneAllotDto)  {
         ResponseResult responseResult = roleService.allotZone(zoneAllotDto);
         return responseResult.isSuccess()?ResponseModel.success():ResponseModel.error(responseResult.getErrorCode());
     }

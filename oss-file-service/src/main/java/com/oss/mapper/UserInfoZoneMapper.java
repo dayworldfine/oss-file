@@ -61,14 +61,14 @@ public interface UserInfoZoneMapper {
 
     /**
      * 删除地区
-     * @param userId
+     * @param userJoin
      * @return
      */
     @Delete({
             "delete from t_user_info_zone",
-            "where user_id = #{userId,jdbcType=BIGINT}"
+            "where user_id in (${userJoin})"
     })
-    Integer deleteByUserId(String userId);
+    Integer deleteByUserId(@Param("userJoin") String userJoin);
 
     /**
      * 添加地区

@@ -108,4 +108,11 @@ public class ZoneServiceImpl implements ZoneService {
         zoneMapper.insert(zone);
         return ResponseResult.responseOK();
     }
+
+    @Override
+    public ResponseResult<Page<Zone>> pageQueryZoneByUserId(ZoneListDto zoneListDto) {
+        PageHelper.startPage(zoneListDto.getPage(),zoneListDto.getSize());
+        Page<Zone>  zoneList  = zoneMapper.pageQueryZoneByUserId(zoneListDto.getName());
+        return ResponseResult.responseSuccessResult(zoneList);
+    }
 }

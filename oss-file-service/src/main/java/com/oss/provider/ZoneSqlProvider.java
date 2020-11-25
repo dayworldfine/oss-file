@@ -134,4 +134,21 @@ public class ZoneSqlProvider {
 
         return sb.toString();
     }
+
+    /**
+     * 分配分区查询分区列表
+     * @return
+     */
+    public String pageQueryZoneByUserId(String name){
+        SQL sql = new SQL();
+        sql.SELECT("*");
+        sql.FROM("t_zone");
+        sql.WHERE("is_open=0 ");
+        if (ValidateUtil.isNotEmpty(name)){
+            sql.AND();
+            sql.WHERE("zone_name like concat('%',#{name,jdbcType=VARCHAR},'%')");
+        }
+        sql.ORDER_BY("create_time ASC");
+        return sql.toString();
+    }
 }
