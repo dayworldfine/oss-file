@@ -162,14 +162,16 @@ public class RoleServiceImpl implements RoleService {
         }
 
         if (ValidateUtil.isCountEmpty(countUserInfoRole)){
-            UserInfoRole userInfoRole  = new UserInfoRole();
-            userInfoRole.setId(SnowUtil.generateId());
-            userInfoRole.setCreateTime(System.currentTimeMillis());
-            userInfoRole.setUpdateTime(System.currentTimeMillis());
-            userInfoRole.setVersion(1l);
-            userInfoRole.setUserId(1l);
-            userInfoRole.setRoleId(1l);
-            userInfoRoleMapper.insert(userInfoRole);
+            List<UserInfoRole> userInfoRoleList = Lists.newArrayList();
+            long timeMillis = System.currentTimeMillis();
+            userInfoRoleList.add(new UserInfoRole(1l,timeMillis,timeMillis,1l,1l,1l));
+            userInfoRoleList.add(new UserInfoRole(2l,timeMillis,timeMillis,1l,1l,2l));
+            userInfoRoleList.add(new UserInfoRole(3l,timeMillis,timeMillis,1l,1l,3l));
+            userInfoRoleList.add(new UserInfoRole(4l,timeMillis,timeMillis,1l,1l,4l));
+            userInfoRoleList.forEach(a->{
+                userInfoRoleMapper.insert(a);
+            });
+
         }
 
         if (ValidateUtil.isCountEmpty(countRoleInfoPer)){
@@ -184,7 +186,9 @@ public class RoleServiceImpl implements RoleService {
             roleInfoPermissionList.add(new RoleInfoPermission(7l,timeMillis,timeMillis,1l,2l,5l));
             roleInfoPermissionList.add(new RoleInfoPermission(8l,timeMillis,timeMillis,1l,2l,6l));
             roleInfoPermissionList.add(new RoleInfoPermission(9l,timeMillis,timeMillis,1l,3l,5l));
-
+            roleInfoPermissionList.forEach(a->{
+                roleInfoPermissionMapper.insert(a);
+            });
         }
         return ResponseResult.responseOK();
     }

@@ -48,7 +48,7 @@ public interface UserService extends BaseService {
      * @param pwd
      * @return
      */
-    ResponseResult getRoleKey(long userId, String pwd);
+    ResponseResult<List<String>> getRoleKey(long userId, String pwd);
 
     /**
      * 初始化项目

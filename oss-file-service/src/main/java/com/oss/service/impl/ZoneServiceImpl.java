@@ -102,7 +102,7 @@ public class ZoneServiceImpl implements ZoneService {
         zone.setUpdateTime(System.currentTimeMillis());
         zone.setVersion(1l);
         zone.setZoneName("游客专区");
-        zone.setZonePrefix("visitor/");
+        zone.setZonePrefix("visitor");
         zone.setZonePwd("");
         zone.setIsOpen(1);
         zoneMapper.insert(zone);

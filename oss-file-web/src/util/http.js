@@ -120,9 +120,8 @@ http.interceptors.response.use((response) => {
       //过滤这个请求
       if (response.config.url.indexOf("/login/login")<0){
         Message.error(data.message?data.message:"服务器正在开小差")
-      }else {
-        return  data;
       }
+      return  data;
 
     }
 

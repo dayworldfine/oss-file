@@ -32,3 +32,18 @@ export const setUserImg = (state, data) =>{
 export const setUserRole = (state, data) =>{
   state.userRole = data
 }
+
+/** 改变我的角色列表*/
+export const setMyRoleList = (state, data) =>{
+  state.myRoleList = data
+}
+
+/** 改变我的分区列表*/
+export const setMyZoneList = (state, data) =>{
+  state.myZoneList = data
+}
+
+/** 改变分区列表*/
+export const setZoneList = (state, data) =>{
+  state.zoneList = data
+}

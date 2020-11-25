@@ -17,6 +17,7 @@ import com.oss.tool.util.MD5Util;
 import com.oss.tool.util.OssUtil;
 import com.oss.tool.util.SnowUtil;
 import com.oss.tool.util.ValidateUtil;
+import net.sf.saxon.trans.Err;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -105,11 +106,14 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public ResponseResult getRoleKey(long userId, String pwd) {
+    public ResponseResult<List<String>> getRoleKey(long userId, String pwd) {
         /** 查看这个密钥相对于的角色id*/
         Role role = roleMapper.selectByPwd(pwd);
         if (ValidateUtil.isEmpty(role)){
             return ResponseResult.responseResultWithErrorCode(ErrorCodes.ERROR_ZONE_KEY);
+        }
+        if (role.getIsOpen()==0){
+            return ResponseResult.responseResultWithErrorCode(ErrorCodes.ROLE_NOT_OPEN);
         }
         /** 查看这个用户是否已经拥有这个角色*/
         UserInfoRole userInfoRole = userInfoRoleMapper.selectByRoleId(userId,role.getId());
@@ -125,8 +129,10 @@ public class UserServiceImpl implements UserService {
         uir.setUserId(userId);
         uir.setRoleId(role.getId());
         int insert = userInfoRoleMapper.insert(uir);
+        /** 查询这个用户所有角色code */
+        List<String> roleCodeList = userInfoRoleMapper.selectRoleCodeByUserId(userId);
 
-        return ResponseResult.responseOK();
+        return ResponseResult.responseSuccessResult(roleCodeList);
     }
 
     /**

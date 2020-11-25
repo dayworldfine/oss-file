@@ -104,4 +104,14 @@ public interface UserInfoRoleMapper {
             "select count(1) from t_user_info_role"
     })
     Integer countUserInfoRole();
+
+    /**
+     * 根据用户id查询角色code
+     * @param userId
+     * @return
+     */
+    @Select({
+            "select `code` from t_user_info_role  where user_id = #{userId,jdbcType=BIGINT}"
+    })
+    List<String> selectRoleCodeByUserId(long userId);
 }

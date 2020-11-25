@@ -7,9 +7,16 @@
       width="20%"
       center>
       <div class="myRole">
-        <div>111</div>
-        <div>111</div>
-        <div>111</div>
+        <div class="myRole-top">
+          <div>角色身份</div>
+          <div>角色编号</div>
+          <div>角色密码</div>
+        </div>
+        <div class="myRole-div" v-for="(item,index) in myRoleList" :key="index">
+          <div>{{item.roleName}}</div>
+          <div>{{item.code}}</div>
+          <div>{{item.pwd}}</div>
+        </div>
       </div>
 
     </el-dialog>
@@ -17,6 +24,7 @@
 </template>
 
 <script>
+  import {mapActions,mapState,mapMutations} from "vuex";
     export default {
         name: "MyRole",
       props: {
@@ -36,6 +44,11 @@
           this.showBoolean = bool;
         }
       },
+      computed:{
+          ...mapState([
+            'myRoleList'
+          ])
+      },
       methods: {
         close() {
           this.name='';
@@ -53,7 +66,18 @@
   .myRole {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /*align-items: center;*/
+  }
+  .myRole-top{
+    display: flex;
+    justify-content: space-between;
+    color: #42b983;
+  }
+  .myRole-div{
+    display: flex;
+    justify-content: space-between;
+    /*align-items:baseline;*/
+    margin-top: 10px;
   }
 
 </style>

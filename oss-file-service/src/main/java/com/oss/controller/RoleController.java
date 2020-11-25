@@ -10,7 +10,7 @@ import com.oss.service.ZoneService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.ResponseResult;
-import com.oss.tool.util.ShiroUtil;
+import com.oss.tool.shiro.ShiroHandler;
 import com.oss.tool.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -64,7 +64,7 @@ public class RoleController extends BaseController {
      */
     @PostMapping("/getRoleList")
     public ResponseModel getRoleList()  {
-        Long userId = ShiroUtil.getUserId();
+        Long userId = ShiroHandler.getUserId();
         ResponseResult responseResult = roleService.getRoleList();
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }
@@ -152,9 +152,8 @@ public class RoleController extends BaseController {
      */
     @PostMapping("/getMyRolePwd")
     public ResponseModel getMyRolePwd()  {
-        long userId = 1l;
-        ResponseResult<List<Role>>  responseResult = userService.getMyRolePwd(userId);
-        return responseResult.isSuccess()?ResponseModel.success():ResponseModel.error(responseResult.getErrorCode());
+        ResponseResult<List<Role>>  responseResult = userService.getMyRolePwd(ShiroHandler.getUserId());
+        return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }
 
 
@@ -182,10 +181,7 @@ public class RoleController extends BaseController {
         if (ValidateUtil.isEmpty(pwd)){
             return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
         }
-//        long userId = ShiroUtil.getUserId();
-        long userId = 1l;
-
-        ResponseResult responseResult = userService.getRoleKey(userId,pwd);
-        return responseResult.isSuccess()?ResponseModel.success():ResponseModel.error(responseResult.getErrorCode());
+        ResponseResult<List<String>> responseResult = userService.getRoleKey(ShiroHandler.getUserId(),pwd);
+        return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }
 }

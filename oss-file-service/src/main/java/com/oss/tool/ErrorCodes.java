@@ -26,6 +26,7 @@ public class ErrorCodes {
     public static final int NO_PERMISSION = 20015;
     public static final int USER_PWD_ERROR = 20016;
     public static final int UPDATE_ERROR = 20017;
+    public static final int ROLE_NOT_OPEN = 20018;
 
 
     public static final int SERVICE_SNEAK_OFF= 99999;
@@ -59,6 +60,7 @@ public class ErrorCodes {
         errorCodes.put(20015, "没有权限");
         errorCodes.put(20016, "账号密码错误");
         errorCodes.put(20017, "修改失败");
+        errorCodes.put(20018, "该角色不支持通过密匙获得");
         errorCodes.put(99999, "服务器正在开小差~~");
     }
 }

@@ -24,14 +24,14 @@
       </div>
     </div>
     <div class="forAll">
-      <div class="document-for" v-for="(item,index) in 30" :key="index"
+      <div class="document-for" v-for="(item,index) in zoneList" :key="index"
            :class="putOnIndex==index?'document-for-putOn':''"
            @click="pichOn(index)"
            @dblclick="goToZone()">
         <img loading="lazy"
              src="/static/file.png"
              class="user-img" />
-        <div class="document-for-font">分区名字</div>
+        <div class="document-for-font">{{item.zoneName}}</div>
         <!--      <div class="button-file">-->
         <!--        <Button type="warning" class="button">下载</Button>-->
         <!--        <Button type="warning" class="button">预览</Button>-->
@@ -70,11 +70,15 @@
     computed:{
       ...mapState([
         "userRole",
+        'zoneList'
       ])
     },
     methods:{
       ...mapActions([
         'sendSms',
+      ]),
+      ...mapMutations([
+        'setZoneList'
       ]),
       /** 当前选中状态*/
       pichOn(index){

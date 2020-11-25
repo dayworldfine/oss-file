@@ -11,6 +11,8 @@ import com.oss.service.ZoneService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.ResponseResult;
+import com.oss.tool.shiro.ShiroHandler;
+import com.oss.tool.util.SnowUtil;
 import com.oss.tool.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -44,13 +46,8 @@ public class ZoneController extends BaseController {
      * @return
      */
     @PostMapping("/getZoneList")
-    public ResponseModel getZoneList(@Valid ZoneListDto zoneListDto,BindingResult bindingResult)  {
-        if (bindingResult.hasErrors()){
-            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
-//        long userId = ShiroUtil.getUserId();
-        long userId = 1l;
-        ResponseResult<Page<ZoneBo>> zoneBoPage = zoneService.pageZoneByUserId(userId,zoneListDto);
+    public ResponseModel getZoneList(@Valid ZoneListDto zoneListDto)  {
+        ResponseResult<Page<ZoneBo>> zoneBoPage = zoneService.pageZoneByUserId(ShiroHandler.getUserId(),zoneListDto);
         return ResponseModel.success(zoneBoPage.getData());
     }
 
@@ -116,9 +113,7 @@ public class ZoneController extends BaseController {
      */
     @PostMapping("/getMyZonePwd")
     public ResponseModel getMyZonePwd()  {
-//        long userId = ShiroUtil.getUserId();
-        long userId = 1l;
-        ResponseResult<List<ZonePwdBo>> responseResult = zoneService.getMyZonePwd(userId);
+        ResponseResult<List<ZonePwdBo>> responseResult = zoneService.getMyZonePwd(ShiroHandler.getUserId());
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }
 

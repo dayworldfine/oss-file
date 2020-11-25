@@ -5,11 +5,10 @@ import com.oss.service.UserService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.ResponseResult;
-import com.oss.tool.util.ShiroUtil;
+import com.oss.tool.shiro.ShiroHandler;
 import com.oss.tool.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -84,7 +83,7 @@ public class UserController {
         if (ValidateUtil.isEmpty(userName)){
             return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
         }
-        ResponseResult responseResult = userService.updateUserName(userName,ShiroUtil.getUserId());
+        ResponseResult responseResult = userService.updateUserName(userName, ShiroHandler.getUserId());
 
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }
@@ -113,7 +112,7 @@ public class UserController {
         if (ValidateUtil.isEmpty(file)){
             return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
         }
-        ResponseResult responseResult = userService.updateUserImg(file,ShiroUtil.getUserId());
+        ResponseResult responseResult = userService.updateUserImg(file, ShiroHandler.getUserId());
 
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }

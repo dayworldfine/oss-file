@@ -7,9 +7,14 @@
       width="20%"
       center>
       <div class="myZone">
-        <div>111</div>
-        <div>111</div>
-        <div>111</div>
+        <div class="myZone-top">
+          <div>分区名称</div>
+          <div>分区密码</div>
+        </div>
+        <div class="myZone-div" v-for="(item,index) in myZoneList" :key="index">
+          <div>{{item.zoneName}}</div>
+          <div>{{item.zonePwd}}</div>
+        </div>
       </div>
 
     </el-dialog>
@@ -17,6 +22,8 @@
 </template>
 
 <script>
+    import {mapState} from "vuex";
+
     export default {
         name: "MyZone",
       props: {
@@ -36,6 +43,11 @@
           this.showBoolean = bool;
         }
       },
+      computed:{
+        ...mapState([
+          'myZoneList'
+        ])
+      },
       methods: {
         close() {
           this.name='';
@@ -53,6 +65,16 @@
   .myZone {
     display: flex;
     flex-direction: column;
-    align-items: center;
+  }
+  .myZone-top{
+    display: flex;
+    justify-content: space-around;
+    color: #42b983;
+  }
+  .myZone-div{
+    display: flex;
+    justify-content: space-around;
+    /*align-items:baseline;*/
+    margin-top: 10px;
   }
 </style>

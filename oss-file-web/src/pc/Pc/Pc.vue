@@ -11,7 +11,7 @@
             <Button type="warning" class="button" @click="updateName()">修改昵称</Button>
             <Button type="warning" class="button" @click="myRole()">我的角色</Button>
             <Button type="warning" class="button" @click="myZone()">我的分区</Button>
-            <Button type="warning" class="button" @click="enterRole()">输入权限密匙</Button>
+            <Button type="warning" class="button" @click="enterRole()">输入角色密匙</Button>
             <Button type="warning" class="button" @click="enterZone()">输入分区密匙</Button>
             <Button type="warning" class="button" @click="allotZone()">分配分区</Button>
             <Button type="warning" class="button" @click="allotRole()">分配角色</Button>
@@ -92,6 +92,7 @@
           localStorage.removeItem("passWord")
           localStorage.removeItem("token");
         }
+        this.getZoneList({name:'',page:1,size:10});
       })
     },
     computed:{
@@ -106,6 +107,9 @@
     methods: {
       ...mapActions([
         'sendSms',
+        'getMyRolePwd',
+        'getMyZonePwd',
+        'getZoneList',
       ]),
       ...mapMutations([
         'setIsLogin',
@@ -136,10 +140,12 @@
       },
       /** 我的角色*/
       myRole(){
+        this.getMyRolePwd();
         this.myRoleVisible=true;
       },
       /** 我的分区*/
       myZone(){
+        this.getMyZonePwd();
         this.myZoneVisible=true;
       },
       /** 输入权限密匙*/

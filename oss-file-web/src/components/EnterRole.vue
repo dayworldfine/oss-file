@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      title="输入权限密匙"
+      title="输入角色密匙"
       :visible.sync="showBoolean"
       @close="close()"
       width="20%"
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+    import RoleService from "@/service/RoleService";
+    import {mapActions,mapState,mapMutations} from "vuex";
     export default {
         name: "EnterRole",
       props: {
@@ -41,6 +43,9 @@
         }
       },
       methods:{
+        ...mapMutations([
+          'setUserRole'
+        ]),
         close() {
           this.roleKey='';
           this.cancel();
@@ -49,7 +54,14 @@
           this.$emit("closeEnterRole");
         },
         confirm(){
-          this.$emit("confirmEnterRole");
+          RoleService.getRoleKey({pwd:this.roleKey}).then((res)=>{
+            console.log("res",res)
+            if (10000==res.error){
+                this.setUserRole(res.data)
+              this.$emit("confirmEnterRole");
+            }
+          });
+
         }
 
       }

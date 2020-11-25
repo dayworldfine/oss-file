@@ -1,9 +1,9 @@
-package com.oss.tool.util;
+package com.oss.tool.shiro;
 
 import com.oss.model.User;
 import org.apache.shiro.SecurityUtils;
 
-public class ShiroUtil {
+public class ShiroHandler {
 
     /**
      * 获取用户id

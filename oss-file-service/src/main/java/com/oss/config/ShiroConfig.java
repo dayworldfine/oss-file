@@ -77,7 +77,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/login/sendSms","anon");
         filterChainDefinitionMap.put("/login/register","anon");
         filterChainDefinitionMap.put("/login/textRedis","anon");
-        filterChainDefinitionMap.put("/user/updateUserImg","anon");
+        filterChainDefinitionMap.put("/zone/getZoneList","anon");
 
         //登录用户才可以访问
         filterChainDefinitionMap.put("/authc/**","authc");

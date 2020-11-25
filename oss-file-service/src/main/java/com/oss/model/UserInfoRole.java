@@ -3,6 +3,19 @@ package com.oss.model;
 import java.io.Serializable;
 
 public class UserInfoRole implements Serializable {
+
+    public UserInfoRole() {
+    }
+
+    public UserInfoRole(Long id, Long createTime, Long updateTime, Long version, Long userId, Long roleId) {
+        this.id = id;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.version = version;
+        this.userId = userId;
+        this.roleId = roleId;
+    }
+
     /**
      * id
 	 * 2020-10-20T17:12:13.956

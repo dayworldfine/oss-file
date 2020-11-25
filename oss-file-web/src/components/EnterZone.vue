@@ -20,6 +20,9 @@
 </template>
 
 <script>
+  import ZoneService from "@/service/ZoneService";
+  import {mapActions,mapState,mapMutations} from "vuex";
+
     export default {
         name: "EnterZone",
       props: {
@@ -41,6 +44,9 @@
         }
       },
       methods:{
+        ...mapMutations([
+          'setUserRole'
+        ]),
         close() {
           this.roleKey='';
           this.cancel();
@@ -49,7 +55,13 @@
           this.$emit("closeEnterZone");
         },
         confirm(){
-          this.$emit("confirmEnterZone");
+          ZoneService.getZoneKey().then((res)=>{
+            if (10000==res.error){
+
+              this.$emit("confirmEnterZone");
+            }
+          })
+
         }
 
       }

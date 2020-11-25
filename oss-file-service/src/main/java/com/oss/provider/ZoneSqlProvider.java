@@ -84,21 +84,29 @@ public class ZoneSqlProvider {
 
     public String pageZoneByUserIdAndName(Long userId, String name) {
         StringBuffer sb = new StringBuffer();
-        sb.append("   SELECT " +
-                "        z.id as id," +
-                "        FROM_UNIXTIME(z.create_time/1000 , '%Y-%m-%d %H:%i:%S') as createTime," +
-                "        FROM_UNIXTIME(z.update_time/1000 , '%Y-%m-%d %H:%i:%S') as updateTime," +
-                "        z.zone_name as zoneName," +
-                "        z.zone_prefix as zonePrefix " +
-                "        FROM t_zone z " +
-                "        INNER JOIN t_user_info_zone uiz  " +
-                "        on z.id = uiz.zone_id   " +
-                "        where user_id= " + userId );
+        sb.append("SELECT  " +
+                "z.id as id, " +
+                "FROM_UNIXTIME(z.create_time/1000 , '%Y-%m-%d %H:%i:%S') as createTime, " +
+                "FROM_UNIXTIME(z.update_time/1000 , '%Y-%m-%d %H:%i:%S') as updateTime, " +
+                "z.zone_name as zoneName, " +
+                "z.zone_prefix as zonePrefix " +
+                "FROM t_zone z " +
+                "WHERE( z.id in  " +
+                "( " +
+                "SELECT  " +
+                "uiz.zone_id  " +
+                "FROM " +
+                "t_user_info_zone uiz " +
+                "WHERE user_id = " + userId+
+                ") " +
+                "OR z.is_open =1 " +
+                ")");
+
         if (ValidateUtil.isNotEmpty(name)){
             sb.append(" and z.zone_name like '%"+name+"%'");
         }
 
-        sb.append(" order by z.create_time desc");
+        sb.append(" order by z.create_time asc");
 
         return sb.toString();
     }
@@ -117,14 +125,12 @@ public class ZoneSqlProvider {
                 "        z.zone_name as zoneName," +
                 "        z.zone_prefix as zonePrefix " +
                 "        FROM t_zone z " +
-                "        INNER JOIN t_user_info_zone uiz  " +
-                "        on z.id = uiz.zone_id   " +
-                "        where and is_open =1 ");
+                "        where and z.is_open =1 ");
         if (ValidateUtil.isNotEmpty(name)){
             sb.append(" and z.zone_name like '%"+name+"%'");
         }
 
-        sb.append(" order by z.create_time desc");
+        sb.append(" order by z.create_time asc");
 
         return sb.toString();
     }
