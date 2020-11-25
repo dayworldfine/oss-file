@@ -10,11 +10,11 @@
         <div class="allotZone-top">
           <div class="allotZone-user">
             <div class="allotZone-searchInput">
-              <input v-model="name" placeholder="昵称/手机号" class="allotZoneInput"></input>
-              <Button type="warning" class="search">搜索</Button>
+              <input v-model="userKey" placeholder="昵称/手机号" class="allotZoneInput"></input>
+              <Button type="warning" class="search" @click="searchUser()">搜索</Button>
             </div>
             <div class="allotZone-forDiv" @scroll="scrollUser">
-              <div v-for="item in 15" class="allotZone-for">
+              <div v-for="item in userList" class="allotZone-for">
                 <span>张飞</span>
                 <img src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="allotZone-for-img"/>
                 <span>13900000000</span>
@@ -25,7 +25,7 @@
           <div class="allotZone-center"><i class="el-icon-mobile-phone"></i></div>
           <div class="allotZone-zone">
             <div>
-              <input v-model="name" placeholder="分区名称" class="allotZoneInput"></input>
+              <input v-model="roleKey" placeholder="分区名称" class="allotZoneInput"></input>
               <Button type="warning" class="search">搜索</Button>
             </div>
             <div class="allotZone-forDiv-zone" @scroll="scrollZone">
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+  import UserService from "@/service/UserService";
     export default {
         name: "AllotZone",
       props: {
@@ -59,7 +60,14 @@
       },
       data() {
         return {
-          name: '',
+          userKey: '',
+          userPage:1,
+          userSize:10,
+          userList:[],
+          roleKey:'',
+          rolePage:1,
+          roleSize:10,
+          roleList:[],
           showBoolean: false,
           checked:false,
         };
@@ -79,6 +87,18 @@
         },
         confirm() {
           this.$emit("confirmAllotZone", this.name);
+        },
+        searchUser(){
+            console.log(this.usage,this.userPage,this.userSize);
+          UserService.queryUserByParam(
+            {paramKey: this.userKey,
+                    page: this.userPage,
+                    size: this.userSize}
+            ).then((res)=>{
+             if (10000==res.error){
+                this.userList=res.data;
+             }
+          });
         },
         scrollUser(e){
           console.log("e1", e.target.scrollHeight);

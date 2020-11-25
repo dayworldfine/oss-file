@@ -44,6 +44,9 @@
         }
       },
       methods:{
+        ...mapActions([
+          'getZoneList',
+        ]),
         ...mapMutations([
           'setUserRole'
         ]),
@@ -55,15 +58,13 @@
           this.$emit("closeEnterZone");
         },
         confirm(){
-          ZoneService.getZoneKey().then((res)=>{
+          ZoneService.getZoneKey({pwd:this.roleKey}).then((res)=>{
             if (10000==res.error){
-
+              this.getZoneList({name:'',page:1,size:10});
               this.$emit("confirmEnterZone");
             }
           })
-
         }
-
       }
     }
 </script>

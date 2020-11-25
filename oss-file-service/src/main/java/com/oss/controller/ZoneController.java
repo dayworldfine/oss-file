@@ -141,10 +141,8 @@ public class ZoneController extends BaseController {
         if (ValidateUtil.isEmpty(pwd)){
             return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
         }
-//        long userId = ShiroUtil.getUserId();
-        long userId = 1l;
 
-        ResponseResult responseResult = userService.getZoneKey(userId,pwd);
+        ResponseResult responseResult = userService.getZoneKey(ShiroHandler.getUserId(),pwd);
         return responseResult.isSuccess()?ResponseModel.success():ResponseModel.error(responseResult.getErrorCode());
     }
 

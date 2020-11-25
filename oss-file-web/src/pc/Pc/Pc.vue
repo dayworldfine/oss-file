@@ -293,6 +293,7 @@
   .content {
     display: flex;
     flex-direction: row;
+    height: 75vh;
   }
 
   .user {

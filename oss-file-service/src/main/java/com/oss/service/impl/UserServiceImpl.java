@@ -81,6 +81,9 @@ public class UserServiceImpl implements UserService {
         if (ValidateUtil.isEmpty(zone)){
             return ResponseResult.responseResultWithErrorCode(ErrorCodes.ERROR_ZONE_KEY);
         }
+        if (1==zone.getIsOpen()){
+            return ResponseResult.responseResultWithErrorCode(ErrorCodes.ERROR_ZONE_KEY);
+        }
         /** 查看这个用户是否已经拥有这个分区*/
         UserInfoZone userInfoZone = userInfoZoneMapper.selectByZoneId(userId,zone.getId());
         if (ValidateUtil.isNotEmpty(userInfoZone)){

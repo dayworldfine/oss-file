@@ -14,8 +14,8 @@ import javax.validation.constraints.NotNull;
 @Data
 public class UserSelectKeyDto {
     private String paramKey;
-    @NotNull
+    @NotNull(message = "page不能为空")
     private Integer page;
-    @NotNull
+    @NotNull(message = "size不能为空")
     private Integer size;
 }

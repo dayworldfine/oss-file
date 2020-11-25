@@ -50,10 +50,7 @@ public class UserController {
      * }
      */
     @PostMapping("/queryUserByParam")
-    public ResponseModel queryUserByParam(@Valid UserSelectKeyDto userSelectKeyDto, BindingResult bindingResult)  {
-        if (bindingResult.hasErrors()){
-            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
+    public ResponseModel queryUserByParam(@Valid UserSelectKeyDto userSelectKeyDto)  {
         ResponseResult responseResult = userService.pageUserBySelectKey(userSelectKeyDto);
 
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());

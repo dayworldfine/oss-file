@@ -83,7 +83,6 @@ public class UserSqlProvider {
                 "create_time as createTime," +
                 "update_time as updateTime," +
                 "version as version," +
-                "user_name as userName," +
                 "nick_name as nickName," +
                 "head_portrait as headPortrait," +
                 "account as account," +
