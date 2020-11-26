@@ -183,6 +183,7 @@
     justify-content: flex-start;
     padding: 10px 30px 10px 30px;
     box-sizing: border-box;
+    align-content:flex-start;
     height: 65vh;
     overflow-y: hidden;
   }

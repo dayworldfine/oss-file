@@ -23,7 +23,7 @@ public interface ZoneService extends BaseService {
      * @param zoneId
      * @return
      */
-    ResponseResult<Integer> deleteZoneById(String zoneId);
+    ResponseResult deleteZoneById(String zoneId);
 
     /**
      * 添加分区

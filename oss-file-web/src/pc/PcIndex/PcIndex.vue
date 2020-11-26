@@ -28,11 +28,6 @@
              src="/static/file.png"
              class="user-img" />
         <div class="document-for-font">{{item.zoneName}}</div>
-        <!--      <div class="button-file">-->
-        <!--        <Button type="warning" class="button">下载</Button>-->
-        <!--        <Button type="warning" class="button">预览</Button>-->
-        <!--        <Button type="warning" class="button">删除</Button>-->
-        <!--      </div>-->
       </div>
     </div>
     <div class="file-page">
@@ -45,6 +40,7 @@
 
 <script>
   import {mapActions,mapState,mapGetters,mapMutations} from "vuex";
+  import ZoneService from "@/service/ZoneService";
 
   export default {
     name: "PcIndex",
@@ -104,7 +100,24 @@
           this.$message.warning("请选择分区")
           return;
         }
-        console.log("delZone")
+        this.$confirm('此操作将删除分区及该分区所有文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          ZoneService.deleteZoneById({zoneId:this.zoneList[this.putOnIndex].id}).then((res)=>{
+            console.log("res",res)
+            if (10000==res.error){
+              this.$message.success("删除成功")
+              this.getZoneList({name:this.zoneSearch,page:this.zonePage,size:this.zoneSize})
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
       /** 搜索事件*/
       search(){
@@ -195,7 +208,8 @@
     justify-content: flex-start;
     padding: 10px 30px 10px 30px;
     box-sizing: border-box;
-    /*height: 65vh;*/
+    align-content:flex-start;
+    height: 65vh;
     overflow-y: hidden;
   }
   .document-for {
@@ -205,7 +219,7 @@
     box-sizing: border-box;
     cursor:pointer;
     margin: 10px;
-    /*height: 17vh;*/
+    height: 17vh;
   }
   .document-for:hover{
     background-color:rgb(242, 250, 255);

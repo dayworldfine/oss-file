@@ -94,7 +94,7 @@ public interface ZoneMapper {
      * @return
      */
     @Update({
-        "delete from t_zone where id = (#{zoneId},jdbcType=BIGINT) "
+        "delete from t_zone where id = #{zoneId,jdbcType=BIGINT} "
     })
     Integer deleteZoneById(String zoneId);
 
@@ -211,4 +211,14 @@ public interface ZoneMapper {
      */
     @SelectProvider(type=ZoneSqlProvider.class, method="pageQueryZoneByUserId")
     Page<Zone> pageQueryZoneByUserId(String name);
+
+    /**
+     * 根据分区id查询
+     * @param zoneId
+     * @return
+     */
+    @Select({
+            "select zone_prefix from t_zone  where id = #{zoneId,jdbcType=BIGINT}"
+    })
+    String selectPrefixByZoneId(String zoneId);
 }

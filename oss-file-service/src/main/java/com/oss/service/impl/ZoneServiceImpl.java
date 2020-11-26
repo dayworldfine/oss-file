@@ -1,5 +1,11 @@
 package com.oss.service.impl;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.model.DeleteObjectsRequest;
+import com.aliyun.oss.model.ListObjectsRequest;
+import com.aliyun.oss.model.OSSObjectSummary;
+import com.aliyun.oss.model.ObjectListing;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -16,6 +22,7 @@ import com.oss.service.ZoneService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseResult;
 import com.oss.tool.start.UserStart;
+import com.oss.tool.util.OssUtil;
 import com.oss.tool.util.SnowUtil;
 import com.oss.tool.util.ValidateUtil;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
@@ -34,6 +42,9 @@ public class ZoneServiceImpl implements ZoneService {
 
     @Autowired
     private UserInfoZoneMapper userInfoZoneMapper;
+
+    @Autowired
+    private OssUtil ossUtil;
 
     @Override
     public ResponseResult<PageInfo<ZoneBo>> pageZoneByUserId(Long userId, ZoneListDto zoneListDto) {
@@ -51,7 +62,38 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
-    public ResponseResult<Integer> deleteZoneById(String zoneId) {
+    public ResponseResult deleteZoneById(String zoneId) {
+
+        String prefix = zoneMapper.selectPrefixByZoneId(zoneId);
+        if (ValidateUtil.isEmpty(prefix)){
+            return ResponseResult.responseSuccessResult(ErrorCodes.ZONE_NOT_FOUND);
+        }
+        //删除oss上的路径
+        // 创建OSSClient实例。
+        OSS ossClient = new OSSClientBuilder().build(ossUtil.getEndpoint(), ossUtil.getAccessKeyId(), ossUtil.getAccessKeySecret());
+        // 列举所有包含指定前缀的文件并删除。
+        String nextMarker = null;
+        ObjectListing objectListing = null;
+        do {
+            ListObjectsRequest listObjectsRequest = new ListObjectsRequest(ossUtil.getBucketName())
+                    .withPrefix(prefix)
+                    .withMarker(nextMarker);
+            objectListing = ossClient.listObjects(listObjectsRequest);
+            if (objectListing.getObjectSummaries().size() > 0) {
+                List<String> keys = new ArrayList<String>();
+                for (OSSObjectSummary s : objectListing.getObjectSummaries()) {
+                    System.out.println("key name: " + s.getKey());
+                    keys.add(s.getKey());
+                }
+                DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(ossUtil.getBucketName()).withKeys(keys);
+                ossClient.deleteObjects(deleteObjectsRequest);
+            }
+            nextMarker = objectListing.getNextMarker();
+        } while (objectListing.isTruncated());
+        // 关闭OSSClient。
+        ossClient.shutdown();
+
+        //删除数据库的数据
         Integer num = zoneMapper.deleteZoneById(zoneId);
         ResponseResult<Integer> result = ResponseResult.responseSuccessResult(num);
         return result;

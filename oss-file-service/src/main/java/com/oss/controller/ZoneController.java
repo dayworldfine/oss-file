@@ -84,7 +84,7 @@ public class ZoneController extends BaseController {
     */
     @PostMapping("/addZone")
     public ResponseModel addZone( @Valid ZoneDto zoneDto)  {
-        //添加oss上的路径
+        //无需添加oss上的路径
 
         //添加数据库的数据
         ResponseResult responseResult = zoneService.addZone(zoneDto);
@@ -99,10 +99,8 @@ public class ZoneController extends BaseController {
      */
     @PostMapping("/deleteZoneById")
     public ResponseModel deleteZoneById(String zoneId)  {
-        //删除oss上的路径
-
-        //删除数据库的数据
-        ResponseResult<Integer> zoneBoPage = zoneService.deleteZoneById(zoneId);
+        //删除oss上的路径 删除数据库的数据
+        ResponseResult zoneBoPage = zoneService.deleteZoneById(zoneId);
         return zoneBoPage.isSuccess()?ResponseModel.success(zoneBoPage.getData()):ResponseModel.error(zoneBoPage.getErrorCode());
     }
 
