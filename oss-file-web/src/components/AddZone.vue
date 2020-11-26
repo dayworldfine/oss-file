@@ -59,6 +59,11 @@
           showBoolean: false,
         };
       },
+      computed:{
+        ...mapState([
+          'zoneSearchKey'
+        ])
+      },
       watch: {
         addZoneVisible(bool) {
           this.showBoolean = bool;
@@ -67,6 +72,9 @@
       methods: {
         ...mapActions([
           'getZoneList'
+        ]),
+        ...mapMutations([
+          'setZoneSearchKey'
         ]),
         close() {
           this.formLabelAlign= {};
@@ -80,11 +88,10 @@
             console.log("res",res)
             if (10000==res.error){
               this.$message.success("添加成功")
-              this.getZoneList({name:'',page:this.page,size:this.size})
+              this.getZoneList({name:this.zoneSearchKey,page:this.page,size:this.size})
               this.$emit("confirmAddZone");
             }
           });
-
         }
 
       }

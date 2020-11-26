@@ -57,3 +57,8 @@ export const setZonePage = (state, data) =>{
 export const setZoneTotal = (state, data) =>{
   state.zoneTotal = data
 }
+
+/** 改变分区搜索关键字*/
+export const setZoneSearchKey = (state, data) =>{
+  state.zoneSearchKey = data
+}

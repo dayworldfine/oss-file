@@ -22,7 +22,7 @@
         <div class="fun-button-text">删除</div>
       </div>
       <div class="fun-search">
-        <input  placeholder="请输入分区名称" class="fun-search-input"/>
+        <input  placeholder="请输入文件名称" class="fun-search-input"/>
         <img class="fun-search-img" src="/static/search.png"/>
 
       </div>

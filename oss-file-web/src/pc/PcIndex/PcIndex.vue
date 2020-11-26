@@ -14,8 +14,8 @@
         <div class="fun-button-text" @click="delZone()">删除分区</div>
       </div>
       <div class="fun-search" :class="userRole.indexOf('superAdmin')>=0?'fun-search-superAdmin':'fun-search-general'">
-        <input  placeholder="请输入分区名称" class="fun-search-input"/>
-        <img class="fun-search-img" src="/static/search.png"/>
+        <input v-model="zoneSearch"  placeholder="请输入分区名称" class="fun-search-input"/>
+        <img class="fun-search-img" src="/static/search.png" @click="search()"/>
 
       </div>
     </div>
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="file-page">
-      <Page :current="zonePage" :total="zoneTotal" :page-size="size" @on-change="changePage"   simple/>
+      <Page :current="zonePage" :total="zoneTotal" :page-size="zoneSize" @on-change="changePage"   simple/>
     </div>
 
 
@@ -50,7 +50,8 @@
     name: "PcIndex",
     data(){
       return{
-        size:24,
+        zoneSearch:'',
+        zoneSize:24,
         putOnIndex:-1,
         fileList:[
           {
@@ -60,8 +61,13 @@
           {
             name:121,
             type:12312,
-          }
+          },
         ]
+      }
+    },
+    watch:{
+      zoneSearch(value1){
+        this.setZoneSearchKey(value1);
       }
     },
     computed:{
@@ -69,15 +75,18 @@
         "userRole",
         'zoneList',
         'zonePage',
-        'zoneTotal'
+        'zoneTotal',
+        'zoneSearchKey',
       ])
     },
     methods:{
       ...mapActions([
         'sendSms',
+        'getZoneList',
       ]),
       ...mapMutations([
-        'setZoneList'
+        'setZoneList',
+        'setZoneSearchKey',
       ]),
       /** 当前选中状态*/
       pichOn(index){
@@ -97,9 +106,14 @@
         }
         console.log("delZone")
       },
+      /** 搜索事件*/
+      search(){
+        this.getZoneList({name:this.zoneSearch,page:this.zonePage,size:this.zoneSize})
+      },
       /** 页面事件发生改变*/
       changePage(page){
         console.log("页面",page)
+        this.getZoneList({name:'',page:1,size:1});
       },
     }
   }
@@ -181,7 +195,7 @@
     justify-content: flex-start;
     padding: 10px 30px 10px 30px;
     box-sizing: border-box;
-    height: 65vh;
+    /*height: 65vh;*/
     overflow-y: hidden;
   }
   .document-for {
@@ -191,7 +205,7 @@
     box-sizing: border-box;
     cursor:pointer;
     margin: 10px;
-    height: 17vh;
+    /*height: 17vh;*/
   }
   .document-for:hover{
     background-color:rgb(242, 250, 255);

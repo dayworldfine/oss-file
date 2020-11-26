@@ -10,6 +10,7 @@ const state = {
   zoneList:[],                           //分区列表
   zonePage:1,                             //分区页数
   zoneTotal:0,                            //分区总条数
+  zoneSearchKey:'',                       //分区搜索关键字
 
 }
 
