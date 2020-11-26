@@ -20,8 +20,11 @@ export function sendSms({commit},param) {
  */
 export function getZoneList({commit},param) {
   ZoneService.getZoneList(param).then((res)=>{
+    console.log("res",res)
     if (10000==res.error){
-      commit('setZoneList',res.data)
+      commit('setZoneList',res.data.list)
+      commit('setZonePage',res.data.pageNum)
+      commit('setZoneTotal',res.data.total)
     }
   })
 }

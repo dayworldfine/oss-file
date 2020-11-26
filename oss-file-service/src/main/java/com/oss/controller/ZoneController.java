@@ -1,6 +1,7 @@
 package com.oss.controller;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.oss.model.Zone;
 import com.oss.pojo.bo.ZonePwdBo;
 import com.oss.tool.BaseController;
@@ -48,7 +49,7 @@ public class ZoneController extends BaseController {
      */
     @PostMapping("/getZoneList")
     public ResponseModel getZoneList(@Valid ZoneListDto zoneListDto)  {
-        ResponseResult<Page<ZoneBo>> zoneBoPage = zoneService.pageZoneByUserId(ShiroHandler.getUserId(),zoneListDto);
+        ResponseResult<PageInfo<ZoneBo>> zoneBoPage = zoneService.pageZoneByUserId(ShiroHandler.getUserId(),zoneListDto);
         return ResponseModel.success(zoneBoPage.getData());
     }
 
@@ -82,10 +83,10 @@ public class ZoneController extends BaseController {
     * }
     */
     @PostMapping("/addZone")
-    public ResponseModel addZone( @Valid ZoneDto zoneDto, BindingResult bindingResult)  {
-        if (bindingResult.hasErrors()){
-            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
+    public ResponseModel addZone( @Valid ZoneDto zoneDto)  {
+        //添加oss上的路径
+
+        //添加数据库的数据
         ResponseResult responseResult = zoneService.addZone(zoneDto);
         return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
     }
@@ -93,12 +94,15 @@ public class ZoneController extends BaseController {
 
     /**
      * 根据分区id删除分区
-     * @param zoneIds
+     * @param zoneId
      * @return
      */
-    @PostMapping("/deleteZoneByIds")
-    public ResponseModel deleteZoneByIds(String[] zoneIds)  {
-        ResponseResult<Integer> zoneBoPage = zoneService.deleteZoneByIds(zoneIds);
+    @PostMapping("/deleteZoneById")
+    public ResponseModel deleteZoneById(String zoneId)  {
+        //删除oss上的路径
+
+        //删除数据库的数据
+        ResponseResult<Integer> zoneBoPage = zoneService.deleteZoneById(zoneId);
         return zoneBoPage.isSuccess()?ResponseModel.success(zoneBoPage.getData()):ResponseModel.error(zoneBoPage.getErrorCode());
     }
 

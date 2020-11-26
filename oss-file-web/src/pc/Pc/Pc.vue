@@ -92,7 +92,7 @@
           localStorage.removeItem("passWord")
           localStorage.removeItem("token");
         }
-        this.getZoneList({name:'',page:1,size:10});
+        this.getZoneList({name:'',page:1,size:24});
       })
     },
     computed:{

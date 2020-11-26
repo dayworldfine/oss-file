@@ -25,11 +25,11 @@ public class UserStart {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(UserStart.class);
 
-    private String userId = "1";
-    private String nickName = "wbh";
-    private String userImg = "/HeadImg/wbh.jpg";
-    private String account = "13738700108";
-    private String pwd = "wbh123";
+    public static String userId = "1";
+    public static String nickName = "wbh";
+    public static String userImg = "/HeadImg/wbh.jpg";
+    public static String account = "13738700108";
+    public static String pwd = "wbh123";
 
     @Autowired
     private UserService userService;

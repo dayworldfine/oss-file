@@ -56,6 +56,8 @@
         name: "PcDetail",
       data(){
         return{
+          page:1,
+          size:24,
           putOnIndex:-1,
           fileList:[
             {
@@ -181,6 +183,8 @@
     justify-content: flex-start;
     padding: 10px 30px 10px 30px;
     box-sizing: border-box;
+    height: 65vh;
+    overflow-y: hidden;
   }
   .document-for {
     width: 160px;

@@ -47,3 +47,13 @@ export const setMyZoneList = (state, data) =>{
 export const setZoneList = (state, data) =>{
   state.zoneList = data
 }
+
+/** 改变分区当前页数*/
+export const setZonePage = (state, data) =>{
+  state.zonePage = data
+}
+
+/** 改变分区总条数*/
+export const setZoneTotal = (state, data) =>{
+  state.zoneTotal = data
+}

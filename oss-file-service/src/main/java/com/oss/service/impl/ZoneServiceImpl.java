@@ -2,8 +2,11 @@ package com.oss.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.Joiner;
+import com.oss.mapper.UserInfoZoneMapper;
 import com.oss.mapper.ZoneMapper;
+import com.oss.model.UserInfoZone;
 import com.oss.model.Zone;
 import com.oss.pojo.bo.ZoneBo;
 import com.oss.pojo.bo.ZonePwdBo;
@@ -12,6 +15,7 @@ import com.oss.pojo.dto.ZoneListDto;
 import com.oss.service.ZoneService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseResult;
+import com.oss.tool.start.UserStart;
 import com.oss.tool.util.SnowUtil;
 import com.oss.tool.util.ValidateUtil;
 import org.springframework.beans.BeanUtils;
@@ -28,8 +32,11 @@ public class ZoneServiceImpl implements ZoneService {
     @Autowired
     private ZoneMapper zoneMapper;
 
+    @Autowired
+    private UserInfoZoneMapper userInfoZoneMapper;
+
     @Override
-    public ResponseResult<Page<ZoneBo>> pageZoneByUserId(Long userId, ZoneListDto zoneListDto) {
+    public ResponseResult<PageInfo<ZoneBo>> pageZoneByUserId(Long userId, ZoneListDto zoneListDto) {
         PageHelper.startPage(zoneListDto.getPage(),zoneListDto.getSize());
         // 如果userId为空 则为游客
         Page<ZoneBo> zoneBos =null;
@@ -38,20 +45,15 @@ public class ZoneServiceImpl implements ZoneService {
         }else {
             zoneBos  = zoneMapper.pageZoneByVisitor(zoneListDto.getName());
         }
+        PageInfo<ZoneBo> pageInfo =new PageInfo<ZoneBo>(zoneBos);
 
-        return  ResponseResult.responseSuccessResult(zoneBos);
+        return  ResponseResult.responseSuccessResult(pageInfo);
     }
 
     @Override
-    public ResponseResult<Integer> deleteZoneByIds(String[] zoneIds) {
-        String joinZoneIds = Joiner.on(",").join(zoneIds);
-        Integer num = zoneMapper.deleteZoneByIds(joinZoneIds);
+    public ResponseResult<Integer> deleteZoneById(String zoneId) {
+        Integer num = zoneMapper.deleteZoneById(zoneId);
         ResponseResult<Integer> result = ResponseResult.responseSuccessResult(num);
-        if (zoneIds.length==num.intValue()){
-            result.setSuccess(true);
-        }else {
-            result.setErrorCode(20001);
-        }
         return result;
     }
 
@@ -69,7 +71,22 @@ public class ZoneServiceImpl implements ZoneService {
         zone.setUpdateTime(System.currentTimeMillis());
         zone.setVersion(1l);
         int insert = zoneMapper.insert(zone);
-        return ValidateUtil.isCountEmpty(insert)? ResponseResult.responseResultWithErrorCode(ErrorCodes.ADD_ERROR):ResponseResult.responseSuccessResult(insert);
+        if (ValidateUtil.isCountEmpty(insert)){
+            return ResponseResult.responseResultWithErrorCode(ErrorCodes.ADD_ERROR);
+        }
+        //添加主账号的分区关联的信息
+        UserInfoZone userInfoZone =new UserInfoZone();
+        userInfoZone.setId(SnowUtil.generateId());
+        userInfoZone.setCreateTime(System.currentTimeMillis());
+        userInfoZone.setUpdateTime(System.currentTimeMillis());
+        userInfoZone.setVersion(1l);
+        userInfoZone.setZoneId(zone.getId());
+        userInfoZone.setUserId(Long.valueOf(UserStart.userId));
+        int num = userInfoZoneMapper.insert(userInfoZone);
+        if (ValidateUtil.isCountEmpty(num)){
+            return ResponseResult.responseResultWithErrorCode(ErrorCodes.ADD_ERROR);
+        }
+        return ResponseResult.responseOK();
     }
 
     @Override

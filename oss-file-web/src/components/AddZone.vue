@@ -15,7 +15,7 @@
             <span>分区前缀</span><input  class="addZoneInput" v-model="formLabelAlign.zonePrefix"/>
           </div>
           <div class="addZone-div">
-            <span>分区密码</span><input  class="addZoneInput" v-model="formLabelAlign.pwd"/>
+            <span>分区密码</span><input  class="addZoneInput" v-model="formLabelAlign.zonePwd"/>
           </div>
           <div class="addZone-div">
             <span>是否公开</span>
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+  import {mapActions,mapState,mapGetters,mapMutations} from "vuex";
+  import ZoneService from "@/service/ZoneService";
     export default {
         name: "AddZone",
       props: {
@@ -51,6 +53,9 @@
             zonePwd: '',
             isOpen:'',
           },
+          name:'',
+          page:1,
+          size:24,
           showBoolean: false,
         };
       },
@@ -60,6 +65,9 @@
         }
       },
       methods: {
+        ...mapActions([
+          'getZoneList'
+        ]),
         close() {
           this.formLabelAlign= {};
           this.cancel();
@@ -68,7 +76,15 @@
           this.$emit("closeAddZone");
         },
         confirm() {
-          this.$emit("confirmAddZone", this.formLabelAlign);
+          ZoneService.addZone(this.formLabelAlign).then((res)=>{
+            console.log("res",res)
+            if (10000==res.error){
+              this.$message.success("添加成功")
+              this.getZoneList({name:'',page:this.page,size:this.size})
+              this.$emit("confirmAddZone");
+            }
+          });
+
         }
 
       }

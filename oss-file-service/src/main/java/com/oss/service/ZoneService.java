@@ -1,6 +1,7 @@
 package com.oss.service;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.oss.model.Zone;
 import com.oss.tool.BaseService;
 import com.oss.pojo.bo.ZoneBo;
@@ -15,14 +16,14 @@ public interface ZoneService extends BaseService {
      * 查询用户拥有的区域
      * @param userId
      */
-    ResponseResult<Page<ZoneBo>> pageZoneByUserId(Long userId, ZoneListDto zoneListDto);
+    ResponseResult<PageInfo<ZoneBo>> pageZoneByUserId(Long userId, ZoneListDto zoneListDto);
 
     /**
      * 删除区域
-     * @param zoneIds
+     * @param zoneId
      * @return
      */
-    ResponseResult<Integer> deleteZoneByIds(String[] zoneIds);
+    ResponseResult<Integer> deleteZoneById(String zoneId);
 
     /**
      * 添加分区

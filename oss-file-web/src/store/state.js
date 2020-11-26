@@ -8,6 +8,8 @@ const state = {
   myRoleList:[],                       //我的角色
   myZoneList:[],                       //我的角色
   zoneList:[],                           //分区列表
+  zonePage:1,                             //分区页数
+  zoneTotal:0,                            //分区总条数
 
 }
 

@@ -90,13 +90,13 @@ public interface ZoneMapper {
 
     /**
      * 删除分区
-     * @param joinZoneIds
+     * @param zoneId
      * @return
      */
     @Update({
-        "delete from t_zone where id in (${joinZoneIds}) "
+        "delete from t_zone where id = (#{zoneId},jdbcType=BIGINT) "
     })
-    Integer deleteZoneByIds(String joinZoneIds);
+    Integer deleteZoneById(String zoneId);
 
     /**
      * 查询前缀
@@ -205,7 +205,7 @@ public interface ZoneMapper {
     Page<ZoneBo> pageZoneByVisitor(String name);
 
     /**
-     * 分配分区查询分区列表
+     *  分配分区查询分区列表
      * @param name
      * @return
      */
