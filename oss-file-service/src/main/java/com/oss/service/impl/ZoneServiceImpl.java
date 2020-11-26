@@ -63,7 +63,7 @@ public class ZoneServiceImpl implements ZoneService {
 
     @Override
     public ResponseResult deleteZoneById(String zoneId) {
-
+        //todo 这里不能通过前缀删除 如果prefix 路径相同 那么将会全部删除
         String prefix = zoneMapper.selectPrefixByZoneId(zoneId);
         if (ValidateUtil.isEmpty(prefix)){
             return ResponseResult.responseSuccessResult(ErrorCodes.ZONE_NOT_FOUND);

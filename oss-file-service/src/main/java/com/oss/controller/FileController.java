@@ -154,7 +154,8 @@ public class FileController extends BaseController {
      */
     @PostMapping("/delPrefixFile")
     public ResponseModel delPrefixFile(String prefix) {
-        if (ValidateUtil.isEmpty(prefix)) {
+        //todo 传参改为文件id 通过id找到url进行删除
+        if (ValidateUtil.isEmpty(prefix)||"/".equals(prefix)) {
             return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
         }
         //上传文件
