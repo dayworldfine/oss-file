@@ -144,7 +144,7 @@ public class FileSqlProvider {
             sql.AND();
             sql.WHERE("f.file_name like concat('%','#{name,jdbcType=VARCHAR}','%')");
         }
-        sql.ORDER_BY("f.createTime desc");
+        sql.ORDER_BY("f.create_time desc");
 
 
         return sql.toString();
