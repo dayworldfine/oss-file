@@ -1,6 +1,8 @@
 package com.oss.provider;
 
 import com.oss.model.File;
+import com.oss.pojo.dto.FileListDto;
+import com.oss.tool.util.ValidateUtil;
 import org.apache.ibatis.jdbc.SQL;
 
 public class FileSqlProvider {
@@ -119,6 +121,31 @@ public class FileSqlProvider {
             sql.SET("preview_statistics = (preview_statistics +1)");
         }
         sql.WHERE("id = #{fileId,jdbcType=BIGINT}");
+
+        return sql.toString();
+    }
+
+    public String pageFileByZoneId(FileListDto fileListDto){
+        SQL sql = new SQL();
+        sql.SELECT("f.id as id");
+        sql.SELECT("FROM_UNIXTIME(f.create_time/1000,'%Y-%m-%d %H:%i:%s' ) as createTime");
+        sql.SELECT("FROM_UNIXTIME(f.update_time/1000,'%Y-%m-%d %H:%i:%s' ) as updateTime");
+        sql.SELECT("f.file_name as fileName");
+        sql.SELECT("f.suffix as suffix");
+        sql.SELECT("f.url as url");
+        sql.SELECT("f.download_statistics as downloadStatistics");
+        sql.SELECT("f.preview_statistics as previewStatistics");
+        sql.SELECT("u.id as uploadUserId");
+        sql.SELECT("u.nick_name as uploadUserName");
+        sql.SELECT("u.head_portrait as uploadUserImg");
+        sql.FROM("t_file f LEFT JOIN t_user u  on f.upload_user_id = u.id");
+        sql.WHERE(" f.zone_id=#{zoneId,jdbcType=BIGINT}");
+        if (ValidateUtil.isNotEmpty(fileListDto.getName())){
+            sql.AND();
+            sql.WHERE("f.file_name like concat('%','#{name,jdbcType=VARCHAR}','%')");
+        }
+        sql.ORDER_BY("f.createTime desc");
+
 
         return sql.toString();
     }

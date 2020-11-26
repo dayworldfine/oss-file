@@ -22,13 +22,13 @@
         <div class="fun-button-text">删除</div>
       </div>
       <div class="fun-search">
-        <input  placeholder="请输入文件名称" class="fun-search-input"/>
+        <input v-model="searchName" placeholder="请输入文件名称" class="fun-search-input"/>
         <img class="fun-search-img" src="/static/search.png"/>
 
       </div>
     </div>
     <div class="forAll">
-      <div class="document-for" v-for="(item,index) in 30" :key="index"
+      <div class="document-for" v-for="(item,index) in fileList" :key="index"
            :class="putOnIndex==index?'document-for-putOn':''"
            @click="pichOn(index)">
         <img loading="lazy"
@@ -44,7 +44,7 @@
       </div>
     </div>
     <div class="file-page">
-      <Page :total="100"  @on-change="changePage"   simple/>
+      <Page :current="filePage" :total="fileTotal" :page-size="fileSize" @on-change="changePage" simple/>
     </div>
 
 
@@ -52,27 +52,33 @@
 </template>
 
 <script>
+  import {mapActions,mapState,mapGetters,mapMutations} from "vuex";
     export default {
         name: "PcDetail",
+      created() {
+        this.getFileList(
+          {
+            zoneId:this.$route.query.zoneId,
+            name:this.searchName,
+            page:this.filePage,
+            size:this.fileSize,
+          }
+        )
+      },
       data(){
         return{
-          page:1,
-          size:24,
+          fileSize:24,
           putOnIndex:-1,
-          fileList:[
-            {
-              name:121,
-              type:12312,
-            },
-            {
-              name:121,
-              type:12312,
-            }
-          ]
+          searchName:'',
         }
       },
       //计算属性
       computed:{
+        ...mapState([
+          'filePage',
+          'fileTotal',
+          'fileList',
+        ]),
         fileSuffix(){
           return (type)=>{
             let prefix ="/static/";
@@ -91,6 +97,9 @@
         }
       },
       methods:{
+        ...mapActions([
+          'getFileList'
+        ]),
         /** 当前选中状态*/
         pichOn(index){
           this.putOnIndex =index;

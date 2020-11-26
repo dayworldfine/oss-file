@@ -1,5 +1,8 @@
 package com.oss.service;
 
+import com.github.pagehelper.PageInfo;
+import com.oss.pojo.bo.FileBo;
+import com.oss.pojo.dto.FileListDto;
 import com.oss.tool.BaseService;
 import com.oss.tool.ResponseResult;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,11 +15,8 @@ public interface FileService  extends BaseService {
 
     /**
      * 分页查询
-     * @param zoneId
-     * @param page
-     * @param size
      */
-    ResponseResult pageFileByZoneId(String zoneId, Integer page, Integer size);
+    ResponseResult<PageInfo<FileBo>> pageFileByZoneId(FileListDto fileListDto);
 
 
     /**

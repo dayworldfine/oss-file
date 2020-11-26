@@ -2,9 +2,11 @@ package com.oss.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.oss.mapper.FileMapper;
 import com.oss.model.File;
 import com.oss.pojo.bo.FileBo;
+import com.oss.pojo.dto.FileListDto;
 import com.oss.service.FileService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseResult;
@@ -27,11 +29,12 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
-    public ResponseResult pageFileByZoneId(String zoneId, Integer page, Integer size) {
-        PageHelper.startPage(page,size);
+    public ResponseResult<PageInfo<FileBo>> pageFileByZoneId(FileListDto fileListDto) {
+        PageHelper.startPage(fileListDto.getPage(),fileListDto.getSize());
 
-        Page<FileBo> pageInfo = fileMapper.pageFileByZoneId(zoneId);
-        return ResponseResult.responseSuccessResult(pageInfo);
+        Page<FileBo> pageInfo = fileMapper.pageFileByZoneId(fileListDto);
+        PageInfo<FileBo> pageHelper = new PageInfo<FileBo>(pageInfo);
+        return ResponseResult.responseSuccessResult(pageHelper);
     }
 
     @Override

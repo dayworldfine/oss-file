@@ -1,6 +1,7 @@
 import LoginService from '@/service/LoginService'
 import RoleService from '@/service/RoleService'
 import ZoneService from '@/service/ZoneService'
+import FileService from "@/service/FileService";
 
 /**
  * 发送验证码
@@ -54,3 +55,21 @@ export function getMyZonePwd({commit},param) {
     }
   })
 }
+
+
+/**
+ * 查看文件列表
+ * @param commit
+ * @param param
+ */
+export function getFileList({commit},param) {
+  FileService.getFileList(param).then((res)=>{
+    if (10000==res.error){
+      commit('setFileList',res.data.list)
+      commit('setFilePage',res.data.pageNum)
+      commit('setFileTotal',res.data.total)
+    }
+  })
+}
+
+

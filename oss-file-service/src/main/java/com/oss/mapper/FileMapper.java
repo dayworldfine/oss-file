@@ -4,15 +4,9 @@ import com.github.pagehelper.Page;
 
 import com.oss.model.File;
 import com.oss.pojo.bo.FileBo;
+import com.oss.pojo.dto.FileListDto;
 import com.oss.provider.FileSqlProvider;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 
@@ -85,27 +79,28 @@ public interface FileMapper {
     int updateByPrimaryKey(File record);
 
 
-    @Select({
-        "SELECT\n" +
-                "f.id as id,\n" +
-                "FROM_UNIXTIME(f.create_time/1000,'%Y-%m-%d %H:%i:%s' ) as createTime,\n" +
-                "FROM_UNIXTIME(f.update_time/1000,'%Y-%m-%d %H:%i:%s' ) as updateTime,\n" +
-                "f.file_name as fileName,\n" +
-                "f.suffix as suffix,\n" +
-                "f.url as url,\n" +
-                "f.download_statistics as downloadStatistics,\n" +
-                "f.preview_statistics as previewStatistics,\n" +
-                "u.id as uploadUserId,\n" +
-                "u.nick_name as uploadUserName,\n" +
-                "u.head_portrait as uploadUserImg\n" +
-                "FROM\n" +
-                "t_file f\n" +
-                "LEFT JOIN t_user u\n" +
-                "on f.upload_user_id = u.id\n" +
-                "WHERE f.zone_id=#{zoneId,jdbcType=BIGINT} \n" +
-                "ORDER BY createTime desc"
-    })
-    Page<FileBo> pageFileByZoneId(String zoneId);
+//    @Select({
+//        "SELECT\n" +
+//                "f.id as id,\n" +
+//                "FROM_UNIXTIME(f.create_time/1000,'%Y-%m-%d %H:%i:%s' ) as createTime,\n" +
+//                "FROM_UNIXTIME(f.update_time/1000,'%Y-%m-%d %H:%i:%s' ) as updateTime,\n" +
+//                "f.file_name as fileName,\n" +
+//                "f.suffix as suffix,\n" +
+//                "f.url as url,\n" +
+//                "f.download_statistics as downloadStatistics,\n" +
+//                "f.preview_statistics as previewStatistics,\n" +
+//                "u.id as uploadUserId,\n" +
+//                "u.nick_name as uploadUserName,\n" +
+//                "u.head_portrait as uploadUserImg\n" +
+//                "FROM\n" +
+//                "t_file f\n" +
+//                "LEFT JOIN t_user u\n" +
+//                "on f.upload_user_id = u.id\n" +
+//                "WHERE f.zone_id=#{zoneId,jdbcType=BIGINT} \n" +
+//                "ORDER BY createTime desc"
+//    })
+    @SelectProvider(type=FileSqlProvider.class, method="pageFileByZoneId")
+    Page<FileBo> pageFileByZoneId(FileListDto fileListDto);
 
     @Select({
             "select * from t_file ",

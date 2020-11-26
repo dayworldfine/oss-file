@@ -11,6 +11,9 @@ const state = {
   zonePage:1,                             //分区页数
   zoneTotal:0,                            //分区总条数
   zoneSearchKey:'',                       //分区搜索关键字
+  filePage:1,                             //文件页数
+  fileTotal:0,                            //文件总条数
+  fileList:[],                          //文件列表
 
 }
 

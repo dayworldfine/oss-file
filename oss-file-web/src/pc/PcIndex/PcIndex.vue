@@ -91,8 +91,11 @@
       },
       /** 进入分区*/
       goToZone(){
-        this.$router.push("PcDetail");
-        console.log("goToZone")
+        if (this.putOnIndex<0){
+          //意外才会走到这里
+          return;
+        }
+        this.$router.push({name:"PcDetail",query:{zoneId:this.zoneList[this.putOnIndex].id}});
       },
       /** 删除分区*/
       delZone(){

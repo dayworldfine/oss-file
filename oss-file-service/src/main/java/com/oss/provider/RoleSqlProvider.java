@@ -92,7 +92,7 @@ public class RoleSqlProvider {
             sql.AND();
             sql.WHERE("role_name like concat('%',#{name,jdbcType=VARCHAR},'%')");
         }
-        sql.ORDER_BY("id asc");
+        sql.ORDER_BY("id desc");
 
         return sql.toString();
     }

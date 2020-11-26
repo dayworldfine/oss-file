@@ -106,7 +106,7 @@ public class ZoneSqlProvider {
             sb.append(" and z.zone_name like '%"+name+"%'");
         }
 
-        sb.append(" order by z.create_time asc");
+        sb.append(" order by z.create_time desc");
 
         return sb.toString();
     }
@@ -130,7 +130,7 @@ public class ZoneSqlProvider {
             sb.append(" and z.zone_name like '%"+name+"%'");
         }
 
-        sb.append(" order by z.create_time asc");
+        sb.append(" order by z.create_time desc");
 
         return sb.toString();
     }
@@ -148,7 +148,7 @@ public class ZoneSqlProvider {
             sql.AND();
             sql.WHERE("zone_name like concat('%',#{name,jdbcType=VARCHAR},'%')");
         }
-        sql.ORDER_BY("create_time ASC");
+        sql.ORDER_BY("create_time desc");
         return sql.toString();
     }
 }

@@ -1,5 +1,8 @@
 package com.oss.controller;
 
+import com.github.pagehelper.PageInfo;
+import com.oss.pojo.bo.FileBo;
+import com.oss.pojo.dto.FileListDto;
 import com.oss.service.FileService;
 import com.oss.service.LogService;
 import com.oss.service.ZoneService;
@@ -15,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.oss.tool.BaseController;
 import com.oss.service.UploadService;
 import com.oss.tool.util.ValidateUtil;
+
+import javax.validation.Valid;
 
 /**
  * @ClassName：fileController
@@ -60,10 +65,8 @@ public class FileController extends BaseController {
      * }
      */
     @PostMapping("/getFileList")
-    public ResponseModel getFileList(String zoneId,
-                                     Integer page,
-                                     Integer size)  {
-        ResponseResult responseResult =  fileService.pageFileByZoneId(zoneId,page,size);
+    public ResponseModel getFileList(@Valid FileListDto fileListDto)  {
+        ResponseResult<PageInfo<FileBo>> responseResult =  fileService.pageFileByZoneId(fileListDto);
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(ErrorCodes.SERVER_INTERNAL_ERROR);
     }
 

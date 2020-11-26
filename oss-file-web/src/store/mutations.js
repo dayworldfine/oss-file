@@ -62,3 +62,18 @@ export const setZoneTotal = (state, data) =>{
 export const setZoneSearchKey = (state, data) =>{
   state.zoneSearchKey = data
 }
+
+/** 改变文件列表*/
+export const setFileList = (state, data) =>{
+  state.fileList = data
+}
+
+/** 改变文件列表*/
+export const setFilePage = (state, data) =>{
+  state.filePage = data
+}
+
+/** 改变文件列表*/
+export const setFileTotal = (state, data) =>{
+  state.fileTotal = data
+}
