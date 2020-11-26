@@ -6,7 +6,7 @@ export const URL_HTTP_PREFIX = "http://127.0.0.1:9735";
 
 
 // 本地静态图片前缀。
-export const URL_USER_IMG_PREFIX= "https://file.tomtangmu.com";
+export const URL_USER_IMG_PREFIX= "https://resource.tomtangmu.com";
 
 
 //用户协议的链接后缀。
