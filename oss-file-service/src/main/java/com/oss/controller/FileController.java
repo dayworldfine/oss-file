@@ -179,13 +179,12 @@ public class FileController extends BaseController {
      * }
      */
     public ResponseModel downloadFile(String fileId) {
-//        if (ValidateUtil.isEmpty(fileId)) {
-//            return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
-//        }
-//        //上传文件
-//        ResponseResult responseResult =  uploadService.delPrefixFile(fileId);
-//        return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
-        return null;
+        if (ValidateUtil.isEmpty(fileId)) {
+            return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
+        }
+        //下载文件
+        ResponseResult responseResult =  null;
+        return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
     }
 
 

@@ -1,11 +1,11 @@
 <template>
   <div class="PcDetail">
     <div class="fun-button-all">
-      <div class="fun-button">
+      <div class="fun-button"  @click="goBack()">
         <img class="button-img" src="/static/goBack.png"/>
-        <div class="fun-button-text" @click="goBack()">后退</div>
+        <div class="fun-button-text">后退</div>
       </div>
-      <div class="fun-button">
+      <div class="fun-button" @click="downloadFile()">
         <img class="button-img" src="/static/download.png"/>
         <div class="fun-button-text">下载</div>
       </div>
@@ -34,8 +34,8 @@
         <img loading="lazy"
              :src="fileSuffix(12)"
              class="user-img" />
-        <div class="document-for-font">分区名字</div>
-        <div class="document-for-font">下载预览量：1</div>
+        <div class="document-for-font">{{item.fileName+item.suffix}}</div>
+        <div class="document-for-font">下载预览量：{{item.downloadStatistics+item.previewStatistics}}</div>
         <!--      <div class="button-file">-->
         <!--        <Button type="warning" class="button">下载</Button>-->
         <!--        <Button type="warning" class="button">预览</Button>-->
@@ -53,6 +53,7 @@
 
 <script>
   import {mapActions,mapState,mapGetters,mapMutations} from "vuex";
+  import {exportExcel} from '@/util/DownloadUtil'
     export default {
         name: "PcDetail",
       created() {
@@ -108,6 +109,17 @@
         /** 返回*/
         goBack(){
           this.$router.go(-1);
+        },
+        /** 下载文件*/
+        downloadFile(){
+          if (this.putOnIndex<0){
+            this.$message.warning("请选择文件")
+            return;
+          }
+
+          exportExcel("download"+ this.fileList[this.putOnIndex].url,
+            this.fileList[this.putOnIndex].fileName + this.fileList[this.putOnIndex].suffix,{})
+          // exportExcel("download/headImg/wbh.jpg","wbh.jpg",{})
         },
         /** 添加分区*/
         addZone(){

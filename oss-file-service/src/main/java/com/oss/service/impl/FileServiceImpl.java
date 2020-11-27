@@ -42,7 +42,6 @@ public class FileServiceImpl implements FileService {
     @Override
     public ResponseResult<PageInfo<FileBo>> pageFileByZoneId(FileListDto fileListDto) {
         PageHelper.startPage(fileListDto.getPage(),fileListDto.getSize());
-
         Page<FileBo> pageInfo = fileMapper.pageFileByZoneId(fileListDto);
         PageInfo<FileBo> pageHelper = new PageInfo<FileBo>(pageInfo);
         return ResponseResult.responseSuccessResult(pageHelper);
@@ -62,17 +61,8 @@ public class FileServiceImpl implements FileService {
         // 获取文件的后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         System.out.println("上传的后缀名为：" + suffixName);
-
-
-        // Endpoint以杭州为例，其它Region请按实际情况填写。
-        String endpoint = ossUtil.getEndpoint();
-        // 云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，创建并使用RAM子账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建。
-        String accessKeyId = ossUtil.getAccessKeyId();
-        String accessKeySecret = ossUtil.getAccessKeySecret();
-
         // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
-
+        OSS ossClient = new OSSClientBuilder().build(ossUtil.getEndpoint(),ossUtil.getAccessKeyId(), ossUtil.getAccessKeySecret());
         // 上传文件流。
         InputStream inputStream =null;
         try {
@@ -81,11 +71,9 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
             return ResponseResult.responseResultWithErrorCode(ErrorCodes.FILE_SUFFIX);
         }
-
         //上传拼接路径
         String url = prefix+"/"+file.getOriginalFilename();
         ossClient.putObject(ossUtil.getBucketName(), url,inputStream );
-
         // 关闭OSSClient。
         ossClient.shutdown();
         return ResponseResult.responseOK();
@@ -108,7 +96,6 @@ public class FileServiceImpl implements FileService {
         file1.setPreviewStatistics(0l);
         file1.setZoneId(Long.valueOf(zoneId));
         int insert = fileMapper.insert(file1);
-
         return ValidateUtil.isNotCountEmpty(insert)?ResponseResult.responseSuccessResult(id):ResponseResult.responseResultWithErrorCode(ErrorCodes.ADD_ERROR);
     }
 
@@ -134,13 +121,11 @@ public class FileServiceImpl implements FileService {
         if (ValidateUtil.isEmpty(file)){
             return ResponseResult.responseResultWithErrorCode(ErrorCodes.FILE_NOT_FOUND);
         }
-
         OSS ossClient = new OSSClientBuilder().build(ossUtil.getEndpoint(), ossUtil.getAccessKeyId(), ossUtil.getAccessKeySecret());
         // 删除文件。如需删除文件夹，请将ObjectName设置为对应的文件夹名称。如果文件夹非空，则需要将文件夹下的所有object删除后才能删除该文件夹。
         ossClient.deleteObject(ossUtil.getBucketName(), file.getUrl());
         // 关闭OSSClient。
         ossClient.shutdown();
-
         Integer integer = fileMapper.deleteByPrimaryKey(Long.valueOf(fileId));
         return ResponseResult.responseOK();
     }

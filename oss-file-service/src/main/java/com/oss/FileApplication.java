@@ -34,10 +34,6 @@ public class FileApplication {
         myBatisGenerator.generate(null);
     }
 
-    // 初始化 IMM 客户端
-    static IAcsClient client = new DefaultAcsClient(DefaultProfile.getProfile("cn-hangzhou", "LTAIugLGMMRE80v9","bLmjLAOpVXUKoPLCOQXbbY27Vh3VPX"));
-    // 项目名称，请确保该项目已经创建
-    static String projectName = "document";
 
     public static void main(String[] args) {
 
@@ -59,6 +55,11 @@ public class FileApplication {
         //刷新凭证
 //        refreshSign();
     }
+
+    // 初始化 IMM 客户端
+    static IAcsClient client = new DefaultAcsClient(DefaultProfile.getProfile("cn-hangzhou", "LTAIugLGMMRE80v9","bLmjLAOpVXUKoPLCOQXbbY27Vh3VPX"));
+    // 项目名称，请确保该项目已经创建
+    static String projectName = "document";
 
     private static void refreshSign() {
         RefreshOfficePreviewTokenRequest req = new RefreshOfficePreviewTokenRequest();
