@@ -28,6 +28,13 @@ public interface FileService  extends BaseService {
     ResponseResult findFileByNameAndZoneId(String substring, String zoneId);
 
     /**
+     * 上传文件
+     * @param file
+     * @param prefix
+     */
+    ResponseResult uploadFile(MultipartFile file, String prefix);
+
+    /**
      * 添加文件
      * @param file
      * @param prefix
@@ -44,4 +51,11 @@ public interface FileService  extends BaseService {
      * @return
      */
     ResponseResult addFileStatistics(int type, String fileId);
+
+    /**
+     * 删除文件
+     * @param fileId
+     * @return
+     */
+    ResponseResult delFileById(String fileId);
 }

@@ -2,14 +2,13 @@ package com.oss.service.impl;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
-import com.aliyun.oss.model.DeleteObjectsRequest;
-import com.aliyun.oss.model.ListObjectsRequest;
-import com.aliyun.oss.model.OSSObjectSummary;
-import com.aliyun.oss.model.ObjectListing;
+import com.aliyun.oss.model.*;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.oss.mapper.FileMapper;
 import com.oss.mapper.UserInfoZoneMapper;
 import com.oss.mapper.ZoneMapper;
 import com.oss.model.UserInfoZone;
@@ -32,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -42,6 +42,9 @@ public class ZoneServiceImpl implements ZoneService {
 
     @Autowired
     private UserInfoZoneMapper userInfoZoneMapper;
+
+    @Autowired
+    private FileMapper fileMapper;
 
     @Autowired
     private OssUtil ossUtil;
@@ -63,40 +66,43 @@ public class ZoneServiceImpl implements ZoneService {
 
     @Override
     public ResponseResult deleteZoneById(String zoneId) {
-        //todo 这里不能通过前缀删除 如果prefix 路径相同 那么将会全部删除
+        /**
+         *删除过程:
+         *  1.查询这个分区的前缀
+         *  2.查询这个分区下的所有文件
+         *  3.删除这个分区下的所有文件
+         *  4.删除这个分区
+         */
+        //查询这个分区
         String prefix = zoneMapper.selectPrefixByZoneId(zoneId);
         if (ValidateUtil.isEmpty(prefix)){
             return ResponseResult.responseSuccessResult(ErrorCodes.ZONE_NOT_FOUND);
         }
-        //删除oss上的路径
-        // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(ossUtil.getEndpoint(), ossUtil.getAccessKeyId(), ossUtil.getAccessKeySecret());
-        // 列举所有包含指定前缀的文件并删除。
-        String nextMarker = null;
-        ObjectListing objectListing = null;
-        do {
-            ListObjectsRequest listObjectsRequest = new ListObjectsRequest(ossUtil.getBucketName())
-                    .withPrefix(prefix)
-                    .withMarker(nextMarker);
-            objectListing = ossClient.listObjects(listObjectsRequest);
-            if (objectListing.getObjectSummaries().size() > 0) {
-                List<String> keys = new ArrayList<String>();
-                for (OSSObjectSummary s : objectListing.getObjectSummaries()) {
-                    System.out.println("key name: " + s.getKey());
-                    keys.add(s.getKey());
-                }
-                DeleteObjectsRequest deleteObjectsRequest = new DeleteObjectsRequest(ossUtil.getBucketName()).withKeys(keys);
-                ossClient.deleteObjects(deleteObjectsRequest);
-            }
-            nextMarker = objectListing.getNextMarker();
-        } while (objectListing.isTruncated());
-        // 关闭OSSClient。
-        ossClient.shutdown();
+        //查询分区下的所有文件
+        ObjectListing objectListing = ossClient.listObjects(ossUtil.getBucketName(), prefix);
+        List<OSSObjectSummary> sums  = objectListing.getObjectSummaries();
 
-        //删除数据库的数据
+        //筛选这个分区下的文件
+        List<String> keys = sums.stream().filter(p->p.getKey().indexOf(prefix+"/")>=0 && !p.getKey().equals(prefix+"/"))
+                .map(p->p.getKey()).collect(Collectors.toList());
+        //删除oss下的所有文件
+        List<List<String>> fileList = Lists.partition(keys,1000);
+        fileList.forEach(a->{
+            DeleteObjectsResult deleteObjectsResult = ossClient.deleteObjects(new DeleteObjectsRequest(ossUtil.getBucketName()).withKeys(a).withQuiet(true));
+            List<String> deletedObjects = deleteObjectsResult.getDeletedObjects();
+            if (ValidateUtil.isNotEmpty(deletedObjects)){
+                LOGGER.error("文件删除失败:{}",deletedObjects);
+            }
+        });
+        //删除外层文件夹
+        ossClient.deleteObject(ossUtil.getBucketName(), prefix+"/");
+        ossClient.shutdown();
+        //删除数据库这个分区所有文件
+        Integer integer = fileMapper.deleteFileByZoneId(zoneId);
+        //删除这个分区
         Integer num = zoneMapper.deleteZoneById(zoneId);
-        ResponseResult<Integer> result = ResponseResult.responseSuccessResult(num);
-        return result;
+        return ResponseResult.responseOK();
     }
 
     @Override
@@ -174,4 +180,5 @@ public class ZoneServiceImpl implements ZoneService {
         Page<Zone>  zoneList  = zoneMapper.pageQueryZoneByUserId(zoneListDto.getName());
         return ResponseResult.responseSuccessResult(zoneList);
     }
+
 }

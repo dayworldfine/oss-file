@@ -1,5 +1,7 @@
 package com.oss.service.impl;
 
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -10,12 +12,18 @@ import com.oss.pojo.dto.FileListDto;
 import com.oss.service.FileService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseResult;
+import com.oss.tool.util.OssUtil;
 import com.oss.tool.util.SnowUtil;
 import com.oss.tool.util.ValidateUtil;
+import net.sf.saxon.trans.Err;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *
@@ -26,6 +34,9 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     private FileMapper fileMapper;
+
+    @Autowired
+    private OssUtil ossUtil;
 
 
     @Override
@@ -41,6 +52,43 @@ public class FileServiceImpl implements FileService {
     public ResponseResult findFileByNameAndZoneId(String fileName, String zoneId) {
         File file =  fileMapper.findFileByNameAndZoneId(fileName,zoneId);
         return ValidateUtil.isEmpty(file)?ResponseResult.responseOK():ResponseResult.responseResultWithErrorCode(ErrorCodes.FILE_NAME_HAVE);
+    }
+
+    @Override
+    public ResponseResult uploadFile(MultipartFile file, String prefix) {
+        // 获取文件名
+        String fileName = file.getOriginalFilename();
+        System.out.println("上传的文件名为：" + fileName);
+        // 获取文件的后缀名
+        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+        System.out.println("上传的后缀名为：" + suffixName);
+
+
+        // Endpoint以杭州为例，其它Region请按实际情况填写。
+        String endpoint = ossUtil.getEndpoint();
+        // 云账号AccessKey有所有API访问权限，建议遵循阿里云安全最佳实践，创建并使用RAM子账号进行API访问或日常运维，请登录 https://ram.console.aliyun.com 创建。
+        String accessKeyId = ossUtil.getAccessKeyId();
+        String accessKeySecret = ossUtil.getAccessKeySecret();
+
+        // 创建OSSClient实例。
+        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+
+        // 上传文件流。
+        InputStream inputStream =null;
+        try {
+            inputStream=   file.getInputStream();
+        }catch (IOException e){
+            e.printStackTrace();
+            return ResponseResult.responseResultWithErrorCode(ErrorCodes.FILE_SUFFIX);
+        }
+
+        //上传拼接路径
+        String url = prefix+"/"+file.getOriginalFilename();
+        ossClient.putObject(ossUtil.getBucketName(), url,inputStream );
+
+        // 关闭OSSClient。
+        ossClient.shutdown();
+        return ResponseResult.responseOK();
     }
 
     @Override
@@ -68,6 +116,33 @@ public class FileServiceImpl implements FileService {
     public ResponseResult addFileStatistics(int type, String fileId) {
         Integer num = fileMapper.addFileStatistics(type,fileId);
         return ValidateUtil.isNotEmpty(num)?ResponseResult.responseOK():ResponseResult.responseResultWithErrorCode(ErrorCodes.ADD_FILE_STATISTICS_ERROR);
+    }
+
+    /**
+     * 通过id删除文件
+     * @param fileId
+     * @return
+     */
+    @Override
+    public ResponseResult delFileById(String fileId) {
+        /**
+         * 1.通过文件找到前缀
+         * 2.删除OSS
+         * 3.删除数据库
+         */
+        File file= fileMapper.selectByPrimaryKey(Long.valueOf(fileId));
+        if (ValidateUtil.isEmpty(file)){
+            return ResponseResult.responseResultWithErrorCode(ErrorCodes.FILE_NOT_FOUND);
+        }
+
+        OSS ossClient = new OSSClientBuilder().build(ossUtil.getEndpoint(), ossUtil.getAccessKeyId(), ossUtil.getAccessKeySecret());
+        // 删除文件。如需删除文件夹，请将ObjectName设置为对应的文件夹名称。如果文件夹非空，则需要将文件夹下的所有object删除后才能删除该文件夹。
+        ossClient.deleteObject(ossUtil.getBucketName(), file.getUrl());
+        // 关闭OSSClient。
+        ossClient.shutdown();
+
+        Integer integer = fileMapper.deleteByPrimaryKey(Long.valueOf(fileId));
+        return ResponseResult.responseOK();
     }
 
 

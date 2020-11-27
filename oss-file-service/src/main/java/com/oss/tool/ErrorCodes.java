@@ -29,6 +29,7 @@ public class ErrorCodes {
     public static final int ROLE_NOT_OPEN = 20018;
     public static final int ZONE_IS_OPEN = 20019;
     public static final int ZONE_NOT_FOUND = 20020;
+    public static final int FILE_NOT_FOUND = 20021;
 
 
     public static final int SERVICE_SNEAK_OFF= 99999;
@@ -65,6 +66,7 @@ public class ErrorCodes {
         errorCodes.put(20018, "该角色不支持通过密匙获得");
         errorCodes.put(20019, "该分区为游客 无需密钥");
         errorCodes.put(20020, "该分区不存在");
+        errorCodes.put(20021, "该文件不存在");
 
 
         errorCodes.put(99999, "服务器正在开小差~~");

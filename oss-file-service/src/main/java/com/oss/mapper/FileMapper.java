@@ -124,4 +124,14 @@ public interface FileMapper {
 
     @UpdateProvider(type=FileSqlProvider.class, method="addFileStatistics")
     Integer addFileStatistics(int type, String fileId);
+
+    /**
+     * 根据分区id删除所有文件
+     * @param zoneId
+     * @return
+     */
+    @Delete({
+            "delete from t_file where zone_id = #{zoneId,jdbcType=BIGINT}"
+    })
+    Integer deleteFileByZoneId(String zoneId);
 }

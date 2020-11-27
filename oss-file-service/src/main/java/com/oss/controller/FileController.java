@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.oss.tool.BaseController;
-import com.oss.service.UploadService;
 import com.oss.tool.util.ValidateUtil;
 
 import javax.validation.Valid;
@@ -32,8 +31,6 @@ import javax.validation.Valid;
 @RequestMapping("/file")
 public class FileController extends BaseController {
 
-    @Autowired
-    private UploadService uploadService;
 
     @Autowired
     private FileService fileService;
@@ -108,7 +105,7 @@ public class FileController extends BaseController {
                 }
                 String prefix = responseResult.getData().toString();
                 //上传文件
-                ResponseResult result = uploadService.uploadFile(file,prefix);
+                ResponseResult result = fileService.uploadFile(file,prefix);
                 if (result.isError()){
                     return ResponseModel.error(result.getErrorCode());
                 }
@@ -152,14 +149,13 @@ public class FileController extends BaseController {
      * 	"data": "{}"
      * }
      */
-    @PostMapping("/delPrefixFile")
-    public ResponseModel delPrefixFile(String prefix) {
-        //todo 传参改为文件id 通过id找到url进行删除
-        if (ValidateUtil.isEmpty(prefix)||"/".equals(prefix)) {
+    @PostMapping("/delFileById")
+    public ResponseModel delFileById(String fileId) {
+        if (ValidateUtil.isEmpty(fileId)) {
             return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
         }
         //上传文件
-       ResponseResult responseResult =  uploadService.delPrefixFile(prefix);
+       ResponseResult responseResult =  fileService.delFileById(fileId);
         return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
     }
 
@@ -183,12 +179,13 @@ public class FileController extends BaseController {
      * }
      */
     public ResponseModel downloadFile(String fileId) {
-        if (ValidateUtil.isEmpty(fileId)) {
-            return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
-        }
-        //上传文件
-        ResponseResult responseResult =  uploadService.delPrefixFile(fileId);
-        return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
+//        if (ValidateUtil.isEmpty(fileId)) {
+//            return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
+//        }
+//        //上传文件
+//        ResponseResult responseResult =  uploadService.delPrefixFile(fileId);
+//        return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
+        return null;
     }
 
 
