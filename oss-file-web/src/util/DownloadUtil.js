@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { MessageBox, Message } from "element-ui";  // 引入
 export  function exportExcel(url,fileName, options = {}) {
   return new Promise((resolve, reject) => {
     console.log(`${url} 请求数据，参数=>`, JSON.stringify(options))
@@ -29,6 +29,7 @@ export  function exportExcel(url,fileName, options = {}) {
         }
       },
       err => {
+        Message.error("该资源有误,请稍后重试")
         reject(err)
       }
     )

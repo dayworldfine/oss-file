@@ -33,6 +33,11 @@ export default new Router({
       ]
     },
     {
+      path: '/PcPreview',
+      name: 'PcPreview',
+      component: resolve => require(['@/pc/PcPreview/PcPreview.vue'], resolve),
+    },
+    {
       path: '/test',
       name: 'test',
       component: test

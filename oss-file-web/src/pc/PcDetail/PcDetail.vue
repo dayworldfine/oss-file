@@ -9,7 +9,7 @@
         <img class="button-img" src="/static/download.png"/>
         <div class="fun-button-text">下载</div>
       </div>
-      <div class="fun-button">
+      <div class="fun-button" @click="previewFile()">
         <img class="button-img" src="/static/preview.png"/>
         <div class="fun-button-text">在线预览</div>
       </div>
@@ -120,6 +120,14 @@
           exportExcel("download"+ this.fileList[this.putOnIndex].url,
             this.fileList[this.putOnIndex].fileName + this.fileList[this.putOnIndex].suffix,{})
           // exportExcel("download/headImg/wbh.jpg","wbh.jpg",{})
+        },
+        /** 在线预览*/
+        previewFile(){
+          let details = this.$router.resolve({
+            name: "PcPreview",
+            query: {},
+          });
+          window.open(details.href, "_blank")
         },
         /** 添加分区*/
         addZone(){
