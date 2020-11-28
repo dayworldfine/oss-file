@@ -5,7 +5,7 @@
         <img class="button-img" src="/static/goBack.png"/>
         <div class="fun-button-text">后退</div>
       </div>
-      <div class="fun-button" @click="downloadFile()">
+      <div class="fun-button" @click="downloadFile()" >
         <img class="button-img" src="/static/download.png"/>
         <div class="fun-button-text">下载</div>
       </div>
@@ -13,15 +13,17 @@
         <img class="button-img" src="/static/preview.png"/>
         <div class="fun-button-text">在线预览</div>
       </div>
-      <div class="fun-button" @click="uploadFile()">
+      <div class="fun-button" @click="uploadFile()" v-if="userRole.indexOf('superAdmin')>=0 ||userRole.indexOf('admin')>=0 || userRole.indexOf('uploadGeneral')>=0">
         <img class="button-img" src="/static/upload.png"/>
         <div class="fun-button-text">上传</div>
       </div>
-      <div class="fun-button" @click="delFile()">
+      <div class="fun-button" @click="delFile()" v-if="userRole.indexOf('superAdmin')>=0 ||userRole.indexOf('admin')>=0">
         <img class="button-img" src="/static/delete.png"/>
         <div class="fun-button-text">删除</div>
       </div>
-      <div class="fun-search" >
+      <div class="fun-search"  :class="userRole.indexOf('superAdmin')>=0 ?'fun-search-superAdmin'
+                :(userRole.indexOf('admin')>=0?'fun-search-admin'
+                :(userRole.indexOf('uploadGeneral')>=0?'fun-search-uploadGeneral':'fun-search-general'))">
         <input v-model="searchName" placeholder="请输入文件名称" class="fun-search-input"/>
         <img class="fun-search-img" src="/static/search.png" @click="searchFile()"/>
 
@@ -32,15 +34,10 @@
            :class="putOnIndex==index?'document-for-putOn':''"
            @click="pichOn(index)">
         <img loading="lazy"
-             :src="fileSuffix(12)"
+             :src="fileSuffix(item.suffix,item.url)"
              class="user-img" />
-        <div class="document-for-font">{{item.fileName+item.suffix}}</div>
+        <div class="document-for-font">{{item.url}}</div>
         <div class="document-for-font">下载预览量：{{Number(item.downloadStatistics)+Number(item.previewStatistics)}}</div>
-        <!--      <div class="button-file">-->
-        <!--        <Button type="warning" class="button">下载</Button>-->
-        <!--        <Button type="warning" class="button">预览</Button>-->
-        <!--        <Button type="warning" class="button">删除</Button>-->
-        <!--      </div>-->
       </div>
     </div>
     <div class="file-page">
@@ -81,30 +78,67 @@
       //计算属性
       computed:{
         ...mapState([
+          'userRole',
           'filePage',
           'fileTotal',
           'fileList',
         ]),
         fileSuffix(){
-          return (type)=>{
+          return (type,url)=>{
+            if (type =="jpg" || type =="jpeg" || type =="png" || type == "gif"){
+              return this.$BaseUrl.URL_USER_IMG_PREFIX+"/"+url;
+            }
             let prefix ="/static/";
             let suffix ="";
             switch (type) {
-                case "jpg":
-                  suffix ="excel.png";
+              case "jpg":suffix ="image.png";break;
+              case "jpeg":suffix ="image.png";break;
+              case "png":suffix ="image.png";break;
+              case "gif":suffix ="image.png";break;
+              case "ppt":suffix ="ppt.png";break;
+              case "pptx":suffix ="ppt.png";break;
+              case "pptm":suffix ="ppt.png";break;
+              case "ppsx":suffix ="ppt.png";break;
+              case "ppsm":suffix ="ppt.png";break;
+              case "pps":suffix ="ppt.png";break;
+              case "potx":suffix ="ppt.png";break;
+              case "potm":suffix ="ppt.png";break;
+              case "dpt":suffix ="ppt.png";break;
+              case "dps":suffix ="ppt.png";break;
+              case "et":suffix ="xls.png";break;
+              case "xls":suffix ="xls.png";break;
+              case "xlt":suffix ="xls.png";break;
+              case "xlsx":suffix ="xls.png";break;
+              case "xlsm":suffix ="xls.png";break;
+              case "xltx":suffix ="xls.png";break;
+              case "xltm":suffix ="xls.png";break;
+              case "csv":suffix ="xls.png";break;
+              case "doc":suffix ="text.png";break;
+              case "docx":suffix ="text.png";break;
+              case "txt":suffix ="text.png";break;
+              case "wps":suffix ="text.png";break;
+              case "wpt":suffix ="text.png";break;
+              case "dotx":suffix ="text.png";break;
+              case "docm":suffix ="text.png";break;
+              case "dotm":suffix ="text.png";break;
+              case "pdf":suffix ="pdf.png";break;
+              case "rar":suffix ="zip.png";break;
+              case "zip":suffix ="zip.png";break;
                 break;
                 default:
-                  suffix ="zip.png";
+                  suffix ="other.png";
                   break;
             }
             return prefix+suffix;
-
           };
         }
       },
       methods:{
         ...mapActions([
           'getFileList'
+        ]),
+        ...mapMutations([
+          'setFilePage'
         ]),
         /** 修改头像事件*/
         confirmUploadFile(){
@@ -154,7 +188,7 @@
             return;
           }
           if (!checkDocumentType(this.fileList[this.putOnIndex].suffix)){
-            this.$message.warning("该文档不支持在线预览，请下载使用")
+            this.$message.warning("该文件不支持在线预览，请下载使用")
             return;
           }
           let details = this.$router.resolve({
@@ -196,11 +230,14 @@
         },
         /** 搜素文件*/
         searchFile(){
+          this.setFilePage(1);
           this.getFileList({zoneId:localStorage.getItem("zoneId"), name:this.searchName, page:this.filePage, size:this.fileSize})
         },
         /** 页面事件发生改变*/
         changePage(page){
           console.log("页面",page)
+          this.setFilePage(page)
+          this.getFileList({zoneId:localStorage.getItem("zoneId"), name:this.searchName, page:this.filePage, size:this.fileSize})
         },
       }
     }
@@ -232,12 +269,24 @@
     border: 1px solid rgb(55, 213, 255);
   }
   .fun-search{
-    position: absolute;
-    right: 65px;
+    position: relative;
     display: flex;
     justify-content: flex-start;
     padding-top: 10px;
   }
+  .fun-search-superAdmin{
+    margin-left: 600px;
+  }
+  .fun-search-admin{
+    margin-left: 600px;
+  }
+  .fun-search-uploadGeneral{
+    margin-left: 680px;
+  }
+  .fun-search-general{
+    margin-left: 760px;
+  }
+
   .fun-search-input{
     outline-style: none ;
     border: 1px solid #ccc;
@@ -287,7 +336,8 @@
     flex-direction: column;
     box-sizing: border-box;
     cursor:pointer;
-    margin: 10px;
+    margin: 2px 10px 2px 10px;
+    overflow:hidden;
   }
   .document-for:hover{
     background-color:rgb(242, 250, 255);
@@ -297,7 +347,7 @@
     border: 1px solid rgb(55, 213, 255);
   }
   .document-for-font{
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   .user-img {
     width: 80px;
@@ -314,6 +364,6 @@
     display: flex;
     justify-content: flex-end;
     padding-right: 40px;
-    margin-bottom: 30px;
+    margin-top: 10px;
   }
 </style>

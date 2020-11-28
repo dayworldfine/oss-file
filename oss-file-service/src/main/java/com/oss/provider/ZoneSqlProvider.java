@@ -125,7 +125,7 @@ public class ZoneSqlProvider {
                 "        z.zone_name as zoneName," +
                 "        z.zone_prefix as zonePrefix " +
                 "        FROM t_zone z " +
-                "        where and z.is_open =1 ");
+                "        where z.is_open =1 ");
         if (ValidateUtil.isNotEmpty(name)){
             sb.append(" and z.zone_name like '%"+name+"%'");
         }

@@ -13,10 +13,10 @@
         <img class="button-img" src="/static/delete.png"/>
         <div class="fun-button-text" >删除分区</div>
       </div>
-      <div class="fun-search" :class="userRole.indexOf('superAdmin')>=0?'fun-search-superAdmin':'fun-search-general'"
-           @click="search()">
+      <div class="fun-search" :class="userRole.indexOf('superAdmin')>-1?'fun-search-superAdmin':'fun-search-general'"
+          >
         <input v-model="zoneSearch"  placeholder="请输入分区名称" class="fun-search-input"/>
-        <img class="fun-search-img" src="/static/search.png" />
+        <img class="fun-search-img" src="/static/search.png"  @click="search()" />
       </div>
     </div>
     <div class="forAll">
@@ -87,6 +87,7 @@
         'setZoneList',
         'setZoneSearchKey',
         'setPresentZoneId',
+        'setZonePage'
       ]),
       /** 当前选中状态*/
       pichOn(index){
@@ -129,12 +130,14 @@
       },
       /** 搜索事件*/
       search(){
+        this.setZonePage(1)
         this.getZoneList({name:this.zoneSearch,page:this.zonePage,size:this.zoneSize})
       },
       /** 页面事件发生改变*/
       changePage(page){
         console.log("页面",page)
-        this.getZoneList({name:'',page:1,size:1});
+        this.setZonePage(page)
+        this.getZoneList({name:this.zoneSearch,page:this.zonePage,size:this.zoneSize})
       },
     }
   }
@@ -176,7 +179,7 @@
     margin-left: 910px;
   }
   .fun-search-general{
-    margin-left: 1190px;
+    margin-left: 1060px;
   }
   .fun-search-input{
     outline-style: none ;

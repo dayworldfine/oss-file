@@ -68,12 +68,12 @@ export const setFileList = (state, data) =>{
   state.fileList = data
 }
 
-/** 改变文件列表*/
+/** 改变文件页数*/
 export const setFilePage = (state, data) =>{
   state.filePage = data
 }
 
-/** 改变文件列表*/
+/** 改变文件总条数*/
 export const setFileTotal = (state, data) =>{
   state.fileTotal = data
 }

@@ -13,9 +13,10 @@
             <Button type="warning" class="button" @click="myZone()">我的分区</Button>
             <Button type="warning" class="button" @click="enterRole()">输入角色密匙</Button>
             <Button type="warning" class="button" @click="enterZone()">输入分区密匙</Button>
-            <Button type="warning" class="button" @click="allotZone()">分配分区</Button>
-            <Button type="warning" class="button" @click="allotRole()">分配角色</Button>
-            <Button type="warning" class="button" @click="addZone()">添加分区</Button>
+            <Button type="warning" class="button" @click="allotZone()" v-if="userRole.indexOf('superAdmin')>-1">分配分区</Button>
+            <Button type="warning" class="button" @click="allotRole()" v-if="userRole.indexOf('superAdmin')>-1">分配角色</Button>
+            <Button type="warning" class="button" @click="addZone()" v-if="userRole.indexOf('superAdmin')>-1">添加分区</Button>
+            <Button type="warning" class="button" @click="outLogin()">退出登录</Button>
           </div>
         </div>
         <div class="user" v-if="!isLogin">
@@ -48,6 +49,7 @@
 <script>
   import {mapState, mapActions, mapMutations} from 'vuex'
   import LoginService from "@/service/LoginService";
+  import FileService from "@/service/FileService";
   export default {
     name: "Pc",
     data() {
@@ -71,6 +73,7 @@
       let account = localStorage.getItem("account");
       let passWord = localStorage.getItem("passWord");
       if (account=='' || account==undefined || passWord=='' || passWord==undefined){
+        this.getZoneList({name:'',page:1,size:24});
         return;
       }
       LoginService.login({account:account,passWord:passWord}).then((res)=>{
@@ -117,6 +120,11 @@
         'setUserNickName',
         'setUserImg',
         'setUserRole',
+        'setMyZoneList',
+        'setZoneList',
+        'setZonePage',
+        'setZoneTotal',
+        'setZoneSearchKey',
       ]),
       /** 注册*/
       register(){
@@ -159,6 +167,27 @@
       /** 添加分区*/
       addZone(){
         this.addZoneVisible=true;
+      },
+      /** 退出登录*/
+      outLogin(){
+        this.$confirm('确认退出登录吗? ', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          localStorage.clear();
+          this.setIsLogin(0)
+          this.setUserId('0')
+          this.setUserNickName('昵称')
+          this.setUserImg('/headImg/defaultUserImg.png')
+          this.setUserRole([])
+          this.setZonePage(1)
+          this.setZoneTotal(1)
+          this.setZoneSearchKey('')
+          this.getZoneList({name:'',page:1,size:24});
+
+        }).catch(() => {
+        });
       },
       /** 分配分区*/
       allotZone(){
@@ -270,7 +299,7 @@
     height: 100vh;
     /*width: 100%;*/
     min-width: 1024px;
-    overflow-y: scroll;
+    overflow-y: hidden;
     background-color: #FFFFFF;
   }
 
