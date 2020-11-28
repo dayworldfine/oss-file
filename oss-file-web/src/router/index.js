@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import test from '@/pc/test'
-import pcIndex from '@/pc/PcIndex/PcIndex'
+import PcIndex from '@/pc/PcIndex/PcIndex'
 import testUpload from '@/pc/testUpload'
 
 
@@ -12,8 +12,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'pcIndex',
-      component: pcIndex
+      redirect: '/PcIndex',
     },
     {
       path: '/Pc',

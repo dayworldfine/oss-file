@@ -266,8 +266,10 @@
     /*box-sizing: border-box;*/
     margin: 0;
     padding: 0;
-    height: 100%;
+    /*height: 100%;*/
+    height: 100vh;
     /*width: 100%;*/
+    min-width: 1024px;
     overflow-y: scroll;
     background-color: #FFFFFF;
   }
@@ -275,6 +277,7 @@
   .outer {
     margin: 50px;
     width: 1820px;
+    /*width: 95%;*/
     /*height: 880px;*/
     border: 1px solid #c2abab;
     display: flex;
@@ -298,6 +301,7 @@
 
   .user {
     width: 320px;
+    min-width: 320px;
     box-sizing: border-box;
     padding-top: 30px;
     box-sizing: border-box;
@@ -331,11 +335,6 @@
 
   .document {
     box-sizing: border-box;
-    /*width: 1500px;*/
-    /*display: flex;*/
-    /*flex-wrap: wrap;*/
-    /*flex-direction: row;*/
-    /*justify-content: space-around;*/
   }
 
 </style>

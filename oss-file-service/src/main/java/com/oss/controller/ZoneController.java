@@ -13,9 +13,11 @@ import com.oss.service.ZoneService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.ResponseResult;
+import com.oss.tool.param.OssParam;
 import com.oss.tool.shiro.ShiroHandler;
 import com.oss.tool.util.SnowUtil;
 import com.oss.tool.util.ValidateUtil;
+import net.sf.saxon.trans.Err;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,7 +87,9 @@ public class ZoneController extends BaseController {
     @PostMapping("/addZone")
     public ResponseModel addZone( @Valid ZoneDto zoneDto)  {
         //无需添加oss上的路径
-
+        if(OssParam.USER_IMG_PREFIX.equals(zoneDto.getZoneName())){
+            return ResponseModel.error(ErrorCodes.IS_IMG_ZONE);
+        }
         //添加数据库的数据
         ResponseResult responseResult = zoneService.addZone(zoneDto);
         return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());

@@ -155,6 +155,7 @@
     margin: 5px 10px 5px 10px;
     display: flex;
     cursor:pointer;
+    justify-content: flex-start;
   }
   .fun-button:hover{
     background-color: rgb(218, 245, 255);
@@ -167,10 +168,10 @@
     padding-top: 10px;
   }
   .fun-search-superAdmin{
-    margin-left: 990px;
+    margin-left: 910px;
   }
   .fun-search-general{
-    margin-left: 1270px;
+    margin-left: 1190px;
   }
   .fun-search-input{
     outline-style: none ;
@@ -198,6 +199,8 @@
   .fun-button-text{
     margin-left: 20px;
     margin-top: 5px;
+    text-align: left;
+    width: 70px;
   }
   .button-img{
     width: 30px;
