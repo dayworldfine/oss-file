@@ -8,7 +8,10 @@ import com.github.pagehelper.PageHelper;
 import com.oss.mapper.*;
 import com.oss.model.*;
 import com.oss.pojo.dto.RegisterDto;
+import com.oss.pojo.dto.RetrievePwdDto;
 import com.oss.pojo.dto.UserSelectKeyDto;
+import com.oss.pojo.vo.RoleVo;
+import com.oss.pojo.vo.UserVo;
 import com.oss.service.UserService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseResult;
@@ -61,10 +64,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseResult pageUserBySelectKey(UserSelectKeyDto userSelectKeyDto) {
+    public ResponseResult<Page<UserVo>> pageUserBySelectKey(UserSelectKeyDto userSelectKeyDto) {
         PageHelper.startPage(userSelectKeyDto.getPage(),userSelectKeyDto.getSize());
 
-        Page<User> pageInfo = userMapper.pageSelectKeyUser(userSelectKeyDto.getParamKey());
+        Page<UserVo> pageInfo = userMapper.pageSelectKeyUser(userSelectKeyDto.getParamKey());
         return ResponseResult.responseSuccessResult(pageInfo);
     }
 
@@ -121,7 +124,7 @@ public class UserServiceImpl implements UserService {
         /** 查看这个用户是否已经拥有这个角色*/
         UserInfoRole userInfoRole = userInfoRoleMapper.selectByRoleId(userId,role.getId());
         if (ValidateUtil.isNotEmpty(userInfoRole)){
-            return ResponseResult.responseResultWithErrorCode(ErrorCodes.ERROR_ZONE_IS_HAVE);
+            return ResponseResult.responseResultWithErrorCode(ErrorCodes.ERROR_ROLE_IS_HAVE);
         }
         /**添加记录*/
         UserInfoRole uir = new UserInfoRole();
@@ -180,7 +183,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseResult addUser(RegisterDto registerDto) {
         User user = new User();
-        user.setId(SnowUtil.generateId());
+        Long userId = SnowUtil.generateId();
+        user.setId(userId);
         user.setCreateTime(System.currentTimeMillis());
         user.setUpdateTime(System.currentTimeMillis());
         user.setVersion(1l);
@@ -189,6 +193,16 @@ public class UserServiceImpl implements UserService {
         user.setAccount(Long.valueOf(registerDto.getAccount()));
         user.setPwd(MD5Util.StringMD5(registerDto.getPwd()));
         int insert = userMapper.insert(user);
+
+        UserInfoRole userInfoRole = new UserInfoRole();
+        userInfoRole.setId(SnowUtil.generateId());
+        userInfoRole.setCreateTime(System.currentTimeMillis());
+        userInfoRole.setUpdateTime(System.currentTimeMillis());
+        userInfoRole.setVersion(1l);
+        userInfoRole.setUserId(userId);
+        userInfoRole.setRoleId(4l);
+        int userInfoCount = userInfoRoleMapper.insert(userInfoRole);
+
         return ValidateUtil.isNotCountEmpty(insert)?ResponseResult.responseOK():ResponseResult.responseResultWithErrorCode(ErrorCodes.ADD_ERROR);
     }
 
@@ -198,8 +212,8 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public ResponseResult<List<Role>> selectRoleByUserId(Long userId) {
-        List<Role> roleList = userMapper.selectRoleByUserId(userId);
+    public ResponseResult<List<RoleVo>> selectRoleByUserId(Long userId) {
+        List<RoleVo> roleList = userMapper.selectRoleByUserId(userId);
         return ResponseResult.responseSuccessResult(roleList);
     }
 
@@ -216,8 +230,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public ResponseResult<List<Role>> getMyRolePwd(long userId) {
-        List<Role> roleList = userMapper.getMyRolePwd(userId);
+    public ResponseResult<List<RoleVo>> getMyRolePwd(long userId) {
+        List<RoleVo> roleList = userMapper.getMyRolePwd(userId);
         return ResponseResult.responseSuccessResult(roleList);
     }
 
@@ -275,5 +289,16 @@ public class UserServiceImpl implements UserService {
         Integer num = userMapper.updateUserImg(userId,"/"+url);
 
         return  ValidateUtil.isNotCountEmpty(num)?ResponseResult.responseSuccessResult("/"+url):ResponseResult.responseResultWithErrorCode(ErrorCodes.UPDATE_ERROR);
+    }
+
+    /**
+     * 修改用户密码
+     * @param retrievePwdDto
+     * @return
+     */
+    @Override
+    public ResponseResult updateUserPwd(RetrievePwdDto retrievePwdDto) {
+        Integer integer = userMapper.updateUserPwd(retrievePwdDto);
+        return ResponseResult.responseOK();
     }
 }

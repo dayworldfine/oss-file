@@ -17,6 +17,7 @@ import com.oss.pojo.bo.ZoneBo;
 import com.oss.pojo.bo.ZonePwdBo;
 import com.oss.pojo.dto.ZoneDto;
 import com.oss.pojo.dto.ZoneListDto;
+import com.oss.pojo.vo.ZoneVo;
 import com.oss.service.ZoneService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseResult;
@@ -175,9 +176,9 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     @Override
-    public ResponseResult<Page<Zone>> pageQueryZoneByUserId(ZoneListDto zoneListDto) {
+    public ResponseResult<Page<ZoneVo>> pageQueryZoneByUserId(ZoneListDto zoneListDto) {
         PageHelper.startPage(zoneListDto.getPage(),zoneListDto.getSize());
-        Page<Zone>  zoneList  = zoneMapper.pageQueryZoneByUserId(zoneListDto.getName());
+        Page<ZoneVo>  zoneList  = zoneMapper.pageQueryZoneByUserId(zoneListDto.getName());
         return ResponseResult.responseSuccessResult(zoneList);
     }
 

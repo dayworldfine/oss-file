@@ -76,9 +76,11 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/app/**","anon");
         filterChainDefinitionMap.put("/login/sendSms","anon");
         filterChainDefinitionMap.put("/login/register","anon");
+        filterChainDefinitionMap.put("/login/retrievePwd","anon");
         filterChainDefinitionMap.put("/login/textRedis","anon");
         filterChainDefinitionMap.put("/zone/getZoneList","anon");
         filterChainDefinitionMap.put("/file/getFileList","anon");
+
 
         //登录用户才可以访问
         filterChainDefinitionMap.put("/authc/**","authc");
@@ -163,7 +165,8 @@ public class ShiroConfig {
         RedisCacheManager  redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(getRedisManager());
         //设置过期时间，单位是秒，
-        redisCacheManager.setExpire(60*60*24);
+//        redisCacheManager.setExpire(60*60*24);
+        redisCacheManager.setExpire(-1);
         return redisCacheManager;
     }
 

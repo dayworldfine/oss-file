@@ -60,7 +60,7 @@
         confirm(){
           ZoneService.getZoneKey({pwd:this.roleKey}).then((res)=>{
             if (10000==res.error){
-              this.getZoneList({name:'',page:1,size:10});
+              this.getZoneList({name:'',page:1,size:24});
               this.$emit("confirmEnterZone");
             }
           })

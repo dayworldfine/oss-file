@@ -3,6 +3,7 @@ package com.oss.pojo.dto;
 import com.google.common.collect.Lists;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -15,8 +16,8 @@ import java.util.List;
  **/
 @Data
 public class RoleAllotDto {
-    @NotNull(message = "userId不得为空")
+    @NotEmpty(message = "请至少选择一个用户")
     private List<String> userIdList = Lists.newArrayList();
-    @NotNull(message = "roleIdList不得为空")
+    @NotNull(message = "缺少角色列表参数")
     private List<String> roleIdList = Lists.newArrayList();
 }

@@ -42,7 +42,7 @@
     <AllotRole :allotRoleVisible="allotRoleVisible" @confirmAllotRole="confirmAllotRole" @closeAllotRole="closeAllotRole"></AllotRole>
     <Register :registerVisible="registerVisible" @confirmRegister="confirmRegister" @closeRegister="closeRegister"></Register>
     <Login :loginVisible="loginVisible" @confirmLogin="confirmLogin" @closeLogin="closeLogin"></Login>
-    <ForGetPwd :forGetPwdVisible="forGetPwdVisible" @confirmLogin="confirmLogin" @closeLogin="closeLogin"></ForGetPwd>
+    <ForGetPwd :forGetPwdVisible="forGetPwdVisible" @confirmForGetPwd="confirmForGetPwd" @closeForGetPwd="closeForGetPwd"></ForGetPwd>
   </div>
 </template>
 
@@ -176,7 +176,7 @@
           type: 'warning'
         }).then(() => {
           localStorage.clear();
-          this.setIsLogin(0)
+          this.setIsLogin(false)
           this.setUserId('0')
           this.setUserNickName('昵称')
           this.setUserImg('/headImg/defaultUserImg.png')

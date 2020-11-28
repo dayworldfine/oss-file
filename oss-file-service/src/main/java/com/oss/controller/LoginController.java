@@ -10,7 +10,9 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.oss.mapper.RoleMapper;
 import com.oss.model.Role;
+import com.oss.pojo.dto.RetrievePwdDto;
 import com.oss.pojo.vo.LoginVo;
+import com.oss.pojo.vo.RoleVo;
 import com.oss.tool.*;
 import com.oss.model.User;
 import com.oss.pojo.dto.RegisterDto;
@@ -155,7 +157,7 @@ public class LoginController extends BaseController {
             subject.login(usernamePasswordToken);
             System.out.println("token:"+subject.getSession().getId());
             User user = (User) subject.getPrincipals().getPrimaryPrincipal();
-            ResponseResult<List<Role>>  roleResponse = userService.getMyRolePwd(user.getId());
+            ResponseResult<List<RoleVo>>  roleResponse = userService.getMyRolePwd(user.getId());
             List<String> roleList = roleResponse.getData().stream().map(p -> p.getCode()).collect(Collectors.toList());
             LoginVo loginVo = new LoginVo();
             loginVo.setToken(String.valueOf(subject.getSession().getId()));
@@ -165,6 +167,23 @@ public class LoginController extends BaseController {
             e.printStackTrace();
             return ResponseModel.error(ErrorCodes.USER_PWD_ERROR);
         }
+    }
+
+    /**
+     * 找回密码
+     * @return
+     */
+    @PostMapping("/retrievePwd")
+    public ResponseModel retrievePwd (@Valid RetrievePwdDto retrievePwdDto){
+        if (!retrievePwdDto.getCode().equals(redisUtil.get(retrievePwdDto.getAccount(),15))){
+            return  ResponseModel.error(ErrorCodes.CODE_ERROR);
+        }
+        ResponseResult<User> userResponseResult = userService.findUserByAccount(retrievePwdDto.getAccount());
+        if (ValidateUtil.isEmpty(userResponseResult.getData())){
+            return ResponseModel.error(ErrorCodes.USER_IS_NOT_HAVE);
+        }
+        ResponseResult responseResult = userService.updateUserPwd(retrievePwdDto);
+        return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
     }
 
     @PostMapping("/textRedis")

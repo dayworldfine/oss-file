@@ -3,6 +3,7 @@ package com.oss.tool.shiro;
 import com.oss.model.Permission;
 import com.oss.model.Role;
 import com.oss.model.User;
+import com.oss.pojo.vo.RoleVo;
 import com.oss.service.UserService;
 import com.oss.tool.ResponseResult;
 import com.oss.tool.util.ValidateUtil;
@@ -45,12 +46,12 @@ public class CustomRealm extends AuthorizingRealm {
         System.out.println("-----------------进行权限校验的时候会调用-----------------");
 
        User user = (User)principalCollection.getPrimaryPrincipal();
-       ResponseResult<List<Role>> roleResult = userService.selectRoleByUserId(user.getId());
-        List<Role> roleList = roleResult.getData();
+       ResponseResult<List<RoleVo>> roleResult = userService.selectRoleByUserId(user.getId());
+        List<RoleVo> roleList = roleResult.getData();
         List<String> roles = roleList.stream().map(p -> p.getCode()).collect(Collectors.toList());
         List<String> permissions =new ArrayList<>();
         if (ValidateUtil.isNotEmpty(roleList)){
-            String roleJoin = roleList.stream().map(p->String.valueOf(p.getId())).collect(Collectors.joining(","));
+            String roleJoin = roleList.stream().map(p->p.getId()).collect(Collectors.joining(","));
            ResponseResult<List<Permission>> permissionResult = userService.selectPermissionByRoleIds(roleJoin);
             permissions=permissionResult.getData().stream().map(p->p.getCode()).collect(Collectors.toList());
         }

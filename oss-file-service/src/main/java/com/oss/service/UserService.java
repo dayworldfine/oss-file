@@ -1,7 +1,11 @@
 package com.oss.service;
 
+import com.github.pagehelper.Page;
 import com.oss.model.Permission;
 import com.oss.model.Role;
+import com.oss.pojo.dto.RetrievePwdDto;
+import com.oss.pojo.vo.RoleVo;
+import com.oss.pojo.vo.UserVo;
 import com.oss.tool.BaseService;
 import com.oss.model.User;
 import com.oss.pojo.dto.RegisterDto;
@@ -32,7 +36,7 @@ public interface UserService extends BaseService {
      * @param userSelectKeyDto
      * @return
      */
-    ResponseResult pageUserBySelectKey(UserSelectKeyDto userSelectKeyDto);
+    ResponseResult<Page<UserVo>> pageUserBySelectKey(UserSelectKeyDto userSelectKeyDto);
 
     /**
      * 用户输入分区密匙获得分区
@@ -78,7 +82,7 @@ public interface UserService extends BaseService {
      * @param userId
      * @return
      */
-    ResponseResult<List<Role>> selectRoleByUserId(Long userId);
+    ResponseResult<List<RoleVo>> selectRoleByUserId(Long userId);
 
     /**
      * 查询用户拥有权限
@@ -93,7 +97,7 @@ public interface UserService extends BaseService {
      * @param userId
      * @return
      */
-    ResponseResult<List<Role>> getMyRolePwd(long userId);
+    ResponseResult<List<RoleVo>> getMyRolePwd(long userId);
 
     /**
      * 修改用户名称
@@ -109,4 +113,11 @@ public interface UserService extends BaseService {
      * @return
      */
     ResponseResult updateUserImg(MultipartFile file, Long userId);
+
+    /**
+     * 修改用户密码
+     * @param retrievePwdDto
+     * @return
+     */
+    ResponseResult updateUserPwd(RetrievePwdDto retrievePwdDto);
 }

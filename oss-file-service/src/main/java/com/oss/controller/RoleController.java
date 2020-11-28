@@ -3,6 +3,7 @@ package com.oss.controller;
 import com.github.pagehelper.Page;
 import com.oss.model.Role;
 import com.oss.pojo.dto.RoleListDto;
+import com.oss.pojo.vo.RoleVo;
 import com.oss.tool.BaseController;
 import com.oss.pojo.dto.RoleAllotDto;
 import com.oss.pojo.dto.ZoneAllotDto;
@@ -65,8 +66,8 @@ public class RoleController extends BaseController {
      * }
      */
     @PostMapping("/getRoleList")
-    public ResponseModel<Page<Role>> getRoleList(@Valid RoleListDto roleListDto)  {
-        ResponseResult<Page<Role>> responseResult = roleService.getRoleList(roleListDto);
+    public ResponseModel<Page<RoleVo>> getRoleList(@Valid RoleListDto roleListDto)  {
+        ResponseResult<Page<RoleVo>> responseResult = roleService.getRoleList(roleListDto);
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }
 
@@ -148,7 +149,7 @@ public class RoleController extends BaseController {
      */
     @PostMapping("/getMyRolePwd")
     public ResponseModel getMyRolePwd()  {
-        ResponseResult<List<Role>>  responseResult = userService.getMyRolePwd(ShiroHandler.getUserId());
+        ResponseResult<List<RoleVo>>  responseResult = userService.getMyRolePwd(ShiroHandler.getUserId());
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }
 

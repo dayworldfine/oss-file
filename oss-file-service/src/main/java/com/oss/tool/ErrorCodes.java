@@ -31,6 +31,8 @@ public class ErrorCodes {
     public static final int ZONE_NOT_FOUND = 20020;
     public static final int FILE_NOT_FOUND = 20021;
     public static final int IS_IMG_ZONE = 20022;
+    public static final int ERROR_ROLE_IS_HAVE = 20023;
+    public static final int USER_IS_NOT_HAVE = 20024;
 
 
     public static final int SERVICE_SNEAK_OFF= 99999;
@@ -69,6 +71,8 @@ public class ErrorCodes {
         errorCodes.put(20020, "该分区不存在");
         errorCodes.put(20021, "该文件不存在");
         errorCodes.put(20022, "该分区名与头像专区冲突，请另选名称");
+        errorCodes.put(20023, "已经拥有该角色");
+        errorCodes.put(20024, "该用户不存在");
 
 
         errorCodes.put(99999, "服务器正在开小差~~");

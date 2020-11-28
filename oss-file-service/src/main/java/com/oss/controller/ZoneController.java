@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.oss.model.Zone;
 import com.oss.pojo.bo.ZonePwdBo;
+import com.oss.pojo.vo.ZoneVo;
 import com.oss.tool.BaseController;
 import com.oss.pojo.bo.ZoneBo;
 import com.oss.pojo.dto.ZoneDto;
@@ -61,7 +62,7 @@ public class ZoneController extends BaseController {
      */
     @PostMapping("/queryZoneByParam")
     public ResponseModel queryZoneByParam(@Valid ZoneListDto zoneListDto)  {
-        ResponseResult<Page<Zone>> zoneBoPage = zoneService.pageQueryZoneByUserId(zoneListDto);
+        ResponseResult<Page<ZoneVo>> zoneBoPage = zoneService.pageQueryZoneByUserId(zoneListDto);
         return ResponseModel.success(zoneBoPage.getData());
     }
 

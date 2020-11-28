@@ -3,6 +3,7 @@ package com.oss.mapper;
 import com.github.pagehelper.Page;
 import com.oss.model.Role;
 import com.oss.pojo.dto.RoleListDto;
+import com.oss.pojo.vo.RoleVo;
 import com.oss.provider.RoleSqlProvider;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -66,7 +67,7 @@ public interface RoleMapper {
     int updateByPrimaryKey(Role record);
 
     @SelectProvider(type=RoleSqlProvider.class, method="getRoleList")
-    Page<Role> getRoleList(String name);
+    Page<RoleVo> getRoleList(String name);
 
     /**
      * 根据密匙查询角色

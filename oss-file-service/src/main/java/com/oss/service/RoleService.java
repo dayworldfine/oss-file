@@ -3,6 +3,7 @@ package com.oss.service;
 import com.github.pagehelper.Page;
 import com.oss.model.Role;
 import com.oss.pojo.dto.RoleListDto;
+import com.oss.pojo.vo.RoleVo;
 import com.oss.tool.BaseService;
 import com.oss.pojo.dto.RoleAllotDto;
 import com.oss.pojo.dto.ZoneAllotDto;
@@ -23,7 +24,7 @@ public interface RoleService extends BaseService {
      * 查询角色列表
      * @return
      */
-    ResponseResult<Page<Role>>  getRoleList(RoleListDto roleListDto);
+    ResponseResult<Page<RoleVo>>  getRoleList(RoleListDto roleListDto);
 
     /**
      * 分配权限
@@ -33,7 +34,7 @@ public interface RoleService extends BaseService {
     ResponseResult allotRole(RoleAllotDto roleAllotDto);
 
     /**
-     * 分配角色
+     * 分配分区
      * @param zoneAllotDto
      * @return
      */

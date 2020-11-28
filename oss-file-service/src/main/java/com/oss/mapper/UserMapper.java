@@ -4,6 +4,9 @@ import com.github.pagehelper.Page;
 import com.oss.model.Permission;
 import com.oss.model.Role;
 import com.oss.model.User;
+import com.oss.pojo.dto.RetrievePwdDto;
+import com.oss.pojo.vo.RoleVo;
+import com.oss.pojo.vo.UserVo;
 import com.oss.provider.UserSqlProvider;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -69,7 +72,7 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     @SelectProvider(type=UserSqlProvider.class, method="pageSelectKeyUser")
-    Page<User> pageSelectKeyUser(String paramKey);
+    Page<UserVo> pageSelectKeyUser(String paramKey);
 
     /**
      * 根据手机号查询用户
@@ -105,7 +108,7 @@ public interface UserMapper {
                     "on uir.role_id = r.id " +
                     "where uir.user_id = #{userId,jdbcType=BIGINT}"
     })
-    List<Role> selectRoleByUserId(Long userId);
+    List<RoleVo> selectRoleByUserId(Long userId);
 
 
     /**
@@ -134,7 +137,7 @@ public interface UserMapper {
                     "on uir.role_id = r.id " +
                     "where uir.user_id =#{userId,jdbcType=BIGINT}"
     })
-    List<Role> getMyRolePwd(long userId);
+    List<RoleVo> getMyRolePwd(long userId);
 
     /**
      * 修改用户名
@@ -156,4 +159,14 @@ public interface UserMapper {
             "update t_user set head_portrait = #{url,jdbcType=VARCHAR} where id = #{userId,jdbcType=BIGINT}"
     })
     Integer updateUserImg(@Param("userId")Long userId,@Param("url") String url);
+
+    /**
+     * 修改用户密码
+     * @param retrievePwdDto
+     * @return
+     */
+    @Update({
+            "UPDATE t_user set pwd = MD5(#{pwd,jdbcType=VARCHAR}) WHERE account = #{account,jdbcType=BIGINT}"
+    })
+    Integer updateUserPwd(RetrievePwdDto retrievePwdDto);
 }

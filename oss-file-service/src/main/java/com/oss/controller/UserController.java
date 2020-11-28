@@ -1,6 +1,8 @@
 package com.oss.controller;
 
+import com.github.pagehelper.Page;
 import com.oss.pojo.dto.UserSelectKeyDto;
+import com.oss.pojo.vo.UserVo;
 import com.oss.service.UserService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
@@ -51,7 +53,7 @@ public class UserController {
      */
     @PostMapping("/queryUserByParam")
     public ResponseModel queryUserByParam(@Valid UserSelectKeyDto userSelectKeyDto)  {
-        ResponseResult responseResult = userService.pageUserBySelectKey(userSelectKeyDto);
+        ResponseResult<Page<UserVo>> responseResult = userService.pageUserBySelectKey(userSelectKeyDto);
 
         return responseResult.isSuccess()?ResponseModel.success(responseResult.getData()):ResponseModel.error(responseResult.getErrorCode());
     }

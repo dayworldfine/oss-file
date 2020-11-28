@@ -111,7 +111,8 @@ public interface UserInfoRoleMapper {
      * @return
      */
     @Select({
-            "select `code` from t_user_info_role  where user_id = #{userId,jdbcType=BIGINT}"
+            "select `code` from t_role  where id in ",
+            "(select role_id from t_user_info_role where user_id = #{userId,jdbcType=BIGINT})"
     })
     List<String> selectRoleCodeByUserId(long userId);
 }

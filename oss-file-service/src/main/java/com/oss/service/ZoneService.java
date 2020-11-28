@@ -3,6 +3,7 @@ package com.oss.service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.oss.model.Zone;
+import com.oss.pojo.vo.ZoneVo;
 import com.oss.tool.BaseService;
 import com.oss.pojo.bo.ZoneBo;
 import com.oss.pojo.dto.ZoneDto;
@@ -63,5 +64,5 @@ public interface ZoneService extends BaseService {
      * @param zoneListDto
      * @return
      */
-    ResponseResult<Page<Zone>> pageQueryZoneByUserId(ZoneListDto zoneListDto);
+    ResponseResult<Page<ZoneVo>> pageQueryZoneByUserId(ZoneListDto zoneListDto);
 }

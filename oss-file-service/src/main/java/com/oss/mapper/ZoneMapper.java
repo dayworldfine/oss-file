@@ -5,6 +5,7 @@ import com.oss.model.Zone;
 import com.oss.pojo.bo.ZoneBo;
 import com.oss.pojo.bo.ZonePwdBo;
 import com.oss.pojo.dto.ZoneDto;
+import com.oss.pojo.vo.ZoneVo;
 import com.oss.provider.ZoneSqlProvider;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
@@ -210,7 +211,7 @@ public interface ZoneMapper {
      * @return
      */
     @SelectProvider(type=ZoneSqlProvider.class, method="pageQueryZoneByUserId")
-    Page<Zone> pageQueryZoneByUserId(String name);
+    Page<ZoneVo> pageQueryZoneByUserId(String name);
 
     /**
      * 根据分区id查询

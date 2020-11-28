@@ -9,6 +9,7 @@ import com.oss.pojo.dto.RoleAllotDto;
 import com.oss.pojo.dto.RoleListDto;
 import com.oss.pojo.dto.RoleStatusDto;
 import com.oss.pojo.dto.ZoneAllotDto;
+import com.oss.pojo.vo.RoleVo;
 import com.oss.service.RoleService;
 import com.oss.tool.ResponseResult;
 import com.oss.tool.util.ConvertScaleUtil;
@@ -49,9 +50,9 @@ public class RoleServiceImpl implements RoleService {
      * @return
      */
     @Override
-    public ResponseResult<Page<Role>>  getRoleList(RoleListDto roleListDto) {
+    public ResponseResult<Page<RoleVo>>  getRoleList(RoleListDto roleListDto) {
         PageHelper.startPage(roleListDto.getPage(),roleListDto.getSize());
-        Page<Role> roleList = roleMapper.getRoleList(roleListDto.getName());
+        Page<RoleVo> roleList = roleMapper.getRoleList(roleListDto.getName());
         return ResponseResult.responseSuccessResult(roleList);
     }
 
@@ -88,7 +89,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public ResponseResult allotZone(ZoneAllotDto zoneAllotDto) {
         String userJoin =  zoneAllotDto.getUserIdList().stream().collect(Collectors.joining(","));
-        //先删除所有角色
+        //先删除角色所有分区
         Integer delNum  =   userInfoZoneMapper.deleteByUserId(userJoin);
         //再分配角色
         List<UserInfoZone> userInfoZoneList = Lists.newArrayList();

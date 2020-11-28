@@ -60,9 +60,18 @@
           }
         }
       },
+      computed:{
+        ...mapState([
+          "userRole",
+          'zoneList',
+          'zonePage',
+          'zoneTotal',
+          'zoneSearchKey',
+        ])
+      },
       methods: {
         ...mapActions([
-
+          'getZoneList',
         ]),
         ...mapMutations([
           'setIsLogin',
@@ -95,7 +104,7 @@
                 localStorage.setItem("account",this.formLabelAlign.account);
                 localStorage.setItem("passWord",this.formLabelAlign.passWord);
                 localStorage.setItem("token",res.data.token);
-
+              this.getZoneList({name:this.zoneSearchKey,page:this.zonePage,size:24})
               this.$emit("confirmLogin", this.formLabelAlign);
             }else {
               this.$message.error(res.message)

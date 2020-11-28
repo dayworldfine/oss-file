@@ -57,6 +57,7 @@
           RoleService.getRoleKey({pwd:this.roleKey}).then((res)=>{
             console.log("res",res)
             if (10000==res.error){
+              this.$message.success("恭喜你获得新的角色")
                 this.setUserRole(res.data)
               this.$emit("confirmEnterRole");
             }
