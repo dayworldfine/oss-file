@@ -134,4 +134,6 @@ public interface FileMapper {
             "delete from t_file where zone_id = #{zoneId,jdbcType=BIGINT}"
     })
     Integer deleteFileByZoneId(String zoneId);
+
+
 }

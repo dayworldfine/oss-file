@@ -61,6 +61,9 @@
         ]
       }
     },
+    created() {
+      localStorage.removeItem('zoneId')
+    },
     watch:{
       zoneSearch(value1){
         this.setZoneSearchKey(value1);
@@ -83,6 +86,7 @@
       ...mapMutations([
         'setZoneList',
         'setZoneSearchKey',
+        'setPresentZoneId',
       ]),
       /** 当前选中状态*/
       pichOn(index){
@@ -95,6 +99,7 @@
           //意外才会走到这里
           return;
         }
+        localStorage.setItem("zoneId",this.zoneList[this.putOnIndex].id)
         this.$router.push({name:"PcDetail",query:{zoneId:this.zoneList[this.putOnIndex].id}});
       },
       /** 删除分区*/

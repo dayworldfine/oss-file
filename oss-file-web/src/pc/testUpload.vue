@@ -9,7 +9,6 @@
       file-list:  上传的文件列表, 例如: [{name: 'food.jpg', url: 'https://xxx.cdn.com/xxx.jpg'}]
       auto-upload: 是否在选取文件后立即进行上传
       name: 上传的文件字段名
-      :http-request="handleRequest"
       文件状态 ready success fail
     -->
     <el-upload
@@ -74,14 +73,6 @@
       handleError(err,file,fileList){
         this.errorList.unshift(file.name+"上传出现： 服务器错误")
         this.$message.error(file.name+"上传出现：服务器错误")
-      },
-      handleRequest() {
-        console.log("自定义上传开始,",this.fileList)
-        let formData = new FormData();
-        formData.append("file",this.fileList[0].raw)
-        this.$service.upload.uploadFile(formData).then(res=>{
-          console.log("res",res)
-        })
       },
 
     }

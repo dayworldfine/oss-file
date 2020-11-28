@@ -58,4 +58,6 @@ public interface FileService  extends BaseService {
      * @return
      */
     ResponseResult delFileById(String fileId);
+
+
 }

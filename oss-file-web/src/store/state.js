@@ -14,7 +14,7 @@ const state = {
   filePage:1,                             //文件页数
   fileTotal:0,                            //文件总条数
   fileList:[],                          //文件列表
-
+  // presentZoneId:-1,                     //当前的分区id
 }
 
 export default state

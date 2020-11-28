@@ -21,6 +21,7 @@ import AllotRole  from "@/components/AllotRole";
 import Register  from "@/components/Register";
 import Login  from "@/components/Login";
 import ForGetPwd  from "@/components/ForGetPwd";
+import UploadFile from "@/components/UploadFile";
 
 import * as BaseUrl from '@/param/BaseUrl';
 
@@ -48,6 +49,7 @@ Vue.component('AllotRole', AllotRole);
 Vue.component('Register', Register);
 Vue.component('Login', Login);
 Vue.component('ForGetPwd', ForGetPwd);
+Vue.component('UploadFile', UploadFile);
 Vue.prototype.$BaseUrl = BaseUrl;
 Vue.prototype.$urlUserImgPerfix = BaseUrl.URL_USER_IMG_PREFIX;
 

@@ -140,7 +140,7 @@ public class ZoneServiceImpl implements ZoneService {
     @Override
     public ResponseResult findPrefixById(String zoneId) {
         String prefix = zoneMapper.findPrefixById(zoneId);
-        return ValidateUtil.isNotEmpty(prefix)?ResponseResult.responseSuccessResult(prefix):ResponseResult.responseResultWithErrorCode(ErrorCodes.SELECT_NOT_FOUND);
+        return ValidateUtil.isNotEmpty(prefix)?ResponseResult.responseSuccessResult(prefix):ResponseResult.responseResultWithErrorCode(ErrorCodes.ZONE_NOT_FOUND);
     }
 
     @Override

@@ -142,7 +142,7 @@ public class FileSqlProvider {
         sql.WHERE(" f.zone_id=#{zoneId,jdbcType=BIGINT}");
         if (ValidateUtil.isNotEmpty(fileListDto.getName())){
             sql.AND();
-            sql.WHERE("f.file_name like concat('%','#{name,jdbcType=VARCHAR}','%')");
+            sql.WHERE("f.file_name like concat('%',#{name,jdbcType=VARCHAR},'%')");
         }
         sql.ORDER_BY("f.create_time desc");
 

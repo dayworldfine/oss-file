@@ -13,17 +13,17 @@
         <img class="button-img" src="/static/preview.png"/>
         <div class="fun-button-text">在线预览</div>
       </div>
-      <div class="fun-button">
+      <div class="fun-button" @click="uploadFile()">
         <img class="button-img" src="/static/upload.png"/>
         <div class="fun-button-text">上传</div>
       </div>
-      <div class="fun-button">
+      <div class="fun-button" @click="delFile()">
         <img class="button-img" src="/static/delete.png"/>
         <div class="fun-button-text">删除</div>
       </div>
-      <div class="fun-search">
+      <div class="fun-search" >
         <input v-model="searchName" placeholder="请输入文件名称" class="fun-search-input"/>
-        <img class="fun-search-img" src="/static/search.png"/>
+        <img class="fun-search-img" src="/static/search.png" @click="searchFile()"/>
 
       </div>
     </div>
@@ -35,7 +35,7 @@
              :src="fileSuffix(12)"
              class="user-img" />
         <div class="document-for-font">{{item.fileName+item.suffix}}</div>
-        <div class="document-for-font">下载预览量：{{item.downloadStatistics+item.previewStatistics}}</div>
+        <div class="document-for-font">下载预览量：{{Number(item.downloadStatistics)+Number(item.previewStatistics)}}</div>
         <!--      <div class="button-file">-->
         <!--        <Button type="warning" class="button">下载</Button>-->
         <!--        <Button type="warning" class="button">预览</Button>-->
@@ -46,7 +46,7 @@
     <div class="file-page">
       <Page :current="filePage" :total="fileTotal" :page-size="fileSize" @on-change="changePage" simple/>
     </div>
-
+    <UploadFile :uploadFileVisible="uploadFileVisible" @confirmUploadFile="confirmUploadFile" @closeUploadFile="closeUploadFile"></UploadFile>
 
   </div>
 </template>
@@ -54,12 +54,16 @@
 <script>
   import {mapActions,mapState,mapGetters,mapMutations} from "vuex";
   import {exportExcel} from '@/util/DownloadUtil'
+  import FileService from "@/service/FileService";
+  import DocumentService from "@/service/DocumentService";
+  import {checkDocumentType} from '@/util/ValidateUtil'
+  import ZoneService from "@/service/ZoneService";
     export default {
         name: "PcDetail",
       created() {
         this.getFileList(
           {
-            zoneId:this.$route.query.zoneId,
+            zoneId:localStorage.getItem("zoneId"),
             name:this.searchName,
             page:this.filePage,
             size:this.fileSize,
@@ -68,6 +72,7 @@
       },
       data(){
         return{
+          uploadFileVisible:false, //修改头像
           fileSize:24,
           putOnIndex:-1,
           searchName:'',
@@ -101,6 +106,21 @@
         ...mapActions([
           'getFileList'
         ]),
+        /** 修改头像事件*/
+        confirmUploadFile(){
+          this.uploadFileVisible=false;
+        },
+        closeUploadFile(){
+          this.getFileList(
+            {
+              zoneId:localStorage.getItem("zoneId"),
+              name:this.searchName,
+              page:this.filePage,
+              size:this.fileSize,
+            }
+          )
+          this.uploadFileVisible=false;
+        },
         /** 当前选中状态*/
         pichOn(index){
           this.putOnIndex =index;
@@ -120,18 +140,63 @@
           exportExcel("download"+ this.fileList[this.putOnIndex].url,
             this.fileList[this.putOnIndex].fileName + this.fileList[this.putOnIndex].suffix,{})
           // exportExcel("download/headImg/wbh.jpg","wbh.jpg",{})
+
+          FileService.downloadFile({fileId:this.fileList[this.putOnIndex].id}).then((res)=>{
+            if (10000==res.error){
+              this.fileList[this.putOnIndex].downloadStatistics=Number(this.fileList[this.putOnIndex].downloadStatistics)+1+"";
+            }
+          })
         },
         /** 在线预览*/
         previewFile(){
+          if (this.putOnIndex<0){
+            this.$message.warning("请选择文件")
+            return;
+          }
+          if (!checkDocumentType(this.fileList[this.putOnIndex].suffix)){
+            this.$message.warning("该文档不支持在线预览，请下载使用")
+            return;
+          }
           let details = this.$router.resolve({
             name: "PcPreview",
-            query: {},
+            query: {
+              fileId:this.fileList[this.putOnIndex].id
+            },
           });
           window.open(details.href, "_blank")
+
         },
-        /** 添加分区*/
-        addZone(){
-          console.log("addZone")
+        /** 上传文件*/
+        uploadFile(){
+          this.uploadFileVisible=true;
+        },
+        /** 删除文件*/
+        delFile(){
+          if (this.putOnIndex<0){
+            this.$message.warning("请选择文件")
+            return;
+          }
+          this.$confirm('确认要删除文件? ', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            FileService.delFileById({fileId:this.fileList[this.putOnIndex].id}).then((res)=>{
+              if (10000==res.error){
+                this.$message.success("删除成功")
+                this.getFileList({zoneId:localStorage.getItem("zoneId"), name:this.searchName, page:this.filePage, size:this.fileSize})
+              }
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+        },
+        /** 搜素文件*/
+        searchFile(){
+          this.getFileList({zoneId:localStorage.getItem("zoneId"), name:this.searchName, page:this.filePage, size:this.fileSize})
         },
         /** 页面事件发生改变*/
         changePage(page){

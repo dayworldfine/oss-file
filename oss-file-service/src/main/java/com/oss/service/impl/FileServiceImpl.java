@@ -89,8 +89,8 @@ public class FileServiceImpl implements FileService {
         file1.setUpdateTime(System.currentTimeMillis());
         file1.setVersion(1l);
         file1.setFileName(filename.substring(0,filename.lastIndexOf(".")));
-        file1.setSuffix(filename.substring(filename.lastIndexOf(".")));
-        file1.setUrl(prefix+filename);
+        file1.setSuffix(filename.substring(filename.lastIndexOf(".")+1));
+        file1.setUrl(prefix+"/"+filename);
         file1.setUploadUserId(userId);
         file1.setDownloadStatistics(0l);
         file1.setPreviewStatistics(0l);
@@ -129,6 +129,8 @@ public class FileServiceImpl implements FileService {
         Integer integer = fileMapper.deleteByPrimaryKey(Long.valueOf(fileId));
         return ResponseResult.responseOK();
     }
+
+
 
 
 }

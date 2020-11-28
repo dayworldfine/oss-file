@@ -13,6 +13,7 @@ import com.oss.service.LogService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.ResponseResult;
+import com.oss.tool.shiro.ShiroHandler;
 import com.oss.tool.util.EnumUtil;
 import com.oss.tool.util.JsonUtil;
 import com.oss.tool.util.ValidateUtil;
@@ -66,8 +67,6 @@ public class DocumentController extends BaseController {
      */
     @PostMapping("/getDocumentUrl")
     public ResponseModel getDocumentUrl(String  fileId)  {
-//            long userId = ShiroUtil.getUserId();
-        long userId = 1l;
         if (ValidateUtil.isEmpty(fileId)){
             return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
         }
@@ -78,7 +77,7 @@ public class DocumentController extends BaseController {
         }
         DocumentPreviewBo documentPreviewBo = JsonUtil.toBean(JsonUtil.toJson(responseResult.getData()), DocumentPreviewBo.class);
         /** 添加日志*/
-        ResponseResult addFileLog = logService.addFileLog(documentPreviewBo.getFileName(), Long.valueOf(fileId), EnumUtil.File_OPERATION_ENUM.PREVIEW.getValue(), Long.valueOf(documentPreviewBo.getZoneId()), userId);
+        ResponseResult addFileLog = logService.addFileLog(documentPreviewBo.getFileName(), Long.valueOf(fileId), EnumUtil.File_OPERATION_ENUM.PREVIEW.getValue(), Long.valueOf(documentPreviewBo.getZoneId()), ShiroHandler.getUserId());
         if (addFileLog.isError()){
             return ResponseModel.error(responseResult.getErrorCode());
         }
@@ -113,19 +112,14 @@ public class DocumentController extends BaseController {
      * }
      */
     @PostMapping("/refreshSign")
-    public ResponseModel refreshSign(@Valid  DocumentSignDto documentSignDto, BindingResult bindingResult)  {
-//      long userId = ShiroUtil.getUserId();
-        long userId = 1l;
-        if (bindingResult.hasErrors()){
-            return ResponseModel.errorWithMsg(ErrorCodes.PARAM_VALID_ERROR,bindingResult.getAllErrors().get(0).getDefaultMessage());
-        }
+    public ResponseModel refreshSign(@Valid  DocumentSignDto documentSignDto)  {
 
        ResponseResult responseResult =  documentService.refreshSign(documentSignDto);
         if (responseResult.isError()){
             return ResponseModel.error(responseResult.getErrorCode());
         }
         DocumentRefreshBo documentPreviewBo = JsonUtil.toBean(JsonUtil.toJson(responseResult.getData()), DocumentRefreshBo.class);
-        ResponseResult addFileLog = logService.addFileLog(documentPreviewBo.getFileName(), Long.valueOf(documentSignDto.getFileId()), EnumUtil.File_OPERATION_ENUM.SIGN.getValue(), Long.valueOf(documentPreviewBo.getZoneId()), userId);
+        ResponseResult addFileLog = logService.addFileLog(documentPreviewBo.getFileName(), Long.valueOf(documentSignDto.getFileId()), EnumUtil.File_OPERATION_ENUM.SIGN.getValue(), Long.valueOf(documentPreviewBo.getZoneId()), ShiroHandler.getUserId());
         if (addFileLog.isError()){
             return ResponseModel.error(responseResult.getErrorCode());
         }

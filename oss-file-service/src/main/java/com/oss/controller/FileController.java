@@ -9,6 +9,7 @@ import com.oss.service.ZoneService;
 import com.oss.tool.ErrorCodes;
 import com.oss.tool.ResponseModel;
 import com.oss.tool.ResponseResult;
+import com.oss.tool.shiro.ShiroHandler;
 import com.oss.tool.util.EnumUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -90,9 +91,7 @@ public class FileController extends BaseController {
     @PostMapping("/uploadFile")
     public ResponseModel uploadFile(MultipartFile file,String zoneId) {
         try {
-//            long userId = ShiroUtil.getUserId();
-            long userId = 1l;
-            if (ValidateUtil.isEmpty(file) || file.isEmpty()) {
+            if (ValidateUtil.isEmpty(file) || file.isEmpty()|| ValidateUtil.isEmpty(zoneId)){
                 return ResponseModel.error(ErrorCodes.FILE_NULL);
             }
             //查询分区前缀
@@ -110,13 +109,13 @@ public class FileController extends BaseController {
                     return ResponseModel.error(result.getErrorCode());
                 }
                 //添加数据库数据
-                ResponseResult addResult = fileService.addFile(file,prefix,zoneId,userId);
+                ResponseResult addResult = fileService.addFile(file,prefix,zoneId, ShiroHandler.getUserId());
                 if (addResult.isError()){
                     return ResponseModel.error(addResult.getErrorCode());
                 }
                 //添加日志
                 String fileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf("."));
-                ResponseResult logResult = logService.addFileLog(fileName,Long.valueOf(addResult.getData().toString()), EnumUtil.File_OPERATION_ENUM.UPLOAD.getValue(),Long.valueOf(zoneId),userId);
+                ResponseResult logResult = logService.addFileLog(fileName,Long.valueOf(addResult.getData().toString()), EnumUtil.File_OPERATION_ENUM.UPLOAD.getValue(),Long.valueOf(zoneId),ShiroHandler.getUserId());
                 if (logResult.isError()){
                     return ResponseModel.error(addResult.getErrorCode());
                 }
@@ -178,12 +177,13 @@ public class FileController extends BaseController {
      * 	"data": "{}"
      * }
      */
+    @PostMapping("/downloadFile")
     public ResponseModel downloadFile(String fileId) {
         if (ValidateUtil.isEmpty(fileId)) {
             return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
         }
-        //下载文件
-        ResponseResult responseResult =  null;
+        //下载文件数量加1
+        ResponseResult responseResult = fileService.addFileStatistics(0,fileId);
         return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
     }
 

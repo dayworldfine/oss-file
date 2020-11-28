@@ -77,3 +77,8 @@ export const setFilePage = (state, data) =>{
 export const setFileTotal = (state, data) =>{
   state.fileTotal = data
 }
+
+// /** 改变当前分区id*/
+// export const setPresentZoneId = (state, data) =>{
+//   state.presentZoneId = data
+// }

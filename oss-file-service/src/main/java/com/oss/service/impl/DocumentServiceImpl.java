@@ -56,7 +56,6 @@ public class DocumentServiceImpl implements DocumentService {
         // 设置待转换对文件OSS路径
 //        req.setSrcUri("oss://tom-file/ywm/新建文本文档 (4).txt");
         req.setSrcUri("oss://"+ossUtil.getBucketName()+"/"+file.getUrl());
-
         GetOfficePreviewURLResponse res = null;
         try {
             res = client.getAcsResponse(req);
