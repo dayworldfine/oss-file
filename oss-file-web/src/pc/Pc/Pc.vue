@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="user" v-if="!isLogin">
-          <img loading="lazy" src="https://img.tomtangmu.com/images/2020/11/14/binli.jpg" class="user-img"/>
+          <img loading="lazy" :src="this.$urlUserImgPerfix+userImg" class="user-img"/>
           <div class="user-name">未登录</div>
           <Button type="warning" class="button" @click="register()">注册</Button>
           <Button type="warning" class="button" @click="login()">登录</Button>
@@ -185,7 +185,7 @@
           this.setZoneTotal(1)
           this.setZoneSearchKey('')
           this.getZoneList({name:'',page:1,size:24});
-
+          this.$router.replace("PcIndex")
         }).catch(() => {
         });
       },

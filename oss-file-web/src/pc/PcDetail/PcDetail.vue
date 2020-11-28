@@ -9,7 +9,7 @@
         <img class="button-img" src="/static/download.png"/>
         <div class="fun-button-text">下载</div>
       </div>
-      <div class="fun-button" @click="previewFile()">
+      <div class="fun-button" @click="previewFile()" v-if="userRole.indexOf('superAdmin')>=0 ||userRole.indexOf('admin')>=0 || userRole.indexOf('uploadGeneral')>=0">
         <img class="button-img" src="/static/preview.png"/>
         <div class="fun-button-text">在线预览</div>
       </div>
@@ -21,9 +21,10 @@
         <img class="button-img" src="/static/delete.png"/>
         <div class="fun-button-text">删除</div>
       </div>
-      <div class="fun-search"  :class="userRole.indexOf('superAdmin')>=0 ?'fun-search-superAdmin'
-                :(userRole.indexOf('admin')>=0?'fun-search-admin'
-                :(userRole.indexOf('uploadGeneral')>=0?'fun-search-uploadGeneral':'fun-search-general'))">
+      <div class="fun-search"  :class="userRole.indexOf('superAdmin')>-1 ?'fun-search-superAdmin'
+                :(userRole.indexOf('admin')>-1?'fun-search-admin'
+                :(userRole.indexOf('uploadGeneral')>-1?'fun-search-uploadGeneral':
+                (userRole.indexOf('general')>-1?'fun-search-general':'fun-search-noLogin')))">
         <input v-model="searchName" placeholder="请输入文件名称" class="fun-search-input"/>
         <img class="fun-search-img" src="/static/search.png" @click="searchFile()"/>
 
@@ -285,6 +286,9 @@
   }
   .fun-search-general{
     margin-left: 760px;
+  }
+  .fun-search-noLogin{
+    margin-left: 1000px;
   }
 
   .fun-search-input{
