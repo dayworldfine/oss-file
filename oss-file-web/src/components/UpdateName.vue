@@ -48,7 +48,7 @@
         'setUserNickName',
       ]),
       close() {
-        this.name='';
+        this.userName='';
         this.cancel();
       },
       cancel() {

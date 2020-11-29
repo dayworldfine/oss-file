@@ -65,6 +65,10 @@
   .myZone {
     display: flex;
     flex-direction: column;
+    height: 50vh;
+    /*overflow-y: scroll;*/
+    overflow-y: auto;
+
   }
   .myZone-top{
     display: flex;

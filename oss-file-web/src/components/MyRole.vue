@@ -67,6 +67,8 @@
     display: flex;
     flex-direction: column;
     /*align-items: center;*/
+    height: 50vh;
+    overflow-y: auto;
   }
   .myRole-top{
     display: flex;

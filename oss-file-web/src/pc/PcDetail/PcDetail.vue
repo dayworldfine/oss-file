@@ -253,7 +253,8 @@
   }
   .fun-button-all{
     height: 50px;
-    border: 1px solid salmon;
+    /*border: 1px solid salmon;*/
+    border: 1px solid rgb(240, 240, 240);
     display: flex;
     flex-direction: row;
     /*justify-content: flex-start;*/

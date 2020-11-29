@@ -1,7 +1,12 @@
 <template>
   <div class="pc">
     <div class="outer">
-      <div class="title">欢迎</div>
+      <div class="title">
+        <div></div>
+        <Button type="warning" class="button" @click="useHelp()">使用说明</Button>
+        <div></div>
+        如有疑问或建议：请联系管理员13738700108(微信同号)
+      </div>
       <div class="content">
         <div class="user" v-if="isLogin">
           <img loading="lazy" :src="this.$urlUserImgPerfix+userImg" class="user-img"/>
@@ -43,6 +48,7 @@
     <Register :registerVisible="registerVisible" @confirmRegister="confirmRegister" @closeRegister="closeRegister"></Register>
     <Login :loginVisible="loginVisible" @confirmLogin="confirmLogin" @closeLogin="closeLogin"></Login>
     <ForGetPwd :forGetPwdVisible="forGetPwdVisible" @confirmForGetPwd="confirmForGetPwd" @closeForGetPwd="closeForGetPwd"></ForGetPwd>
+    <UseHelp :useHelpVisible="useHelpVisible" @confirmUseHelp="confirmUseHelp" @closeUseHelp="closeUseHelp"></UseHelp>
   </div>
 </template>
 
@@ -67,6 +73,7 @@
         registerVisible:false,  //注册
         loginVisible:false,     //登录
         forGetPwdVisible:false, //忘记密码
+        useHelpVisible:false,   //使用说明
       }
     },
     created() {
@@ -197,7 +204,10 @@
       allotRole(){
         this.allotRoleVisible=true;
       },
-
+      /** 使用说明*/
+      useHelp(){
+        this.useHelpVisible=true;
+      },
 
 
       /** 修改名称事件 */
@@ -283,6 +293,13 @@
       },
       closeForGetPwd(){
         this.forGetPwdVisible=false;
+      },
+      /** 使用说明*/
+      confirmUseHelp(){
+        this.useHelpVisible=false;
+      },
+      closeUseHelp(){
+        this.useHelpVisible=false;
       }
     }
   }
@@ -308,7 +325,7 @@
     width: 1820px;
     /*width: 95%;*/
     /*height: 880px;*/
-    border: 1px solid #c2abab;
+    border: 1px solid #e0e1e1;
     display: flex;
     flex-direction: column;
   }
@@ -319,6 +336,7 @@
     font-size: 16px;
     box-sizing: border-box;
     /*border: 1px solid salmon;*/
+    /*background-color: rgb(238, 240, 246);*/
     background-color: rgb(238, 240, 246);
   }
 
@@ -334,7 +352,9 @@
     box-sizing: border-box;
     padding-top: 30px;
     box-sizing: border-box;
-    border: 1px solid salmon;
+    /*border: 1px solid salmon;*/
+    border: 1px solid rgb(232, 234, 240);
+    background-color: rgb(249, 250, 251);
   }
 
   .user-name {
