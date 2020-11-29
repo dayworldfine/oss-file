@@ -130,7 +130,11 @@ public class FileServiceImpl implements FileService {
         return ResponseResult.responseOK();
     }
 
-
+    @Override
+    public File selectFileByFileId(String fileId) {
+        File file = fileMapper.selectByPrimaryKey(Long.valueOf(fileId));
+        return file;
+    }
 
 
 }

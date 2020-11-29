@@ -37,7 +37,7 @@
         <img loading="lazy"
              :src="fileSuffix(item.suffix,item.url)"
              class="user-img" />
-        <div class="document-for-font">{{item.url}}</div>
+        <div class="document-for-font">{{item.fileName+'.'+item.suffix}}</div>
         <div class="document-for-font">下载预览量：{{Number(item.downloadStatistics)+Number(item.previewStatistics)}}</div>
       </div>
     </div>

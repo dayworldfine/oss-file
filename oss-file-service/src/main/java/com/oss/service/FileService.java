@@ -1,6 +1,7 @@
 package com.oss.service;
 
 import com.github.pagehelper.PageInfo;
+import com.oss.model.File;
 import com.oss.pojo.bo.FileBo;
 import com.oss.pojo.dto.FileListDto;
 import com.oss.tool.BaseService;
@@ -60,4 +61,10 @@ public interface FileService  extends BaseService {
     ResponseResult delFileById(String fileId);
 
 
+    /**
+     * 根据文件id查询文件
+     * @param fileId
+     * @return
+     */
+    File selectFileByFileId(String fileId);
 }

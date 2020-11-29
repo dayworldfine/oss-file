@@ -2,10 +2,12 @@
   <div class="pc">
     <div class="outer">
       <div class="title">
-        <div></div>
-        <Button type="warning" class="button" @click="useHelp()">使用说明</Button>
-        <div></div>
-        如有疑问或建议：请联系管理员13738700108(微信同号)
+        <img loading="lazy" src="/static/logo.jpg" class="title-img" />
+        <div class="title-img-font">Tom网盘</div>
+        <div class="title-img-button">
+          <Button type="info" class="button " @click="useHelp()">使用说明</Button>
+        </div>
+
       </div>
       <div class="content">
         <div class="user" v-if="isLogin">
@@ -338,6 +340,22 @@
     /*border: 1px solid salmon;*/
     /*background-color: rgb(238, 240, 246);*/
     background-color: rgb(238, 240, 246);
+    display: flex;
+    justify-content: flex-end;
+  }
+  .title-img{
+    width: 70px;
+    height: 70px;
+    margin-right: 20px;
+  }
+  .title-img-font{
+    margin-right: 20px;
+    line-height: 70px;
+    font-weight: bold;
+  }
+  .title-img-button{
+    margin-right: 20px;
+     margin-top: -10px;
   }
 
   .content {

@@ -1,6 +1,7 @@
 package com.oss.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.oss.model.File;
 import com.oss.pojo.bo.FileBo;
 import com.oss.pojo.dto.FileListDto;
 import com.oss.service.FileService;
@@ -153,8 +154,15 @@ public class FileController extends BaseController {
         if (ValidateUtil.isEmpty(fileId)) {
             return ResponseModel.error(ErrorCodes.PARAM_EMPTY_ERROR);
         }
-        //上传文件
+        //添加日志
+        File file = fileService.selectFileByFileId(fileId);
+        if (ValidateUtil.isNotEmpty(file)){
+            logService.addFileLog(file.getFileName(),file.getId(),EnumUtil.File_OPERATION_ENUM.DELETE.getValue(),file.getZoneId(),ValidateUtil.isNotEmpty(ShiroHandler.getUserId())?ShiroHandler.getUserId():0l);
+        }
+        //删除文件
        ResponseResult responseResult =  fileService.delFileById(fileId);
+
+
         return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
     }
 
@@ -184,6 +192,11 @@ public class FileController extends BaseController {
         }
         //下载文件数量加1
         ResponseResult responseResult = fileService.addFileStatistics(0,fileId);
+        //添加日志
+        File file = fileService.selectFileByFileId(fileId);
+        if (ValidateUtil.isNotEmpty(file)){
+            logService.addFileLog(file.getFileName(),file.getId(),EnumUtil.File_OPERATION_ENUM.DOWNLOAD.getValue(),file.getZoneId(),ValidateUtil.isNotEmpty(ShiroHandler.getUserId())?ShiroHandler.getUserId():0l);
+        }
         return responseResult.isSuccess()?ResponseModel.OK():ResponseModel.error(responseResult.getErrorCode());
     }
 
