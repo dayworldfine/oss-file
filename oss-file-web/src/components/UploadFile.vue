@@ -30,7 +30,7 @@
 </template>
 
 <script>
-    import {mapMutations} from "vuex";
+  import {mapMutations, mapState} from "vuex";
 
     export default {
         name: "UploadFile",
@@ -53,6 +53,11 @@
           uploadData:{zoneId:localStorage.getItem('zoneId')}
         };
       },
+      computed:{
+        ...mapState([
+          'userRole',
+        ]),
+      },
       watch: {
         uploadFileVisible(bool) {
           this.showBoolean = bool;
@@ -71,17 +76,53 @@
         cancel() {
           this.$emit("closeUploadFile");
         },
-        confirm() {
-          console.log("上传触发事件",this.fileList)
+        submitUpload() {
+          console.log("点击上传到服务器fileList",this.fileList)
+
           if (this.fileList.length==0){
             this.$message.warning("请选择文件")
             return;
           }
-          this.$refs.upload.submit();
-          // this.$emit("confirmUploadFile", this.name);
-        },
-        submitUpload() {
-          console.log("点击上传到服务器fileList",this.fileList)
+          /** 文件大小
+           * 1M = 1024k = 1048576字节
+           算法是：
+           1Byte(字节) = 8bit(位)
+           1KB = 1024Byte(字节)
+           1MB = 1024KB
+           1GB = 1024MB
+           1TB = 1024GB
+           */
+          let size =0;
+          if (this.userRole.indexOf('admin')>-1){
+            let allSize=0;
+            size = 1024*1024*110;
+            for (let i = 0; i < this.fileList.length; i++) {
+              allSize= allSize+this.fileList[i].size;
+              if (this.fileList[i].size>size){
+                this.$message.warning("管理员单每次最大上传为100M,如有大文件需求,请联系超级管理员")
+                return;
+              }
+            }
+            if (allSize>size){
+              this.$message.warning("管理员单每次最大上传为100M,如有大文件需求,请联系超级管理员")
+              return;
+            }
+          }
+          if (this.userRole.indexOf('uploadGeneral')>-1){
+            let allSize=0;
+            size = 1024*1024*110;
+            for (let i = 0; i < this.fileList.length; i++) {
+              allSize= allSize+this.fileList[i].size;
+              if (this.fileList[i].size>size){
+                this.$message.warning("上传员单每次最大上传为100M,如有大文件需求,请联系超级管理员")
+                return;
+              }
+            }
+            if (allSize>size){
+              this.$message.warning("上传员单每次最大上传为100M,如有大文件需求,请联系超级管理员")
+              return;
+            }
+          }
           this.$refs.upload.submit();
         },
 

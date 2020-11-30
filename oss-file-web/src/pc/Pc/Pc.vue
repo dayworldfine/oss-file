@@ -2,7 +2,7 @@
   <div class="pc">
     <div class="outer">
       <div class="title">
-        <img loading="lazy" src="/static/logo.jpg" class="title-img" />
+        <img loading="lazy" src="static/logo.jpg" class="title-img" />
         <div class="title-img-font">Tom网盘</div>
         <div class="title-img-button">
           <Button type="info" class="button " @click="useHelp()">使用说明</Button>

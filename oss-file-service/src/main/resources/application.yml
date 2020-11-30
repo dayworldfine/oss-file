@@ -12,7 +12,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/ossfile?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true
+#    url: jdbc:mysql://120.27.243.106:3306/ossfile?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&tinyInt1isBit=false&allowPublicKeyRetrieval=true
     username: root
+#    username: ossfile
     password: wswbh
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
@@ -63,6 +65,9 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
+
+logging:
+  config: classpath:logback.xml
 
 aliyun:
   oss:

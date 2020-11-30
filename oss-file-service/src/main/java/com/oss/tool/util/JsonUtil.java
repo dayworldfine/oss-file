@@ -5,8 +5,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.oss.tool.BaseUtil;
-import com.sun.istack.internal.Nullable;
+//import com.sun.istack.internal.Nullable;
 
+
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;

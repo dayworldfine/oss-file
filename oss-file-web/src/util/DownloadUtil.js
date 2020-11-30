@@ -6,12 +6,12 @@ export  function exportExcel(url,fileName, options = {}) {
     axios.defaults.headers['content-type'] = 'application/json;charset=UTF-8'
     axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
     axios.defaults.headers['Access-Control-Allow-Methods'] = '*'
-    axios.defaults.headers['Access-Control-Allow-Headers'] = 'X-Requested-With'
+    axios.defaults.headers['Access-Control-Allow-Headers'] = 'Test'
     axios({
       method: 'get',
       url: url, // 请求地址
       data: options, // 参数
-      responseType: 'blob' // 表明返回服务器返回的数据类型
+      responseType: 'blob', // 表明返回服务器返回的数据类型,
     }).then(
       response => {
         resolve(response.data)

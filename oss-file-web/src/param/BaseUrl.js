@@ -3,6 +3,8 @@ export const url_config_grpc = "http://192.168.1.109:9988";
 
 // 网站前缀。
 export const URL_HTTP_PREFIX = "http://127.0.0.1:9735";
+// export const URL_HTTP_PREFIX = "https://120.27.243.106:9734";
+// export const URL_HTTP_PREFIX = "https://ossfileservice.tomtangmu.com";
 
 
 // 本地静态图片前缀。

@@ -2,21 +2,21 @@
   <div class="PcIndex">
     <div class="fun-button-all">
       <div class="fun-button" @click="goToZone()">
-        <img class="button-img" src="/static/go.png"/>
+        <img class="button-img" src="static/go.png"/>
         <div class="fun-button-text" >进入分区</div>
       </div>
 <!--      <div class="fun-button" v-show="userRole.indexOf('superAdmin')>=0">-->
-<!--        <img class="button-img" src="/static/add.png"/>-->
+<!--        <img class="button-img" src="static/add.png"/>-->
 <!--        <div class="fun-button-text">添加分区</div>-->
 <!--      </div>-->
       <div class="fun-button" v-show="userRole.indexOf('superAdmin')>=0" @click="delZone()">
-        <img class="button-img" src="/static/delete.png"/>
+        <img class="button-img" src="static/delete.png"/>
         <div class="fun-button-text" >删除分区</div>
       </div>
       <div class="fun-search" :class="userRole.indexOf('superAdmin')>-1?'fun-search-superAdmin':'fun-search-general'"
           >
         <input v-model="zoneSearch"  placeholder="请输入分区名称" class="fun-search-input"/>
-        <img class="fun-search-img" src="/static/search.png"  @click="search()" />
+        <img class="fun-search-img" src="static/search.png"  @click="search()" />
       </div>
     </div>
     <div class="forAll">
@@ -25,7 +25,7 @@
            @click="pichOn(index)"
            @dblclick="goToZone()">
         <img loading="lazy"
-             src="/static/file.png"
+             src="static/file.png"
              class="user-img" />
         <div class="document-for-font">{{item.zoneName}}</div>
       </div>

@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
         user.setUpdateTime(System.currentTimeMillis());
         user.setVersion(1l);
         user.setNickName(registerDto.getNickName());
-        user.setHeadPortrait("HeadImg/defaultUserImg.png");
+        user.setHeadPortrait("/headImg/defaultUserImg.png");
         user.setAccount(Long.valueOf(registerDto.getAccount()));
         user.setPwd(MD5Util.StringMD5(registerDto.getPwd()));
         int insert = userMapper.insert(user);

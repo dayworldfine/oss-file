@@ -27,7 +27,7 @@ public class UserStart {
 
     public static String userId = "1";
     public static String nickName = "wbh";
-    public static String userImg = "/HeadImg/wbh.jpg";
+    public static String userImg = "/headImg/wbh.jpg";
     public static String account = "13738700108";
     public static String pwd = "wbh123";
 

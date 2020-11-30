@@ -8,7 +8,7 @@
       center>
       <div class="useHelp">
         <div class="useHelp-title">1.上传功能:</div>
-        <div class="useHelp-center">只有右上角提示上传成功才为上传成功,大文件请耐心等待</div>
+        <div class="useHelp-center">只有右上角提示上传成功才为上传成功,大文件请耐心等待,如文件超过上传限制,请联系超级管理员</div>
         <div class="useHelp-title">2.预览功能:</div>
         <div class="useHelp-center">文档类的文件才支持在线预览</div>
         <div class="useHelp-title">3.输入分区密匙功能:</div>

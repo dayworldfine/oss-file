@@ -2,23 +2,23 @@
   <div class="PcDetail">
     <div class="fun-button-all">
       <div class="fun-button"  @click="goBack()">
-        <img class="button-img" src="/static/goBack.png"/>
+        <img class="button-img" src="static/goBack.png"/>
         <div class="fun-button-text">后退</div>
       </div>
       <div class="fun-button" @click="downloadFile()" >
-        <img class="button-img" src="/static/download.png"/>
+        <img class="button-img" src="static/download.png"/>
         <div class="fun-button-text">下载</div>
       </div>
       <div class="fun-button" @click="previewFile()" v-if="userRole.indexOf('superAdmin')>=0 ||userRole.indexOf('admin')>=0 || userRole.indexOf('uploadGeneral')>=0">
-        <img class="button-img" src="/static/preview.png"/>
+        <img class="button-img" src="static/preview.png"/>
         <div class="fun-button-text">在线预览</div>
       </div>
       <div class="fun-button" @click="uploadFile()" v-if="userRole.indexOf('superAdmin')>=0 ||userRole.indexOf('admin')>=0 || userRole.indexOf('uploadGeneral')>=0">
-        <img class="button-img" src="/static/upload.png"/>
+        <img class="button-img" src="static/upload.png"/>
         <div class="fun-button-text">上传</div>
       </div>
       <div class="fun-button" @click="delFile()" v-if="userRole.indexOf('superAdmin')>=0 ||userRole.indexOf('admin')>=0">
-        <img class="button-img" src="/static/delete.png"/>
+        <img class="button-img" src="static/delete.png"/>
         <div class="fun-button-text">删除</div>
       </div>
       <div class="fun-search"  :class="userRole.indexOf('superAdmin')>-1 ?'fun-search-superAdmin'
@@ -26,7 +26,7 @@
                 :(userRole.indexOf('uploadGeneral')>-1?'fun-search-uploadGeneral':
                 (userRole.indexOf('general')>-1?'fun-search-general':'fun-search-noLogin')))">
         <input v-model="searchName" placeholder="请输入文件名称" class="fun-search-input"/>
-        <img class="fun-search-img" src="/static/search.png" @click="searchFile()"/>
+        <img class="fun-search-img" src="static/search.png" @click="searchFile()"/>
 
       </div>
     </div>
@@ -89,7 +89,7 @@
             if (type =="jpg" || type =="jpeg" || type =="png" || type == "gif"){
               return this.$BaseUrl.URL_USER_IMG_PREFIX+"/"+url;
             }
-            let prefix ="/static/";
+            let prefix ="static/";
             let suffix ="";
             switch (type) {
               case "jpg":suffix ="image.png";break;
@@ -171,9 +171,13 @@
             this.$message.warning("请选择文件")
             return;
           }
-
+        //生产
+        //   exportExcel("https://resource.tomtangmu.com/"+ this.fileList[this.putOnIndex].url,
+        //     this.fileList[this.putOnIndex].fileName + this.fileList[this.putOnIndex].suffix,{})
+          //开发
           exportExcel("download"+ this.fileList[this.putOnIndex].url,
             this.fileList[this.putOnIndex].fileName + this.fileList[this.putOnIndex].suffix,{})
+
           // exportExcel("download/headImg/wbh.jpg","wbh.jpg",{})
 
           FileService.downloadFile({fileId:this.fileList[this.putOnIndex].id}).then((res)=>{
