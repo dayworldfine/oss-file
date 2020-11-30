@@ -173,7 +173,7 @@
           }
         //生产
           exportExcel("https://resource.tomtangmu.com/"+ this.fileList[this.putOnIndex].url,
-            this.fileList[this.putOnIndex].fileName + this.fileList[this.putOnIndex].suffix,{})
+            this.fileList[this.putOnIndex].fileName +"."+ this.fileList[this.putOnIndex].suffix,{})
           //开发
           // exportExcel("download"+ this.fileList[this.putOnIndex].url,
           //   this.fileList[this.putOnIndex].fileName + this.fileList[this.putOnIndex].suffix,{})
