@@ -8,13 +8,16 @@ import testUpload from '@/pc/testUpload'
 Vue.use(Router)
 
 export default new Router({
-  // mode: 'history',
+  mode: 'history',
+  base: '/',
   routes: [
     {
+      base: '/',
       path: '/',
       redirect: '/PcIndex',
     },
     {
+      base: '/',
       path: '/Pc',
       name: 'Pc',
       component: resolve => require(['@/pc/Pc/Pc.vue'], resolve),

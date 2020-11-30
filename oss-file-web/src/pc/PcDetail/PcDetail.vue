@@ -172,11 +172,11 @@
             return;
           }
         //生产
-        //   exportExcel("https://resource.tomtangmu.com/"+ this.fileList[this.putOnIndex].url,
-        //     this.fileList[this.putOnIndex].fileName + this.fileList[this.putOnIndex].suffix,{})
-          //开发
-          exportExcel("download"+ this.fileList[this.putOnIndex].url,
+          exportExcel("https://resource.tomtangmu.com/"+ this.fileList[this.putOnIndex].url,
             this.fileList[this.putOnIndex].fileName + this.fileList[this.putOnIndex].suffix,{})
+          //开发
+          // exportExcel("download"+ this.fileList[this.putOnIndex].url,
+          //   this.fileList[this.putOnIndex].fileName + this.fileList[this.putOnIndex].suffix,{})
 
           // exportExcel("download/headImg/wbh.jpg","wbh.jpg",{})
 
@@ -290,7 +290,7 @@
     margin-left: 680px;
   }
   .fun-search-general{
-    margin-left: 760px;
+    margin-left: 1000px;
   }
   .fun-search-noLogin{
     margin-left: 1000px;
