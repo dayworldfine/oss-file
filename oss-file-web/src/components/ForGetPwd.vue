@@ -133,7 +133,7 @@
     padding: 13px 14px;
     /*width: 620px;*/
     font-size: 14px;
-    color: #bfae90;
+    /*color: #bfae90;*/
     height: 40px;
     width: 200px;
     font-family: "Microsoft soft";
