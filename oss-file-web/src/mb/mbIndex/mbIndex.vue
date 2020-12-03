@@ -1,5 +1,5 @@
 <template>
-    <div>移动</div>
+    <div class="mbIndex">不支持移动端使用</div>
 </template>
 
 <script>
@@ -9,5 +9,7 @@
 </script>
 
 <style scoped>
-
+.mbIndex{
+  margin-top: 200px;
+}
 </style>

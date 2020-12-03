@@ -40,6 +40,11 @@ export default new Router({
       component: resolve => require(['@/pc/PcPreview/PcPreview.vue'], resolve),
     },
     {
+      path: '/mbIndex',
+      name: 'mbIndex',
+      component: resolve => require(['@/mb/mbIndex/mbIndex.vue'], resolve),
+    },
+    {
       path: '/test',
       name: 'test',
       component: test

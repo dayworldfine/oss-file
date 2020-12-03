@@ -91,7 +91,7 @@ public class ZoneSqlProvider {
                 "z.zone_name as zoneName, " +
                 "z.zone_prefix as zonePrefix " +
                 "FROM t_zone z " +
-                "WHERE z.id in  " +
+                "WHERE ( z.id in  " +
                 "( " +
                 "SELECT  " +
                 "uiz.zone_id  " +
@@ -100,7 +100,7 @@ public class ZoneSqlProvider {
                 "WHERE uiz.user_id = " + userId+
                 ") " +
                 "OR z.is_open =1 " +
-                " ");
+                " ) ");
 
         if (ValidateUtil.isNotEmpty(name)){
             sb.append(" and z.zone_name like '%"+name+"%'");

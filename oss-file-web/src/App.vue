@@ -17,6 +17,9 @@ export default {
     //   // alert("pc端");
     //   this.$router.replace('/PcIndex');
     // }
+    if (this._isMobile()) {
+      this.$router.replace('/mbIndex');
+    }
   },
   methods:{
 
