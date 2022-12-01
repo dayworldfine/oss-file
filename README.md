@@ -8,4 +8,4 @@ vue + java
 ```
 
 ### 界面图
-![image](https://github.com/dayworldfine/oss-file/blob/master/show.png)
+![image](https://markdown.tomtangmu.com/git/oss-file/show.png)
